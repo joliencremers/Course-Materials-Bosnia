@@ -1,0 +1,295 @@
+---
+title: "Statistical Inference"
+author: "Jolien Cremers (adapted from Gerko Vink)"
+date: "Statistical Programming with R"
+output:
+  ioslides_presentation:
+    css: css/style.css
+    logo: css/logo_en.png
+    transition: 0
+    self_contained: TRUE   
+---
+
+# Statistical Inference
+
+## This Lecture:
+
+- Plotting distributions
+- Comparing two groups
+- Checking assuptions
+- Non-parametric tests
+
+## I use the following package in this lecture
+```{r message=FALSE}
+library(magrittr) #for pipes
+library(MASS)     #for the bacteria data
+#library(ggplot2)
+library(Ecdat)    #for the Benefits data
+```
+
+
+
+
+
+# Plotting distributions
+## Plotting curves
+
+Base R function `curve()` to plot the pdf and cdf of a normal distribution:
+
+```{r fig.height=3}
+par(mfrow=c(1,2), bg=NA)
+curve(dnorm(x,0,1),xlim=c(-3,3),ylab="f(x)",main='') 
+curve(pnorm(x,0,1),xlim=c(-3,3),ylab="F(X < x)",main='')
+```
+
+## 
+or exponential distribution:
+
+```{r echo = FALSE, fig.height=4}
+par(mfrow=c(1,2), bg = NA)
+curve(dexp(x,2),from=0, to=5,xlab="t",ylab="f(t)",col="red",main='') 
+curve(dexp(x,.5),from=0, to=5,main='',col="blue",add=TRUE) 
+text(.8,1.8,expression(paste(lambda," = 2")),col="red")
+text(4,0.25,expression(paste(lambda," = 0.5")),col="blue")
+curve(pexp(x,2),from=0, to=5,xlab="t",ylab="F(T < t)",main='',col="red")
+curve(pexp(x,.5),from=0, to=5,main='',col="blue",add=TRUE)
+text(1.5,.8,expression(paste(lambda," = 2")),col="red")
+text(2.3,0.5,expression(paste(lambda," = 0.5")),col="blue")
+```
+
+## Sampling from distributions:
+
+In R we can use:
+
+- `rnorm()` to obtain samples from a normal distribution
+- `dnorm()` to sample from a normal density function
+- `pnorm()` to sample from a normal distribution function
+- `qnorm()` to sample from a normal quantile function
+
+This works for other distributions as well, e.g. `rexp()`, `dexp()`, `pexp()` and `qexp()`.
+
+## Setting a seed
+
+```{r}
+set.seed (101)
+rnorm(5, 2, 5)
+rnorm(5, 2, 5)
+
+set.seed(101)
+rnorm(5, 2, 5)
+```
+
+## Barplots
+
+Barplots for a poisson distribution:
+
+```{r echo=FALSE, fig.height=4}
+par(mfrow = c(1, 3), bg = NA)
+y <- factor(0:5)
+x <- 0:5
+barplot(dpois(x, .5), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y=y)", xlab = "y")
+text(5, .5, expression(paste(lambda, " = 0.5")))
+barplot(dpois(x, 1), 
+        ylim = c(0, .6), 
+        names.arg = y, 
+        ylab = "P(Y=y)", 
+        xlab = "y")
+text(5, .5, expression(paste(lambda, " = 1")))
+barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y = y)",xlab="y")
+text(5,.5,expression(paste(lambda," = 2")))
+```
+
+## Code for the previous plot  {.smaller}
+
+```{r, eval = FALSE, fig.height=4}
+par(mfrow = c(1, 3), bg = NA)
+y <- factor(0:5)
+x <- 0:5
+barplot(dpois(x, .5), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y=y)", xlab = "y")
+text(5, .5, expression(paste(lambda, " = 0.5")))
+barplot(dpois(x, 1), 
+        ylim = c(0, .6), 
+        names.arg = y, 
+        ylab = "P(Y=y)", 
+        xlab = "y")
+text(5, .5, expression(paste(lambda, " = 1")))
+barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y = y)",xlab="y")
+text(5,.5,expression(paste(lambda," = 2")))
+```
+
+## Histograms
+
+```{r echo=FALSE, fig.height=4}
+set.seed(101)
+hist(rnorm(1000, 3, 0.5), ylab = "P(Y=y)", xlab = "y", ylim = c(0,1), prob = TRUE)
+set.seed(101)
+lines(density(rnorm(1000, 3, 0.5))) 
+
+```
+
+## Code for previous plot
+
+```{r, eval = FALSE, fig.height=4}
+
+hist(rnorm(1000, 3, 0.5),
+     ylab = "P(Y=y)", xlab = "y",
+     ylim = c(0,1), prob = TRUE)
+lines(density(rnorm(1000, 3, 0.5))) 
+
+```
+
+
+
+
+
+# Comparing two groups
+
+## Discrete variables
+
+```{r}
+bacteria %>% head(n=8)
+```
+
+## Discrete variables
+
+Column `y`: 
+
+* `n`: Disease absent. 
+* `y`: Disease present.
+
+Column `ap`: 
+
+* `a`: Active medicine. 
+* `p`: Placebo.
+
+
+## Chi-square test
+```{r}
+x2.table <- bacteria %$% table(ap, y) #do not need data argument
+x2.table
+
+prop.table(table(bacteria$ap, bacteria$y), margin = 1)
+```
+
+## Performing a chi-square test
+```{r}
+bacteria %$% chisq.test(ap, y)
+```
+
+## Or, equivalently:
+```{r}
+bacteria %$% table(ap, y) %>% chisq.test
+```
+
+## Expected cell counts
+
+```{r}
+bacteria %$% chisq.test(ap, y)$expected
+```
+
+## Visualizing this
+
+```{r, dev.args = list(bg = 'transparent')}
+bacteria %$% table(y, ap) %>% plot
+```
+
+## Visualizing this {.smaller}
+
+```{r fig.height=4.5, dev.args = list(bg = 'transparent')}
+barplot(table(bacteria$y, bacteria$ap), 
+        beside = TRUE, 
+        legend = c("No infection", "Infection"), 
+        col = c("blue", "orange"),
+        args.legend = list(x=4.5, y=80))
+```
+
+## Continuous variables
+
+```{r}
+head(Benefits, n = 5)
+```
+
+##
+
+```{r}
+hist(Benefits$stateur, xlim=c(2,18),
+     main = "State Unemployment Rates in 1972",
+     xlab = "State Unemployment Rate (in %)")
+```
+
+
+## Two-sided t-test
+
+```{r}
+Benefits %$% t.test(stateur, mu = 5, alternative = "two.sided")
+```
+
+## One-sided t-test
+
+```{r}
+Benefits %$% t.test(stateur, mu = 5, alternative = "greater")
+```
+
+## Two-sample t-test
+
+```{r}
+Benefits %$% t.test(stateur~sex)
+```
+
+## ANOVA
+```{r}
+fit <- Benefits %$% aov(stateur~sex)
+summary(fit)
+```
+
+
+# Some Assumptions
+
+## Small expected cell frequencies {.smaller}
+
+With small expected cell frequencies (roughly if any are below 5), we should use Fishers exact test.
+
+```{r}
+short <- bacteria %>%
+  subset(week <= 2) %$%
+  table(y, ap)
+short
+```
+
+
+## Fisher's exact test
+
+```{r}
+short %>% chisq.test
+```
+
+
+## Fisher's exact test
+
+```{r warning=TRUE}
+#fisher.test(table(short$y, short$ap))
+short %>%
+  fisher.test
+```
+
+## Assumptions in ANOVA
+
+```{r}
+fit <- Benefits %$% aov(stateur~sex)
+plot(fit, 2)
+```
+
+# Non-parametric testing
+
+## Mann-Whitney U test
+
+## Kruskal-wallis test (violation of normality assuption)
+
+## Friedman test
+
+
+

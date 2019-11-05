@@ -1,0 +1,202 @@
+---
+title: "Statistical Programming with R"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: scroll
+---
+
+# Intro {.sidebar}
+
+This dashboard covers the materials for the first folow-up course in R programming. Course held in Banja Luka, December 9-13, 2019. See ?? for the course website of the introductory course.
+
+---
+
+Instructors: 
+
+ - Anne Vinkel Hansen (aih@dst.dk)
+ - Jolien Cremers (jcre@sund.ku.dk)
+
+
+---
+
+Part of the material for this course is adapted from [Gerko Vink](https://github.com/gerkovink/R)
+
+
+---
+# Quick Overview
+
+## Column 1
+
+### Outline
+
+This follow-up course deals with the following topics:
+
+1.	Statistical inference
+2.  Linear models
+3.  Generalised linear models
+4.  Data validation and editing
+5.  Imputation
+
+
+Previous experience with R is required.
+
+## Column 2
+
+### Course schedule 
+
+| Time        | Topic                                           |
+|:------------|:------------------------------------------------|
+| *Tuesday*   |                                                 |
+| 09.00-12.00 | Repetition                                      |
+|             | *Break*                                         |    
+| 13.00-15.30 | Statistical Inference                           |
+| *Wednesday* |                                                 |
+| 09.00-12.00 | Linear Models (G)                               |
+|             | *Break*                                         |             
+| 13.00-15.30 | Generalized Linear Models (H)                   |
+| *Thursday*  |                                                 |
+| 09.00-12.00 | Data Validation and Editing                     |
+|             | *Break*                                         |
+| 13.00-15.30 | Imputation                                      |
+| *Friday*    |                                                 |
+| 09.00-12.00 | Evaluation, agreement on summary mission report |
+
+
+# How to prepare
+
+## Column 1
+
+### Preparing your machine for the course
+Dear all, 
+
+The below steps guide you through installing both `R` as well as the necessary additions.
+
+We look forward to see you all in Banja Luka,  
+
+*Anne and Jolien*
+
+### **System requirements**
+
+Bring a laptop computer to the course and make sure that you have full write access and administrator rights to the machine. We will explore programming and compiling in this course. This means that you need full access to your machine. Some corporate laptops come with limited access for their users, we therefore advice you to bring a personal laptop computer, if you have one. 
+
+### **1. Install `R`**
+`R` can be obtained [here](https://cran.r-project.org). We won't use `R` directly in the course, but rather call `R` through `RStudio`. Therefore it needs to be installed. 
+
+### **2. Install `RStudio` Desktop**
+
+Rstudio is an Integrated Development Environment (IDE). It can be obtained as stand-alone software [here](https://www.rstudio.com/products/rstudio/download/#download). The free and open source `RStudio Desktop` version is sufficient.
+
+### **3. Start RStudio and install the following packages. **
+
+Execute the following lines of code in the console window:
+
+```{r eval=FALSE, echo = TRUE}
+install.packages(c("ggplot2", "stats","tidyverse", "magrittr", "micemd", "jomo", "pan", 
+                 "lme4", "knitr", "rmarkdown", "plotly", "ggplot2", "shiny", 
+                 "devtools", "boot", "class", "car", "MASS", "ggplot2movies", 
+                 "ISLR", "DAAG", "mice", "mitml", "miceadds", "sf"), 
+                 dependencies = TRUE)
+```
+
+
+If you are not sure where to execute code, use the following figure to identify the console:
+
+<center>
+  <img src="console.png" alt="HTML5 Icon" width = 50%>
+</center>
+
+Just copy and paste the installation command and press the return key. When asked 
+
+```{r eval = FALSE, echo = TRUE}
+Do you want to install from sources the package which needs 
+compilation? (Yes/no/cancel)
+```
+
+type `Yes` in the console and press the return key. 
+
+# Tuesday
+
+## Column 1
+
+### Tuesday's materials
+We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
+
+- Part ??: Repetition
+
+
+- Part G: Statistical Inference
+    - [Lecture G](Contents/Material/Part G - Statistical inference/Lecture_G.html){target="_blank"}
+    - [Lecture G Handout](Contents/Material/Part G - Statistical inference/Lecture_G_handout.html){target="_blank"}
+    - [Practical G](Contents/Material/Part G - Statistical inference/Practical_G_walkthrough.html){target="_blank"}
+    - [Impractical G](Contents/Material/Part G - Statistical inference/Practical_G.html){target="_blank"}
+
+All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions. 
+
+## Column 2
+
+### Useful references
+
+
+
+
+
+# Wednesday
+
+## Column 1
+
+### Wednesday's materials
+We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
+
+- Part H: `R` Linear Models
+    - [Lecture H](Contents/Material/Part H - Statistical inference/Lecture_H.html){target="_blank"}
+    - [Lecture H Handout](Contents/Material/Part H - Statistical inference/Lecture_H_handout.html){target="_blank"}
+    - [Practical H](Contents/Material/Part H - Statistical inference/Practical_H_walkthrough.html){target="_blank"}
+    - [Impractical H](Contents/Material/Part H - Statistical inference/Practical_H.html){target="_blank"}
+    
+- Part ??: Generalized Linear Models
+
+All lectures are in `html` format. Practicals are are provided both as naked questions but also with ample explanations and solutions - choose according to your taste!
+
+## Column 2
+
+### Useful references
+
+# Thursday
+
+## Column 1
+
+### Thursday's materials
+We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
+
+- Part ??: Data Validation and Editing
+
+- Part ??: Imputation
+
+All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions.
+
+## Column 2
+
+### Useful references
+
+
+# Further studies
+
+## Column 1
+
+### What to do after the course
+
+The following references are currently available for free, either as pdfs or as extensive webpages (written with [RMarkdown](https://rmarkdown.rstudio.com/) and [bookdown](https://bookdown.org/)). They are all very useful and we highly recommend them. 
+
+- [R for Data Science](https://r4ds.had.co.nz): written by Hadley Wickham and Garrett Grolemund this book relies almost exclusively on the [tidyverse](https://www.tidyverse.org/) approach to data analysis. Many highly effective tools will be right at your fingertips after reading this book and working through the many exercises.
+- [Hands-On Programming with R](https://rstudio-education.github.io/hopr/): a great read by Garrett Grolemund emphasizing programming techniques with R. 
+- [Advanced R](https://adv-r.hadley.nz/): You want to gain deeper knowledge of R and you wnat to learn from one of the most influential R contributors. This one is for you!
+- [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/): an introductory book on statistical learning, with applications in R. The R code is somewhat old-style and you might be able to find newer packages for the tasks, but ths is a solid read well worth the effort.
+- [Data Analysis and Graphics Using R](http://www.pindex.com/uploads/post_docs/Maindonald%20Data%20Analysis%20and%20Graphics(PINDEX-DOC-6953).pdf): a detailed book that covers a lot about categorical data analysis and fitting `glm`s in `R`.
+- [Happy Git and GitHub for the useR ](https://happygitwithr.com/index.html): a great introduction to version control using Git and GitHub together with RStudio. Written by Jenny Bryan in a very concise style. Highly recommended!
+
+<!-- ## Column 2 -->
+
+<!-- ### For fun -->
+<!-- <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">My wife asked me what machine learning is and I said: remember when we ordered the hot plate for the boat and amazon suggested buying all the equipment needed to make a full meth lab?</p>&mdash; (((Kane Baccigalupi))) (@rubyghetto) <a href="https://twitter.com/rubyghetto/status/1058220004301127680?ref_src=twsrc%5Etfw">November 2, 2018</a></blockquote> -->
+<!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->

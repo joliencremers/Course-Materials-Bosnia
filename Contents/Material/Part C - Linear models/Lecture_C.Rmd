@@ -1,0 +1,345 @@
+---
+title: "Linear models"
+author: "Jolien Cremers (adapted from Gerko Vink)"
+date: "Statistical Programming with R"
+output:
+  ioslides_presentation:
+    css: css/style.css
+    logo: css/logo_en.png
+    transition: 0
+    self_contained: TRUE   
+---
+
+# The linear model
+## This Lecture:
+
+- Linear models in R
+- Checking assuptions
+- Model fit & comparison
+- Predictions
+
+## I use the following packages in this lecture
+
+```{r message = FALSE}
+
+library(magrittr) #for pipes
+library(mice)     #for the boys data
+library(Ecdat)    #for the Benefits data
+library(ggplot2)
+
+```
+
+## The linear model
+
+The function `lm()` is a base function in `R` and allows you to pose a variety of linear models. 
+```{r}
+args(lm)
+```
+
+If we want to know what these arguments do we can ask R:
+
+```{r, eval=FALSE}
+?lm
+```
+
+This will open a help page on the `lm()` function.
+
+## Continuous predictors {.smaller}
+To obtain a linear model with a main effect for `tenure`, we formulate $stateur\sim tenure$ 
+```{r warning=FALSE, message = FALSE}
+fit <- Benefits %$%
+  lm(stateur~tenure)
+fit
+```
+
+## Continuous predictors: more detail {.smaller}
+```{r}
+fit %>% summary
+```
+
+## Continuous predictors
+To obtain a linear model with just main effects for `tenure` and `age`, we formulate $stateur\sim tenure + age$ 
+```{r}
+require(mice)
+fit <- Benefits %$%
+  lm(stateur ~ tenure + age)
+fit
+```
+
+## Continuous predictors: more detail {.smaller}
+```{r}
+fit %>% summary
+```
+
+## Continuous predictors: interaction effects
+To obtain a linear model with an interaction effect for `tenure` and `age`, we formulate $stateur\sim tenure * age$ 
+```{r}
+fit <- Benefits %$% lm(stateur ~ tenure * age)
+```
+
+Equivalent
+```{r eval = FALSE}
+fit <- Benefits %$% lm(stateur ~ tenure + age + tenure:age)
+```
+
+## Continuous predictors: interaction effects
+```{r}
+fit
+```
+
+##  and with more detail {.smaller}
+```{r}
+fit %>% summary
+```
+
+## Categorical predictors in the linear model
+If a categorical variable is entered into function `lm()`, it is automatically converted to a dummy set in `R`. The first level is always taken as the reference category. If we want another reference category we can use the function `relevel()` to change this.
+
+```{r}
+fit_c <- Benefits %$% lm(stateur ~ joblost)
+```
+
+##  and again with more detail {.smaller}
+```{r}
+fit_c %>% summary
+```
+
+## Components of the linear model {.smaller}
+```{r}
+names(fit_c) # the names of the list with output objects
+fit_c$coef  # show the estimated coefficients
+```
+
+```{r eval = FALSE}
+coef(fit_c) # alternative
+```
+
+
+
+
+
+# Checking assumptions
+## Linearity {.smaller}
+```{r eval = FALSE, message = FALSE}
+Benefits %>%
+  ggplot(aes(tenure, stateur)) + 
+  geom_point() + 
+  geom_smooth(method = "loess", col = "blue") + 
+  geom_smooth(method = "lm", col = "orange")
+```
+
+## Linearity {.smaller}
+```{r echo=FALSE, message = FALSE}
+Benefits %>%
+  ggplot(aes(tenure, stateur)) + 
+  geom_point() + 
+  geom_smooth(method = "loess", col = "blue") + 
+  geom_smooth(method = "lm", col = "orange")
+```
+
+The loess curve suggests slight non-linearity
+
+## Adding a squared term
+```{r message=FALSE, warning = FALSE}
+Benefits %$%
+  lm(stateur ~ tenure + I(tenure^2)) %>%
+  summary()
+```
+
+## Constant error variance? {.smaller}
+```{r, fig.height=4, dev.args = list(bg = 'transparent')}
+par(mfrow = c(1, 2))
+fit %>%
+  plot(which = c(1, 3), cex = .6)
+```
+
+## No constant error variance! {.smaller}
+```{r, fig.height=4, dev.args = list(bg = 'transparent')}
+par(mfrow = c(1, 2))
+boys %$%
+  lm(bmi ~ age) %>%
+  plot(which = c(1, 3), cex = .6)
+```
+
+## Normality of errors {.smaller}
+```{r, fig.height=3.5, dev.args = list(bg = 'transparent')}
+fit %>%
+  plot(which = 2, cex = .6)
+```
+
+The QQplot shows divergence from normality at the tails
+
+## Histograms
+```{r, echo = FALSE}
+par(mfrow = c(1,2))
+hist(Benefits$age, main = "", xlab = "Age")
+hist(Benefits$tenure, main = " ", xlab = "Tenure")
+```
+
+<!-- ## Outliers and influential cases {.smaller} -->
+
+<!-- Leverage: see the fit line as a lever.  -->
+
+<!--   - some points pull/push harder; they have more leverage -->
+
+<!-- Standardized residuals: -->
+
+<!--   - The values that have more leverage tend to be closer to the line -->
+<!--   - The line is fit so as to be closer to them -->
+<!--   - The residual standard deviation can differ at different points on $X$ - even if the error standard deviation is constant.  -->
+<!--   - Therefore we standardize the residuals so that they have constant variance (assuming homoscedasticity).  -->
+
+<!-- Cook's distance: how far the predicted values would move if your model were fit without the data point in question.  -->
+
+<!--   - it is a function of the leverage and standardized residual  associated with each data point -->
+
+<!-- ## Outliers and influential cases -->
+<!-- Outliers are cases with large $e_z$  (standardized residuals). -->
+
+<!-- If the model is ***correct***  we expect: -->
+
+<!--   -  5\% of $|e_z|>1.96$  -->
+<!--   -  1\% of $|e_z|>2.58$ -->
+<!--   -  0\% of $|e_z|>3.3$  -->
+
+<!-- Influential cases are cases with large influence on parameter estimates -->
+
+<!--   -  cases with Cook's Distance $> 1$, or  -->
+<!--   -  cases with Cook's Distance much larger than the rest -->
+
+## Outliers and influential cases {.smaller}
+```{r, fig.height= 3, dev.args = list(bg = 'transparent')}
+par(mfrow = c(1, 2), cex = .6)
+fit %>% plot(which = c(4, 5))
+```
+
+There are quite some cases with $|e_z|>2$ (right plot). There are no cases with Cook's Distance $>1$, but some cases stand out.
+
+```{r echo = FALSE}
+set.seed(20)
+
+pred1 = rnorm(20, mean=20, sd=3)
+outcome1 = 5 + .5*pred1 + rnorm(20)
+
+pred2 = c(pred1, 30);        outcome2 = c(outcome1, 20.8)
+pred3 = c(pred1, 19.44);     outcome3 = c(outcome1, 20.8)
+pred4 = c(pred1, 30);        outcome4 = c(outcome1, 10)
+```
+
+## Fine
+```{r echo=FALSE}
+par(mfrow = c(1,2))
+plot(outcome1 ~ pred1, ylim = c(9, 25), xlim = c(10, 30))
+abline(lm(outcome1 ~ pred1))
+plot(lm(outcome1 ~ pred1), which = 5)
+```
+
+## High leverage, low residual
+```{r echo=FALSE}
+par(mfrow = c(1,2))
+plot(outcome2 ~ pred2, ylim = c(9, 25), xlim = c(10, 30))
+points(30, 20.8, col = "red")
+abline(lm(outcome2 ~ pred2))
+plot(lm(outcome2 ~ pred2), which = 5)
+```
+
+## Low leverage, high residual
+```{r echo=FALSE}
+par(mfrow = c(1,2))
+plot(outcome3 ~ pred3, ylim = c(9, 25), xlim = c(10, 30))
+abline(lm(outcome3 ~ pred3))
+points(19.44, 20.8, col = "red")
+plot(lm(outcome3 ~ pred3), which = 5)
+```
+
+## High leverage, high residual
+```{r echo=FALSE}
+par(mfrow = c(1,2))
+plot(outcome4 ~ pred4, ylim = c(9, 25), xlim = c(10, 30))
+points(30, 10, col = "red")
+abline(lm(outcome4 ~ pred4))
+plot(lm(outcome4 ~ pred4), which = 5)
+```
+
+
+
+
+
+# Model fit & comparison
+## R-squared
+
+```{r cache = TRUE}
+summary(fit)$r.squared
+```
+
+```{r cache = TRUE}
+summary(fit)$adj.r.squared
+```
+
+
+## AIC and BIC
+Akaike's *An Information Criterion* 
+```{r cache = TRUE}
+fit %>% 
+  AIC()
+```
+
+and *Bayesian Information Criterion*
+```{r cache = TRUE}
+fit %>%
+  BIC()
+```
+
+## Influence of cases
+DfBeta calculates the change in coefficients depicted as deviation in SE's.
+```{r cache = TRUE}
+fit %>%
+  dfbeta() %>%
+  head(n = 7)
+```
+
+
+
+
+
+# Prediction
+
+## Fitted values:
+Let's use the simpler `anscombe` data example
+```{r cache = TRUE}
+fit <- anscombe %$% lm(y1 ~ x1)
+y_hat <- 
+  fit %>%
+  fitted.values()
+```
+The residual is then calculated as
+```{r cache = TRUE}
+y_hat - anscombe$y1
+```
+
+## Predict new values
+If we introduce new values for the predictor `x1`, we can generate predicted values from the model
+```{r cache = TRUE, warning=FALSE}
+new.x1 <- data.frame(x1 = 1:20)
+predict.lm(fit, newdata = new.x1)
+```
+
+## Predictions are draws from the regression line
+```{r}
+pred <- predict.lm(fit, newdata = new.x1)
+lm(pred ~ new.x1$x1)$coefficients
+fit$coefficients
+```
+
+## Prediction intervals
+```{r warning=FALSE}
+predict(fit, interval = "prediction")
+```
+
+## Some other modeling devices in `R`
+- `lm()`: linear modeling
+- `glm()`: generalized linear modeling
+- `gamlss::gamlss`: generalized additive models (for location, scale and shape)
+- `lme4::lmer`: linear mixed effect models
+- `lme4::glmer`: generalized linear mixed effect models
+- `lme4::nlmer`: non-linear mixed effect models
