@@ -1,5 +1,5 @@
 ---
-title: "Practical H"
+title: "Practical C"
 author: "Jolien Cremers (adapted from Gerko Vink)"
 date: "Statistical Programming in R"
 output: html_document
@@ -69,24 +69,6 @@ of data?
 
 6. **Now make a scatterplot to investigate similarity between plot the predicted values against the observed values for `elastic2`**
 
-
----
-
-7. **Write a function that chooses automatically whether to do the `chisq.test()` or the `fisher.test()`. Create the function such that it:**
-
-- takes two vectors as input
-- creates a table from the two vectors
-- checks if there is any expected cell frequency that is smaller than 5
-- and that then performs and prints the results of the appropriate test.
-
----
-
-8. **Test the function with the dataset `bacteria` (from `MASS`) by testing independence between compliance (`hilo`) and the presence or absence of disease (`y`).**
-  
----
-
-9. **Does your function work differently if we only put in the first 25 rows of the `bacteria` dataset?**
-
 ---
 
 The mammalsleep dataset is part of `mice`. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type
@@ -96,19 +78,19 @@ The mammalsleep dataset is part of `mice`. It contains the Allison and Cicchetti
 
 --- 
 
-10. **Fit and inspect a model where `brw` is modeled from `bw`**
+7. **Fit and inspect a model where `brw` is modeled from `bw`**
 
 ---
 
-11. **Now fit and inspect a model where `brw` is predicted from both `bw` and `species`**
+8. **Now fit and inspect a model where `brw` is predicted from both `bw` and `species`**
 
 ---
 
-12. **Can you find a model that improves the $R^2$ in modeling `brw`?**
+9. **Can you find a model that improves the $R^2$ in modeling `brw`?**
 
 ---
 
-13. **Inspect the diagnostic plots for the model obtained in `exercise 12`. What issues can you detect?**
+10. **Inspect the diagnostic plots for the model obtained in `exercise 12`. What issues can you detect?**
 
 ---
 

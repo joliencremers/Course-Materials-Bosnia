@@ -1,5 +1,5 @@
 ---
-title: "Practical H"
+title: "Practical C"
 author: "Jolien Cremers (adapted from Gerko Vink)"
 date: "Statistical Programming in R"
 output: html_document
@@ -223,71 +223,6 @@ data.frame(distance = elastic2$distance, predicted = pred) %>%
 
 ---
 
-7. **Write a function that chooses automatically whether to do the `chisq.test()` or the `fisher.test()`. Create the function such that it:**
-
-- takes two vectors as input
-- creates a table from the two vectors
-- checks if there is any expected cell frequency that is smaller than 5
-- and that then performs and prints the results of the appropriate test.
-
-```{r}
-contingencyTest <- function(x, y) {
-  
-  # Make a table out of the variables.
-  tab <- table(x, y)
-  
-  #expected frequencies
-  exp.freq <- (colSums(tab) %*% t(rowSums(tab))) / sum(tab)
-  
-  # Choose the correct test. 
-  if (any(exp.freq < 5)) {
-    results <- fisher.test(x, y)
-    return(results)
-  } else {
-    results <- chisq.test(x, y)
-    return(results)
-  }
-}
-```
-
-A more efficient function that tests whether the expected frequencies are smaller than a threshold $t$ is:
-
-```{r}
-contingencyTest2 <- function(x, y, t = 5){
-  test <- suppressWarnings(chisq.test(x, y))
-  if (any(test$expected < t)){
-    test <- fisher.test(x, y)
-  }
-  return(test)
-}
-```
-
-The `suppressWarnings()` function is used to surpress printing of the warnings that function chi-square puts out to the console when too low expected cell-frequencies are encountered. Since we decide to use Fisher's exact test in those situations anyway, it is redundant to print the message. 
-
----
-
-8. **Test the function with the dataset `bacteria` (from `MASS`) by testing independence between compliance (`hilo`) and the presence or absence of disease (`y`).**
-  
-```{r} 
-bacteria %$%
-  contingencyTest(ap, hilo)
-bacteria %$%
-  contingencyTest2(ap, hilo)
-```
-
----
-
-9. **Does your function work differently if we only put in the first 25 rows of the `bacteria` dataset?**
-```{r}
-bacteria[1:25, ] %$%
-  contingencyTest(ap, hilo)
-bacteria[1:25, ] %$%
-  contingencyTest2(ap, hilo)
-```
-Yes, it performs differently: expected cell frequencies are smaller than 5 for this subset. 
- 
----
-
 The mammalsleep dataset is part of `mice`. It contains the Allison and Cicchetti (1976) data for mammalian species. To learn more about this data, type
 ```{r}
 ?mammalsleep
@@ -295,7 +230,7 @@ The mammalsleep dataset is part of `mice`. It contains the Allison and Cicchetti
 
 --- 
 
-10. **Fit and inspect a model where `brw` is modeled from `bw`**
+7. **Fit and inspect a model where `brw` is modeled from `bw`**
 ```{r}
 mammalsleep %$%
   lm(brw ~ bw) %>%
@@ -310,7 +245,7 @@ mammalsleep %$%
 
 ---
 
-11. **Now fit and inspect a model where `brw` is predicted from both `bw` and `species`**
+8. **Now fit and inspect a model where `brw` is predicted from both `bw` and `species`**
 ```{r}
 mammalsleep %$%
   lm(brw ~ bw + species) %>%
@@ -329,7 +264,7 @@ The analysis we ran is in fact equivalent to running a fixed effects model on cl
 
 ---
 
-12. **Can you find a model that improves the $R^2$ in modeling `brw`?**
+9. **Can you find a model that improves the $R^2$ in modeling `brw`?**
 
 Since we're considering linear models so far, I limit myself to linear models only. The basis of the linear model is the variance covariance matrix and how it translates to data relations. This is most easily linearly summarized in the correlation matrix:
 ```{r}
@@ -375,7 +310,7 @@ and we have obtained a very high $R^2$. If prediction was our goal, we are doing
 
 ---
 
-13. **Inspect the diagnostic plots for the model obtained in `exercise 12`. What issues can you detect?**
+10. **Inspect the diagnostic plots for the model obtained in `exercise 12`. What issues can you detect?**
 ```{r}
 fit %>%
   plot(which = 1:6)

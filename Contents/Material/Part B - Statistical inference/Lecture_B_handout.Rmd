@@ -42,7 +42,7 @@ pre { /* Code block - determines code spacing between lines */
 
 
 
-# Statistical Inference & Testing Assumptions
+# Statistical Inference
 
 ## This Lecture:
 
@@ -54,11 +54,8 @@ pre { /* Code block - determines code spacing between lines */
 ## I use the following package in this lecture
 ```{r message=FALSE}
 library(magrittr) #for pipes
-library(MASS)     #for the cats and bacteria data
-library(mice)     #for the boys data
-library(datasets) #for the VADeaths data
-#library(ggplot2)
-library(Ecdat)
+library(MASS)     #for the bacteria data
+library(Ecdat)    #for the Benefits data
 ```
 
 
@@ -317,13 +314,35 @@ fit <- Benefits %$% aov(stateur~sex)
 plot(fit, 2)
 ```
 
+
+
+
+
 # Non-parametric testing
 
-## Mann-Whitney U test
+## Mann-Whitney / Wilcoxon rank-sum test {.smaller}
 
-## Kruskal-wallis test (violation of normality assuption)
+Check whether two population distributions (independent samples) are identical without assuming normality.
 
-## Friedman test
+```{r}
+Benefits %$% wilcox.test(stateur~sex, paired = FALSE) 
+```
+
+set `paired = TRUE` for Wilcoxon signed-rank test for dependent samples.
+
+## Kruskal-wallis test
+
+Check whether a collection of population distributions (independent samples) are identical without assuming normality.
+
+```{r}
+Benefits %$% kruskal.test(stateur~sex)
+```
 
 
+## Some other non-parametric tests in `R`
 
+- `friedman.test`: Friedman rank sum test
+- `Rfit` package for nonparametric regression
+- `cor(x, y, method = "kendall")` for Kendalls tau-b correlation
+- `cor(x, y, method = "spearman")` for Spearman correlation
+- `survival` package for semi- and nonparametric methods (Kaplan-Meier/Cox regression) in survival analysis

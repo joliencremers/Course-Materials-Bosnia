@@ -1,6 +1,6 @@
 ---
-title: "Practical H"
-author: "Gerko Vink"
+title: "Practical B"
+author: "Jolien Cremers (adapted from Gerko Vink)"
 date: "Statistical Programming with R"
 output: html_document
 ---
@@ -13,6 +13,8 @@ We use the following packages:
 ```{r}
 library(ggplot2)
 library(dplyr)
+library(magrittr)
+library(MASS)
 ```
 
 ---
@@ -151,129 +153,69 @@ We find that people who are receiving *true* `Acupuncture` are more inclined to 
 
 ---
 
-In the following simulation experiment we investigate least-squares estimation of the mean.
+6. **Write a function that chooses automatically whether to do the `chisq.test()` or the `fisher.test()`. Create the function such that it:**
 
----
-
-6. **Start by drawing a 100 values from a normal distribution with $\mu = 3$ and $\sigma = 7$. Use seed value `32083`.**
-
+- takes two vectors as input
+- creates a table from the two vectors
+- checks if there is any expected cell frequency that is smaller than 5
+- and that then performs and prints the results of the appropriate test.
 
 ```{r}
-set.seed(32083)
-
-x <- rnorm(100, mean=3, sd=7)
-```
-
----
-
-7. **Next, confirm that the sample mean of the values in x is near 4.166.**
-```{r}
-mean(x)
-```
-
----
-
-8. **Calculate the sample mean's sum of squared deviations from $\mu$. The sum of squared deviations from mu is defined as: **
-$$ \sum_{i=1}^{100} (x_i - \mu)^2,$$
-There is a slow way
-```{r}
-mu = 3
-summed <- x-mu
-sum.sq <- sum(summed^2)
-sum.sq
-```
-
-And a fast way
-```{r}
-sum.sq2 <- apply(outer(x, mu, "-")^2, 2, sum)
-```
-Both solutions are identical
-```{r}
-identical(sum.sq, sum.sq2)
-```
-
----
-
-9. **Now create a function that automates the calculation of the sum of squares for any given $\mu$. Call the function `lsfun` because we are going to identify the least squares estimate in exercise 8.**
-
-```{r eval=printAnswers}
-lsfun <- function(meanest) apply(outer(x, meanest, "-")^2, 2, sum)
-```
-
-or, 100% equivalently, but easier to spot as a function:
-```{r}
-lsfun <- function(meanest){
-  apply(outer(x, meanest, "-")^2, 2, sum)
-}
-```
-
----
-
-10. **Plot the curve of your least square function such that you can identify the minimum of the curve (i.e. the location for $x$ where the sum of the squared deviations are the lowest).**
-```{r}
-curve(lsfun, from = 4.16, to = 4.17)
-```
-
----
-
-
-11. **Repeat the experiment from 10 with the following $X \sim \mathcal{N}(\mu, \sigma^2)$ normal samples of length $n=100$, but now use the sample mean $\bar{x}$ in your function `lsfun()`. Let the function plot the curve and print the location where the minimum of the sum of the squares is located each time. Fix the seed to `set.seed(123)`:**
-
-- $x \sim \mathcal{N}(3, 7)$
-- $x \sim \mathcal{N}(15, 12)$
-- $x \sim \mathcal{N}(0, 2)$
-- $\sqrt{x} \sim \mathcal{N}(0, 2)$, i.e. you need to square $x$
-
-Hint: use the sample mean $\bar{x}$ as the center of your graph and add/subtract e.g. `.5` from this value to plot a range.
-
-First, we fix the random seed
-```{r}
-set.seed(123)
-```
-
-Code-wise it is efficient to write a function that does the repetitive experimentation. That way we have to write some lines of code only once. 
-```{r}
-plotfun <- function(x, meanest, plot = TRUE){
-  xbar <- mean(x)
-  lsfun <- function(meanest){ apply(outer(xbar, meanest, "-")^2, 2, sum)}
-  # lsfun <- function(mu, xbar) {
-  #   summed <- x-mu
-  #   sum.sq <- sum(summed^2)
-  #   return(sum.sq)
-  # }
-  if (plot) {
-    curve(lsfun, from = xbar - .5, to = xbar + .5, 
-          ylab=expression(paste(Sigma," ",e^2))) #nicer y-axis label
+contingencyTest <- function(x, y) {
+  
+  # Make a table out of the variables.
+  tab <- table(x, y)
+  
+  #expected frequencies
+  exp.freq <- (colSums(tab) %*% t(rowSums(tab))) / sum(tab)
+  
+  # Choose the correct test. 
+  if (any(exp.freq < 5)) {
+    results <- fisher.test(x, y)
+    return(results)
+  } else {
+    results <- chisq.test(x, y)
+    return(results)
   }
-  return(cat("The mean is:", xbar, "\n"))
 }
 ```
 
-- For $x \sim \mathcal{N}(3, 7)$:
-```{r eval=printAnswers, echo=printAnswers}
-rnorm(100, mean=3, sd=sqrt(7)) %>%
-  plotfun(meanest = 3, plot = TRUE)
+A more efficient function that tests whether the expected frequencies are smaller than a threshold $t$ is:
+
+```{r}
+contingencyTest2 <- function(x, y, t = 5){
+  test <- suppressWarnings(chisq.test(x, y))
+  if (any(test$expected < t)){
+    test <- fisher.test(x, y)
+  }
+  return(test)
+}
 ```
 
-- For $x \sim \mathcal{N}(15, 12)$
-```{r eval=printAnswers, echo=printAnswers}
-rnorm(100, mean=15, sd=sqrt(12)) %>%
-  plotfun(meanest = 15, plot = TRUE)
+The `suppressWarnings()` function is used to surpress printing of the warnings that function chi-square puts out to the console when too low expected cell-frequencies are encountered. Since we decide to use Fisher's exact test in those situations anyway, it is redundant to print the message. 
+
+---
+
+7. **Test the function with the dataset `bacteria` (from `MASS`) by testing independence between compliance (`hilo`) and the presence or absence of disease (`y`).**
+  
+```{r} 
+bacteria %$%
+  contingencyTest(ap, hilo)
+bacteria %$%
+  contingencyTest2(ap, hilo)
 ```
 
-- For $x \sim \mathcal{N}(0, 2)$:
-```{r eval=printAnswers, echo=printAnswers}
-rnorm(100, mean=0, sd=2) %>%
-  plotfun(meanest = 0, plot = TRUE)
+---
+
+8. **Does your function work differently if we only put in the first 25 rows of the `bacteria` dataset?**
+```{r}
+bacteria[1:25, ] %$%
+  contingencyTest(ap, hilo)
+bacteria[1:25, ] %$%
+  contingencyTest2(ap, hilo)
 ```
-
-- For $\sqrt{x} \sim \mathcal{N}(0, 2)$:
-```{r eval=printAnswers, echo=printAnswers}
-rnorm(100, mean=0, sd=2)^2 %>%
-  plotfun(meanest = 0, plot = TRUE)
-```
-
-
+Yes, it performs differently: expected cell frequencies are smaller than 5 for this subset. 
+ 
 ---
 
 End of practical. 

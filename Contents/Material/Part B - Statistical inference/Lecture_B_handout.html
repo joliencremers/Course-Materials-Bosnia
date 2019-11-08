@@ -1539,8 +1539,8 @@ pre { /* Code block - determines code spacing between lines */
 }
 </style>
 <hr />
-<div id="statistical-inference-testing-assumptions" class="section level1">
-<h1>Statistical Inference &amp; Testing Assumptions</h1>
+<div id="statistical-inference" class="section level1">
+<h1>Statistical Inference</h1>
 <div id="this-lecture" class="section level2">
 <h2>This Lecture:</h2>
 <ul>
@@ -1553,11 +1553,8 @@ pre { /* Code block - determines code spacing between lines */
 <div id="i-use-the-following-package-in-this-lecture" class="section level2">
 <h2>I use the following package in this lecture</h2>
 <pre class="r"><code>library(magrittr) #for pipes
-library(MASS)     #for the cats and bacteria data
-library(mice)     #for the boys data
-library(datasets) #for the VADeaths data
-#library(ggplot2)
-library(Ecdat)</code></pre>
+library(MASS)     #for the bacteria data
+library(Ecdat)    #for the Benefits data</code></pre>
 </div>
 </div>
 <div id="plotting-distributions" class="section level1">
@@ -1843,14 +1840,37 @@ plot(fit, 2)</code></pre>
 </div>
 <div id="non-parametric-testing" class="section level1">
 <h1>Non-parametric testing</h1>
-<div id="mann-whitney-u-test" class="section level2">
-<h2>Mann-Whitney U test</h2>
+<div id="mann-whitney-wilcoxon-rank-sum-test" class="section level2 smaller">
+<h2>Mann-Whitney / Wilcoxon rank-sum test</h2>
+<p>Check whether two population distributions (independent samples) are identical without assuming normality.</p>
+<pre class="r"><code>Benefits %$% wilcox.test(stateur~sex, paired = FALSE) </code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  stateur by sex
+## W = 2038781, p-value = 0.0125
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p>set <code>paired = TRUE</code> for Wilcoxon signed-rank test for dependent samples.</p>
 </div>
-<div id="kruskal-wallis-test-violation-of-normality-assuption" class="section level2">
-<h2>Kruskal-wallis test (violation of normality assuption)</h2>
+<div id="kruskal-wallis-test" class="section level2">
+<h2>Kruskal-wallis test</h2>
+<p>Check whether a collection of population distributions (independent samples) are identical without assuming normality.</p>
+<pre class="r"><code>Benefits %$% kruskal.test(stateur~sex)</code></pre>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  stateur by sex
+## Kruskal-Wallis chi-squared = 6.239, df = 1, p-value = 0.0125</code></pre>
 </div>
-<div id="friedman-test" class="section level2">
-<h2>Friedman test</h2>
+<div id="some-other-non-parametric-tests-in-r" class="section level2">
+<h2>Some other non-parametric tests in <code>R</code></h2>
+<ul>
+<li><code>friedman.test</code>: Friedman rank sum test</li>
+<li><code>Rfit</code> package for nonparametric regression</li>
+<li><code>cor(x, y, method = &quot;kendall&quot;)</code> for Kendalls tau-b correlation</li>
+<li><code>cor(x, y, method = &quot;spearman&quot;)</code> for Spearman correlation</li>
+<li><code>survival</code> package for semi- and nonparametric methods (Kaplan-Meier/Cox regression) in survival analysis</li>
+</ul>
 </div>
 </div>
 

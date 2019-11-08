@@ -3137,7 +3137,7 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Statistical Inference &amp; Testing Assumptions</h2></hgroup><article  id="statistical-inference-testing-assumptions">
+<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Statistical Inference</h2></hgroup><article  id="statistical-inference">
 
 </article></slide><slide class=""><hgroup><h2>This Lecture:</h2></hgroup><article  id="this-lecture">
 
@@ -3151,11 +3151,8 @@ slide:not(.current) .plotly.html-widget{
 </article></slide><slide class=""><hgroup><h2>I use the following package in this lecture</h2></hgroup><article  id="i-use-the-following-package-in-this-lecture">
 
 <pre class = 'prettyprint lang-r'>library(magrittr) #for pipes
-library(MASS)     #for the cats and bacteria data
-library(mice)     #for the boys data
-library(datasets) #for the VADeaths data
-#library(ggplot2)
-library(Ecdat)</pre>
+library(MASS)     #for the bacteria data
+library(Ecdat)    #for the Benefits data</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Plotting distributions</h2></hgroup><article  id="plotting-distributions">
 
@@ -3472,11 +3469,42 @@ plot(fit, 2)</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Non-parametric testing</h2></hgroup><article  id="non-parametric-testing">
 
-</article></slide><slide class=""><hgroup><h2>Mann-Whitney U test</h2></hgroup><article  id="mann-whitney-u-test">
+</article></slide><slide class=""><hgroup><h2>Mann-Whitney / Wilcoxon rank-sum test</h2></hgroup><article  class="smaller" id="mann-whitney-wilcoxon-rank-sum-test">
+
+<p>Check whether two population distributions (independent samples) are identical without assuming normality.</p>
+
+<pre class = 'prettyprint lang-r'>Benefits %$% wilcox.test(stateur~sex, paired = FALSE) </pre>
+
+<pre >## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  stateur by sex
+## W = 2038781, p-value = 0.0125
+## alternative hypothesis: true location shift is not equal to 0</pre>
+
+<p>set <code>paired = TRUE</code> for Wilcoxon signed-rank test for dependent samples.</p>
 
 </article></slide><slide class=""><hgroup><h2>Kruskal-wallis test</h2></hgroup><article  id="kruskal-wallis-test">
 
-</article></slide><slide class=""><hgroup><h2>Friedman test</h2></hgroup><article  id="friedman-test"></article></slide>
+<p>Check whether a collection of population distributions (independent samples) are identical without assuming normality.</p>
+
+<pre class = 'prettyprint lang-r'>Benefits %$% kruskal.test(stateur~sex)</pre>
+
+<pre >## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  stateur by sex
+## Kruskal-Wallis chi-squared = 6.239, df = 1, p-value = 0.0125</pre>
+
+</article></slide><slide class=""><hgroup><h2>Some other non-parametric tests in <code>R</code></h2></hgroup><article  id="some-other-non-parametric-tests-in-r">
+
+<ul>
+<li><code>friedman.test</code>: Friedman rank sum test</li>
+<li><code>Rfit</code> package for nonparametric regression</li>
+<li><code>cor(x, y, method = &quot;kendall&quot;)</code> for Kendalls tau-b correlation</li>
+<li><code>cor(x, y, method = &quot;spearman&quot;)</code> for Spearman correlation</li>
+<li><code>survival</code> package for semi- and nonparametric methods (Kaplan-Meier/Cox regression) in survival analysis</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
