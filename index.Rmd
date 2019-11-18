@@ -48,17 +48,17 @@ Previous experience with R is required.
 | Time        | Topic                                           |
 |:------------|:------------------------------------------------|
 | *Tuesday*   |                                                 |
-| 09.00-12.00 | Repetition                                      |
+| 09.00-12.00 | Repetition (A)                                  |
 |             | *Break*                                         |    
-| 13.00-15.30 | Statistical Inference                           |
+| 13.00-15.30 | Statistical Inference (B)                       |
 | *Wednesday* |                                                 |
-| 09.00-12.00 | Linear Models (G)                               |
+| 09.00-12.00 | Linear Models (C)                               |
 |             | *Break*                                         |             
-| 13.00-15.30 | Generalized Linear Models (H)                   |
+| 13.00-15.30 | Generalized Linear Models (D)                   |
 | *Thursday*  |                                                 |
-| 09.00-12.00 | Data Validation and Editing                     |
+| 09.00-12.00 | Data Validation and Editing (E)                 |
 |             | *Break*                                         |
-| 13.00-15.30 | Imputation                                      |
+| 13.00-15.30 | Imputation (F)                                  |
 | *Friday*    |                                                 |
 | 09.00-12.00 | Evaluation, agreement on summary mission report |
 
@@ -122,14 +122,14 @@ type `Yes` in the console and press the return key.
 ### Tuesday's materials
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
-- Part ??: Repetition
+- Part A: Repetition
 
 
-- Part G: Statistical Inference
-    - [Lecture G](Contents/Material/Part G - Statistical inference/Lecture_G.html){target="_blank"}
-    - [Lecture G Handout](Contents/Material/Part G - Statistical inference/Lecture_G_handout.html){target="_blank"}
-    - [Practical G](Contents/Material/Part G - Statistical inference/Practical_G_walkthrough.html){target="_blank"}
-    - [Impractical G](Contents/Material/Part G - Statistical inference/Practical_G.html){target="_blank"}
+- Part B: Statistical Inference
+    - [Lecture B](Contents/Material/Part B - Statistical inference/Lecture_B.html){target="_blank"}
+    - [Lecture B Handout](Contents/Material/Part B - Statistical inference/Lecture_B_handout.html){target="_blank"}
+    - [Practical B](Contents/Material/Part B - Statistical inference/Practical_B_walkthrough.html){target="_blank"}
+    - [Impractical B](Contents/Material/Part B - Statistical inference/Practical_B.html){target="_blank"}
 
 All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions. 
 
@@ -148,13 +148,13 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
 ### Wednesday's materials
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
-- Part H: `R` Linear Models
-    - [Lecture H](Contents/Material/Part H - Statistical inference/Lecture_H.html){target="_blank"}
-    - [Lecture H Handout](Contents/Material/Part H - Statistical inference/Lecture_H_handout.html){target="_blank"}
-    - [Practical H](Contents/Material/Part H - Statistical inference/Practical_H_walkthrough.html){target="_blank"}
-    - [Impractical H](Contents/Material/Part H - Statistical inference/Practical_H.html){target="_blank"}
+- Part C: `R` Linear Models
+    - [Lecture C](Contents/Material/Part C - Statistical inference/Lecture_C.html){target="_blank"}
+    - [Lecture C Handout](Contents/Material/Part C - Statistical inference/Lecture_C_handout.html){target="_blank"}
+    - [Practical C](Contents/Material/Part C - Statistical inference/Practical_C_walkthrough.html){target="_blank"}
+    - [Impractical C](Contents/Material/Part C - Statistical inference/Practical_C.html){target="_blank"}
     
-- Part ??: Generalized Linear Models
+- Part D: Generalized Linear Models
 
 All lectures are in `html` format. Practicals are are provided both as naked questions but also with ample explanations and solutions - choose according to your taste!
 
@@ -169,9 +169,9 @@ All lectures are in `html` format. Practicals are are provided both as naked que
 ### Thursday's materials
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
-- Part ??: Data Validation and Editing
+- Part E: Data Validation and Editing
 
-- Part ??: Imputation
+- Part F: Imputation
 
 All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions.
 
@@ -179,6 +179,12 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
 
 ### Useful references
 
+- [Flexible Imputation of Missing Data](https://stefvanbuuren.name/fimd/): written by Stef van Buuren, uses the `mice` package. 
+- [Applied Missing Data Analysis](https://bookdown.org/mwheymans/bookmi/): book on missing data and imputation in R and SPSS.
+- [Visualization of Missingness Patterns](https://cran.r-project.org/web/packages/naniar/vignettes/naniar-visualisation.html): Tutorial for the naniar package that does nice visualizations of missingness patterns.
+- [Tutorial](https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/): Tutorial describing the use of 5 different R-packages for missing data imputation.
+- [Tutorial](http://www.di.fc.ul.pt/~jpn/r/missing/index.html): Another tutorial on missing data in R.
+- [Tutorial](https://github.com/gerkovink/miceVignettes): a set of tutorials for the `mice` package.
 
 # Further studies
 
@@ -190,7 +196,7 @@ The following references are currently available for free, either as pdfs or as 
 
 - [R for Data Science](https://r4ds.had.co.nz): written by Hadley Wickham and Garrett Grolemund this book relies almost exclusively on the [tidyverse](https://www.tidyverse.org/) approach to data analysis. Many highly effective tools will be right at your fingertips after reading this book and working through the many exercises.
 - [Hands-On Programming with R](https://rstudio-education.github.io/hopr/): a great read by Garrett Grolemund emphasizing programming techniques with R. 
-- [Advanced R](https://adv-r.hadley.nz/): You want to gain deeper knowledge of R and you wnat to learn from one of the most influential R contributors. This one is for you!
+- [Advanced R](https://adv-r.hadley.nz/): You want to gain deeper knowledge of R and you want to learn from one of the most influential R contributors. This one is for you!
 - [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/): an introductory book on statistical learning, with applications in R. The R code is somewhat old-style and you might be able to find newer packages for the tasks, but ths is a solid read well worth the effort.
 - [Data Analysis and Graphics Using R](http://www.pindex.com/uploads/post_docs/Maindonald%20Data%20Analysis%20and%20Graphics(PINDEX-DOC-6953).pdf): a detailed book that covers a lot about categorical data analysis and fitting `glm`s in `R`.
 - [Happy Git and GitHub for the useR ](https://happygitwithr.com/index.html): a great introduction to version control using Git and GitHub together with RStudio. Written by Jenny Bryan in a very concise style. Highly recommended!
