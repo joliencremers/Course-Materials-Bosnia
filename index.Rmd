@@ -8,7 +8,7 @@ output:
 
 # Intro {.sidebar}
 
-This dashboard covers the materials for the first folow-up course in R programming. Course held in Banja Luka, December 9-13, 2019. See ?? for the course website of the introductory course.
+This dashboard covers the materials for the first folow-up course in R programming. Course held in Banja Luka, December 10-13, 2019. The course website of the introductory course can be found [here](http://peterstoltze.dk/RfOS/).
 
 ---
 
@@ -126,6 +126,7 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
 
 
 - Part B: Statistical Inference
+
     - [Lecture B](Contents/Material/Part B - Statistical inference/Lecture_B.html){target="_blank"}
     - [Lecture B Handout](Contents/Material/Part B - Statistical inference/Lecture_B_handout.html){target="_blank"}
     - [Practical B](Contents/Material/Part B - Statistical inference/Practical_B_walkthrough.html){target="_blank"}
@@ -149,11 +150,16 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
 - Part C: `R` Linear Models
-    - [Lecture C](Contents/Material/Part C - Statistical inference/Lecture_C.html){target="_blank"}
-    - [Lecture C Handout](Contents/Material/Part C - Statistical inference/Lecture_C_handout.html){target="_blank"}
-    - [Practical C](Contents/Material/Part C - Statistical inference/Practical_C_walkthrough.html){target="_blank"}
-    - [Impractical C](Contents/Material/Part C - Statistical inference/Practical_C.html){target="_blank"}
-    
+
+    - [Lecture C](Contents/Material/Part C - Linear models/Lecture_C.html){target="_blank"}
+    - [Lecture C Handout](Contents/Material/Part C - Linear models/Lecture_C_handout.html){target="_blank"}
+    - [Practical C](Contents/Material/Part C - Linear models/Practical_C_walkthrough.html){target="_blank"}
+    - [Impractical C](Contents/Material/Part C - Linear models/Practical_C.html){target="_blank"}
+    - [Extra Lecture M Handout](Contents/Material/Part C - Linear models/Lecture_M_handout.html){target="_blank"}
+    - [Extra Practical M](Contents/Material/Part C - Linear models/Practical_M_walkthrough.html){target="_blank"}
+    - [Extra Impractical M](Contents/Material/Part C - Linear models/Practical_M.html){target="_blank"}
+    - [Nurse dataset](Contents/Material/Part C - Linear models/nurses.sav){target="_blank"}
+       
 - Part D: Generalized Linear Models
 
 All lectures are in `html` format. Practicals are are provided both as naked questions but also with ample explanations and solutions - choose according to your taste!
@@ -172,6 +178,11 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
 - Part E: Data Validation and Editing
 
 - Part F: Imputation
+
+    - [Lecture F](Contents/Material/Part F - Imputation/Lecture_F.html){target="_blank"}
+    - [Lecture F Handout](Contents/Material/Part F - Imputation/Lecture_F_handout.html){target="_blank"}
+    - [Practical F](Contents/Material/Part F - Imputation/Practical_F_walkthrough.html){target="_blank"}
+    - [Impractical F](Contents/Material/Part F - Imputation/Practical_F.html){target="_blank"}
 
 All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions.
 
@@ -203,6 +214,3 @@ The following references are currently available for free, either as pdfs or as 
 
 <!-- ## Column 2 -->
 
-<!-- ### For fun -->
-<!-- <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">My wife asked me what machine learning is and I said: remember when we ordered the hot plate for the boat and amazon suggested buying all the equipment needed to make a full meth lab?</p>&mdash; (((Kane Baccigalupi))) (@rubyghetto) <a href="https://twitter.com/rubyghetto/status/1058220004301127680?ref_src=twsrc%5Etfw">November 2, 2018</a></blockquote> -->
-<!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
