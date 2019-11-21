@@ -1,0 +1,164 @@
+---
+title: "Repetition"
+author: "Anne Vinkel (adapted from Gerko Vink)"
+date: "Statistical Programming with R"
+output:
+  ioslides_presentation:
+    css: css/style.css
+    logo: css/logo_en.png
+    transition: 0
+    self_contained: TRUE   
+---
+
+# Welcome back
+
+## Programme 
+
+| **Day** |  **Time**     | **Purpose/Details** | **Material** | **Lecturer** | 
+|-------------|---------------|---------------------|--------------|--------------|
+| December 10 | 9:00 - 12:00  | Repetition | A | Anne |
+| December 10 | 13:00 - 15:30 | Statistical inference | B | Jolien |
+| December 11 | 9:00 - 12:00  | Linear models | C | Jolien |
+| December 11 | 13:00 - 15:30 | Generalized linear models | D | Anne |
+| December 12 | 9:00 - 12:00  | Data validation and editing  | E | Anne |
+| December 12 | 13:00 - 15:30 | Imputation | F  | Jolien |
+| December 13 | 9:00 - 12:00  | Evaluation, agreement on summary mission report | | | 
+|------------------------------------------------------------------|
+
+## Format
+- Lectures followed by practicals
+- Materials are on the homepage
+  - "Impracticals" are the versions without solutions, "Practicals" the ones with
+- Please do ask questions
+
+# What is R?
+## What is R?
+<center>
+<img src="figures/fig2.png" alt="HTML5 Icon" width = 85%>
+</center>
+
+## What is R? 
+- R is a language and environment for statistical computing and for graphics
+
+- GNU project (100% free software)
+
+- Managed by the R Foundation for Statistical Computing, Vienna, Austria.
+
+- Community-driven
+
+- Based on the object-oriented language S (1975)
+
+## What is Rstudio?
+
+<center>
+<img src="figures/fig2.png" alt="HTML5 Icon" width = 85%>
+</center>
+
+## What is RStudio?
+- Aggregates all convenient information and procedures into one single place
+- Allows you to work in projects
+- Manages your code with highlighting
+- Gives extra functionality (Shiny, knitr, markdown, LaTeX)
+- Allows for integration with version control routines, such as Git.
+
+## The R community
+- Huge, active, welcoming online community
+  - #rstats
+  - rweekly
+  - rbloggers
+  - Stack Overflow
+- Package development
+  - About eight packages supplied with base R
+  - More than 15.000 packages on CRAN
+
+## CRAN: Comprehensive R Archive Network
+
+<center>
+<img src="figures/fig3.png" alt="HTML5 Icon" width = 99%>
+</center>
+
+## Task views
+
+<center>
+<img src="figures/fig4.png" alt="HTML5 Icon" width = 99%>
+</center>
+
+# Using R
+
+## The basics
+
+- Write commands directly in the console
+- Or write code in the editor and submit with Ctrl + Enter
+- Assign values to objects with `<-`
+
+```{r, results = "hide"}
+a <- c(1, 8, 42, pi, 2^3, 1)
+b <- 0:5
+c <- rep( c("Hi", "there"), 3)
+D <- as.data.frame(cbind(a,b,c))
+```
+
+## Help
+- Everything that is published CRAN and is aimed at `R` users, must be accompanied by a help file. 
+- If you know the name of the function that performs an operation, e.g. `anova()`, then you just type `?anova` or `help(anova)` in the console. 
+- If you do not know the name of the function: type `??` followed by your search criterion. For example `??anova` returns a list of all help pages that contain the word 'anova'
+
+## Objects
+Vectors and character vectors
+```{r}
+c(1,2,3,4,5)
+1:5
+as.character(1:5)
+```
+
+## Objects
+Matrices 
+```{r}
+matrix(1:12, nrow = 3)
+```
+
+## Data frames
+Data sets for R
+
+```{r}
+D <- as.data.frame(cbind(a,b,c))
+D
+```
+Alternatively: `tibbles` or `data.tables` 
+
+## Subsetting 
+
+```{r}
+D[1,3]
+D[1,]
+D[,2]
+```
+
+
+## Pipes and the tidyverse
+
+The tidyverse is a collection of packages that "share an underlying design philosophy, grammar, and data structures". They make for easier data handling and visualization. 
+
+The pipe %>% allows for chained method calls that make code much more readable
+```{r, results="hide", message = F}
+library(dplyr)
+starwars %>%
+  subset(species == "Human") %>%
+  group_by(homeworld) %>% 
+  summarise( n= n(), mean.height = mean(height))
+```
+
+## Plotting
+Plots in base R are fast and easy:
+```{r}
+plot(starwars$height, starwars$mass)
+hist(starwars$height)
+```
+
+## ggplot2
+```{r, warning=F, message=F}
+library(ggplot2)
+starwars %>% ggplot( aes( x = height)) + geom_histogram()
+```
+
+# Practical
