@@ -1,0 +1,172 @@
+---
+title: "Practical F"
+author: "Jolien Cremers"
+date: "Statistical Programming with R"
+output: html_document
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+printAnswers <- TRUE
+```
+
+----
+
+The purpose of this practical is to use some of R's packages to solve a missing data problem by imputing missing values in a 'real' dataset. This can either be a dataset you've brought to this course yourself or the `selfreport` data from the `mice` package. The 'selfreport' data is described in Section 7.3 of the first edition of the book Flexible Imputation of Missing Data (van Buuren, S. (2012). *Flexible Imputation of Missing Data.* CRC/Chapman & Hall, FL: Boca Raton).
+
+---
+
+Suggested packages:
+
+```{r message = FALSE}
+
+library(mice) # for visualisation & pmm
+library(VIM) # visualisation & several hotdeck imputation methods (fast implementation)
+library(simputation) # common interface for several imputation methods
+library(magrittr) # for pipe operator
+library(dplyr)
+library(naniar) # additional package for practical
+library(visdat) # visualisation of datasets
+library(UpSetR) # Upset plots
+library(ggplot2) # plots
+
+```
+
+---
+
+#### Selfreport data
+
+---
+
+The selfreport data contains data from two studies, one from the `mgg` study, the *survey dataset*, where height and weight are selfreported measures (`hr` and `wr`) and one from the `krul` study, the *calibration dataset*, where the height and weight measures are both selfreported and measured (variables `hm` and `wm`). The goal for the self-report data is to obtain correct estimates of the prevalence of obesity (Body Mass Index > 32) in the *survey dataset*. Note that the Body Mass Index (bmi) is computed as follows:
+
+$$\text{bmi} = \frac{\text{weight in kg}}{(\text{height in m})^2} $$
+
+---
+
+1. **Check missing data patterns.**
+
+First, check if there is a description of the `selfreport` data in the `mice` package documentation:
+
+```{r}
+?selfreport
+```
+
+The selfreport data contains data from two studies, one from the `mgg` study where height and weight are selfreported measures (`hr` and `wr`) and one from the `krul` study where the measures are both selfreported and measured (variables `hm` and `wm`). 
+
+Then, investigate the missing data patterns
+
+```{r}
+head(selfreport, n = 10)
+```
+
+```{r}
+summary(selfreport)
+```
+
+The measures weight and height variables are indeed missing from the `mgg` study
+
+```{r}
+VIM::aggr(selfreport, col=c('blue','red'), numbers=TRUE, sortVars=TRUE,
+                  labels=names(selfreport), cex.axis=.8, gap=3, 
+                  ylab=c("Histogram of missing data", "Red is Missing Data"))
+```
+
+Apart from measured height and weight also the measured bmi, the indicators for pregnancy, educational level and ethnicity contain missing values.
+
+---
+
+2. **Check the relation between measured and self reported bmi in the *calibration dataset*.**
+
+There are more individuals that have a lower selfreported BMI than measured BMI.
+
+```{r}
+
+calibration <- selfreport %>% 
+  filter(as.numeric(src) == 1) %>% 
+  mutate(difference = case_when(br < bm ~ "lower",
+                                bm < br ~ "higher",
+                                bm == br ~ "same"))
+
+ggplot(calibration, aes(br, bm, color = difference)) +
+  geom_point() +
+  theme_minimal() +
+  geom_abline(intercept = 0, slope = 1) + 
+  labs(x = "Selfreported BMI", y = "Measured BMI", fill = "")
+
+```
+
+
+
+---
+
+3. **Impute missing data.**
+
+First define a deterministic function to compute bmi:
+
+```{r}
+bmi <- function(h, w) {
+  return(w/(h/100)^2)
+}
+```
+
+Define the imputation methods to use (we only impute `wm`, `hm` and `bm`). Make
+sure to define the deterministic relation between height, weight and bmi for the
+computation (not imputation) of bmi.
+
+```{r}
+meth <- c(rep("", 5), "pmm", "pmm", rep("", 6), "~bmi(hm,wm)", "")
+```
+
+Get predictor matrix:
+```{r, warning = FALSE, message = FALSE}
+init <- mice(selfreport, maxit = 0) #get initial predictor matrix
+pred <- init$pred #note that pregnancy is not imputed by default because it contains too many missings
+pred[, c("src", "id", "pop", "prg", "edu", "etn", "web", "bm", "br")] <- 0 #set variables not used as predictors to 0
+```
+
+Impute:
+```{r, cache = TRUE, results = FALSE}
+imp <- mice(selfreport, pred = pred, meth = meth, seed = 66573, maxit = 20, m = 10)
+```
+
+
+---
+
+4. **What is the estimated prevalence (selfreported and imputed data) of obesity for different `age` and `sex` in the *survey dataset*?**
+
+Estimated prevalence in the selfreported data
+
+```{r}
+
+reported <- as.tbl(selfreport)
+
+reported %>% 
+  filter(as.numeric(src) == 2) %>% 
+  mutate(br = bmi(hr, wr)) %>%
+  mutate(obese = case_when(br > 32 ~ 1,
+                           TRUE ~ 0)) %>% 
+  mutate(age_cat = cut(age, c(17, 29, 39, 49, 59, 75))) %>% 
+  group_by(sex, age_cat) %>% 
+  summarise(N = n(), prevalence = sum(obese)/N*100)
+
+```
+
+Estimated prevalence in the imputed data
+
+```{r}
+
+imputed <- as.tbl(complete(imp, action = "long"))
+
+imputed %>% 
+  filter(as.numeric(src) == 2) %>% 
+  mutate(obese = case_when(bm > 32 ~ 1,
+                           TRUE ~ 0)) %>% 
+  mutate(age_cat = cut(age, c(17, 29, 39, 49, 59, 75))) %>% 
+  group_by(sex, age_cat) %>% 
+  summarise(N = n()/10, prevalence = sum(obese)/(N*10)*100)
+
+```
+
+---
+
+End of practical. 

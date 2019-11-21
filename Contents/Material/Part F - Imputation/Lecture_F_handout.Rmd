@@ -1,0 +1,323 @@
+---
+title: "Imputation"
+author: "Jolien Cremers"
+date: "Statistical Programming with R"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: true
+    number_sections: false
+---
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 12px;
+  }
+td {  /* Table  */
+  font-size: 12px;
+}
+h1.title {
+  font-size: 18px;
+  color: DarkBlue;
+}
+h1 { /* Header 1 */
+  font-size: 18px;
+}
+h2 { /* Header 2 */
+    font-size: 18px;
+}
+h3 { /* Header 3 */
+  font-size: 18px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 14px;
+}
+</style>
+
+---
+
+
+# Imputation
+
+## This Lecture:
+
+- Missing data patterns
+- Imputation methods
+
+## I use the following packages in this lecture
+
+```{r message = FALSE}
+
+library(mice) # for visualisation & pmm
+library(VIM) # visualisation & several hotdeck imputation methods (fast implementation)
+library(simputation) # common interface for several imputation methods
+library(magrittr) # for pipe operator
+library(naniar) # additional package for practical
+library(visdat) # visualisation of datasets
+library(UpSetR) # Upset plots
+library(ggplot2) # plots
+
+```
+
+# Missing data patterns
+
+## `nhanes` data {.smaller}
+
+```{r}
+head(nhanes, n = 10)
+```
+
+##
+```{r}
+summary(nhanes)
+```
+
+
+## Visualise missing data pattern {.smaller}
+
+```{r}
+
+VIM::aggr(nhanes, col=c('blue','red'), numbers = TRUE, sortVars = TRUE,
+                  labels = names(nhanes), cex.axis = .8, gap = 3, 
+                  ylab = c("Histogram of missing data", "Red is Missing Data"))
+
+```
+
+
+## 
+```{r}
+pattern <- mice::md.pattern(nhanes)
+```
+
+##
+```{r}
+pattern
+```
+
+##
+```{r}
+visdat::vis_miss(nhanes)
+```
+
+##
+```{r}
+naniar::gg_miss_upset(nhanes)
+```
+
+##
+```{r, message = FALSE, warning = FALSE}
+naniar::gg_miss_fct(x = nhanes, fct = age)
+```
+
+
+## Both variables observed
+```{r}
+pairs <- mice::md.pairs(nhanes)
+
+pairs$rr
+```
+
+## Row missing, column observed
+```{r}
+pairs$mr
+```
+
+## Both variables missing
+```{r}
+pairs$rr
+```
+
+
+# Imputation methods
+
+## Specifying models in `simputation`
+
+Common structure for specifying an imputation model:
+
+```{r, eval = FALSE}
+impute_<model>(data, formula, [model-specific options])
+```
+
+Structure of the model in `formula`:
+
+```{r, eval = FALSE}
+IMPUTED ~ MODEL_SPECIFICATION [ | GROUPING ]
+```
+
+
+## Regression imputation
+
+```{r}
+imp_1 <- impute_lm(nhanes, bmi ~ age + hyp + chl)
+head(imp_1)
+```
+
+## Median imputation
+
+```{r}
+imp_2 <- simputation::impute_median(imp_1, bmi ~ age)
+head(imp_2)
+```
+
+## 
+
+```{r}
+
+imp_2a <- nhanes %>%
+          simputation::impute_lm(bmi ~ age + hyp + chl) %>%
+          simputation::impute_median(bmi ~ age)
+head(imp_2a)
+```
+
+## Decision tree imputation
+
+```{r}
+imp_3 <- impute_cart(nhanes, hyp ~ .)
+head(imp_3)
+```
+
+## Other methods
+
+- `impute_hotdeck()`:  random and sequential hot deck, k-nearest neighbours imputation and predictive mean matching.
+- `impute_multivariate()`: imputation based on EM-estimation of multivariate normal parameters, imputation based on iterative Random Forest estimates and stochastic imptuation based on bootstrapped EM-estimatin of multivariate normal parameters.
+- `impute_proxy()`: Impute missing values by a constant, by copying another variable computing transformations from other variables.
+
+
+## Predictive Mean Matching (mice)
+
+Default imputation
+
+```{r}
+imp <- mice(nhanes, print = FALSE)
+```
+
+Defaults:
+
+  - pmm, predictive mean matching (numeric data)
+  - logreg, logistic regression imputation (binary data, factor with 2 levels)
+  - polyreg, polytomous regression imputation (unordered cateogrical data, factor > 2 levels)
+  - polr, proportional odds model (ordered data, factor > 2 levels)
+
+## Check imputations
+
+```{r}
+stripplot(imp, chl, pch = 19, xlab = "Imputation number")
+```
+
+## Vary number of imputations
+
+Just 4 imputed datasets instead of the default (5)
+
+```{r}
+imp <- mice(nhanes, m = 4, print = F)
+```
+
+## Predictor matrix
+
+```{r}
+imp$pred
+```
+
+1 = column used to impute row
+
+## Initial predictor matrix
+
+```{r}
+ini <- mice(nhanes, maxit = 0, print = F)
+pred <- ini$pred
+pred
+```
+
+
+## Change predictor matrix 
+
+We do not use `hyp` to impute any other variables
+
+```{r}
+pred[ ,"hyp"] <- 0
+pred
+imp <- mice(nhanes, m = 4, init = pred, print = F)
+```
+
+## Convergence
+
+```{r}
+plot(imp)
+```
+
+## Seed values
+
+```{r}
+
+imp <- mice(nhanes, m = 4, init = pred, print = F, seed = 101)
+
+```
+
+## Changing imputation methods
+
+```{r}
+imp$meth
+str(nhanes)
+```
+
+##
+
+```{r}
+str(nhanes2)
+imp <- mice(nhanes2, m = 4, init = pred, print = F, seed = 101)
+imp$meth
+```
+
+## Available methods {.smaller}
+
+```{r, warning = FALSE, message = FALSE}
+methods(mice)
+```
+
+## Extracting imputed data
+
+The 3rd imputed dataset
+```{r}
+c3 <- complete(imp, 3) 
+md.pattern(c3, plot = FALSE)
+```
+
+## {.smaller}
+All imputed datasets in long format
+
+```{r}
+complete(imp, "long")
+```
+
+
+## Pooling analyses {.smaller}
+
+```{r}
+fit <- with(imp, lm(bmi ~ chl))
+fit
+```
+
+##
+
+```{r}
+class(fit)
+ls(fit)
+```
+
+##
+
+```{r}
+summary(fit$analyses[[2]])
+```
+
+##
+
+```{r}
+pool.fit <- pool(fit)
+summary(pool.fit)
+```
+

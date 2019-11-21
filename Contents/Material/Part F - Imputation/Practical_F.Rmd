@@ -1,0 +1,68 @@
+---
+title: "Practical F"
+author: "Jolien Cremers"
+date: "Statistical Programming with R"
+output: html_document
+---
+
+---
+title: "Practical F"
+author: "Jolien Cremers"
+date: "Statistical Programming with R"
+output: html_document
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+printAnswers <- TRUE
+```
+
+---
+
+The purpose of this practical is to use some of R's packages to solve a missing data problem in a 'real' dataset. This can be either the dataset you've brought to this course yourself or the 'selfreport' data from the `mice` package. The 'selfreport' data is used in Section 7.3 of the first edition of the book Flexible Imputation of Missing Data (van Buuren, S. (2012). *Flexible Imputation of Missing Data.* CRC/Chapman & Hall, FL: Boca Raton).
+
+---
+
+Suggested packages:
+
+```{r message = FALSE}
+
+library(mice) # for visualisation & pmm
+library(VIM) # visualisation & several hotdeck imputation methods (fast implementation)
+library(simputation) # common interface for several imputation methods
+library(magrittr) # for pipe operator
+library(naniar) # additional package for practical
+library(visdat) # visualisation of datasets
+library(UpSetR) # Upset plots
+library(ggplot2) # plots
+
+```
+
+---
+
+#### Selfreport data
+
+---
+
+The selfreport data contains data from two studies, one from the `mgg` study, the *survey dataset*, where height and weight are selfreported measures (`hr` and `wr`) and one from the `krul` study, the *calibration dataset*, where the height and weight measures are both selfreported and measured (variables `hm` and `wm`). The goal for the self-report data is to obtain correct estimates of the prevalence of obesity (Body Mass Index > 32) in the *survey dataset*. Note that the Body Mass Index (bmi) is computed as follows:
+
+$$\text{bmi} = \frac{\text{weight in kg}}{(\text{height in cm})^2} $$
+
+---
+
+1. **Check missing data patterns.**
+
+---
+
+2. **Check the relation between measured and self reported bmi in the *calibration dataset*.**
+
+---
+
+3. **Impute missing data.**
+
+---
+
+4. **What is the estimated prevalence (selfreported and imputed data) of obesity for different `age` and `sex` in the *survey dataset*?**
+
+---
+
+End of practical. 
