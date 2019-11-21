@@ -370,8 +370,8 @@ summary {
 
 
 <hr />
-<div id="exercise-math-achievement" class="section level3">
-<h3>Exercise Math Achievement</h3>
+<div id="exercise-math-achievement" class="section level4">
+<h4>Exercise Math Achievement</h4>
 <hr />
 <p>Using the dataset <code>MathAchieve</code>in the <code>MEMSS</code> package carry out an analysis that treats <code>School</code> as a random effect. Answer the following questions:</p>
 <pre><code>-Which variables should be treated as fixed effects?
@@ -379,15 +379,14 @@ summary {
 -Is the relation between SES and MathAch different for different schools? Compare the models using deviance difference tests.
 -Discuss how the decision whether to treat `School` as a fixed or a random effect might depend on the purpose of the study. </code></pre>
 <hr />
-<div id="which-variables-should-be-treated-as-fixed-effects" class="section level4">
-<h4>Which variables should be treated as fixed effects?</h4>
-<hr />
+<ol style="list-style-type: decimal">
+<li><strong>Which variables should be treated as fixed effects?</strong></li>
+</ol>
 <p>Minority, SES, Sex and MEANSES can be treated as fixed effects (SES can also be treated as random).</p>
 <hr />
-</div>
-<div id="are-differences-between-schools-greater-than-can-be-explained-by-within-school-variation" class="section level4">
-<h4>Are differences between schools greater than can be explained by within-school variation?</h4>
-<hr />
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Are differences between schools greater than can be explained by within-school variation?</strong></li>
+</ol>
 <p>To obtain deviances we use full maximum likelihood estimation (REML=F). First fit an empty model, to see whether there are any differences between schools:</p>
 <pre class="r"><code>#Load the required packages into the environment.
 library(MEMSS)
@@ -470,10 +469,9 @@ anova(fit1, fit2)</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>We see that part of the between school variance is explained (8.55-2.40=6.15). The deviance difference between this and the previous model is equal to (47115.8-46333.3=782.5, df=4, p&lt;0.001).</p>
 <hr />
-</div>
-<div id="is-the-relation-between-ses-and-mathach-different-for-different-schools-compare-the-models-using-deviance-difference-tests." class="section level4">
-<h4>Is the relation between SES and MathAch different for different schools? Compare the models using deviance difference tests.</h4>
-<hr />
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Is the relation between SES and MathAch different for different schools? Compare the models using deviance difference tests.</strong></li>
+</ol>
 <p>To check whether the relation between SES and MathAch is different for different schools we add a random slope for SES.</p>
 <pre class="r"><code>#Fit a model with a random slope for MEANSES.
 fit3 &lt;- lmer(MathAch ~ Minority + SES + Sex + MEANSES +
@@ -528,16 +526,14 @@ anova(fit1, fit2, fit3)</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>We see that there is some random slope variance (0.32), The deviance difference between this and the previous model is equal to (46333-46321=12, df=2, p=0.002). The best model for this data, based on the deviances, is thus model 3 (with random slope for SES).</p>
 <hr />
-</div>
-<div id="discuss-how-the-decision-whether-to-treat-school-as-a-fixed-or-a-random-effect-might-depend-on-the-purpose-of-the-study." class="section level4">
-<h4>Discuss how the decision whether to treat <code>School</code> as a fixed or a random effect might depend on the purpose of the study.</h4>
-<hr />
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Discuss how the decision whether to treat <code>School</code> as a fixed or a random effect might depend on the purpose of the study.</strong></li>
+</ol>
 <p>If the purpose of the study is to generalize to all schools in a specific region/country, and a random sample of schools was taken, the school variable can be considered random. If the purpose is to compare a specific set of schools, not randomly sampled, school is fixed.</p>
 <hr />
 </div>
-</div>
-<div id="exercise-nurses" class="section level3">
-<h3>Exercise Nurses</h3>
+<div id="exercise-nurses" class="section level4">
+<h4>Exercise Nurses</h4>
 <hr />
 <p>The file nurses.sav holds data from nurses working in wards nested within hospitals (Hox, J.J. (2002). <em>Multilevel analysis: Techniques and applications.</em> Hove: Routledge). It is from a hypothetical study on stress in hospitals where wards were randomly assigned to and experimental or control condition. It contains the variables <code>age</code>(years), <code>experience</code>(years), <code>gender</code> (0=m, 1=f), <code>wardtype</code> (0=general care, 1=special care), <code>expcon</code> (0=control, 1=experimental), <code>hospsize</code> (0=small, 1=medium, 2=large), <code>stress</code> (likert scale 1-7) and the id variables <code>hospital</code>, <code>ward</code> and <code>nurse</code>.</p>
 <p>Load this file into R using the function <code>read_spss()</code> from the <code>haven</code> package, grand mean center (centering based on the mean over all hospitals) the variables <code>age</code> and <code>experience</code> and answer the following questions:</p>
@@ -548,12 +544,10 @@ anova(fit1, fit2, fit3)</code></pre>
 - If this relation is different, can the size of the hospital explain (a part of) these different 
   relations?</code></pre>
 <hr />
-<div id="are-differences-between-wards-greater-than-can-be-explained-by-ward-and-nurse-varying-variables" class="section level4">
-<h4>Are differences between wards greater than can be explained by ward and nurse varying variables?</h4>
-</div>
-<div id="are-differences-between-hospitals-greater-than-can-be-explained-by-hospital-ward-and-nurse-varying-variables" class="section level4">
-<h4>Are differences between hospitals greater than can be explained by hospital, ward and nurse varying variables?</h4>
-<hr />
+<ol style="list-style-type: decimal">
+<li><strong>Are differences between wards greater than can be explained by ward and nurse varying variables?</strong></li>
+<li><strong>Are differences between hospitals greater than can be explained by hospital, ward and nurse varying variables?</strong></li>
+</ol>
 <pre class="r"><code>#Load the required packages into the environment. Note that we already loaded the lme4 package in the previous exercise so actually we do not need to load it again.
 require(haven)
 require(lme4)
@@ -636,10 +630,9 @@ summary(fit2)</code></pre>
 ## hospsize   -0.629 -0.001  0.003  0.002  0.000  0.000</code></pre>
 <p>We see that the variance at all levels decreases, so some of it is explained by hospital, nurse and ward varying variables but not all.</p>
 <hr />
-</div>
-<div id="is-the-relation-between-experimental-condition-and-mean-ward-stress-score-the-same-in-all-hospitals" class="section level4">
-<h4>Is the relation between experimental condition and mean ward stress-score the same in all hospitals?</h4>
-<hr />
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Is the relation between experimental condition and mean ward stress-score the same in all hospitals?</strong></li>
+</ol>
 <p>To test whether the relation between experimental condition and mean ward stress-score is the same in all hospitals we add a random effect for experimental condition.</p>
 <pre class="r"><code>fit3 &lt;- lmer(stress ~ 1 + age + gender + experience + wardtype + expcon + hospsize +
                       (1 + expcon | hospital) + (1 | hospital:ward),
@@ -686,10 +679,9 @@ summary(fit3)</code></pre>
 ## hospsize   -0.657 -0.004  0.004  0.004  0.000  0.000</code></pre>
 <p>Indeed, the variance of the random slope for experimental condition is 0.66, leading us to assume that the relation between experimental condition and mean ward stress-score is different between hospitals (formally however, we would like to test whether this variance is really diferent from 0).</p>
 <hr />
-</div>
-<div id="if-this-relation-is-different-can-the-size-of-the-hospital-explain-a-part-of-these-different-relations" class="section level4">
-<h4>If this relation is different, can the size of the hospital explain (a part of) these different relations?</h4>
-<hr />
+<ol start="4" style="list-style-type: decimal">
+<li><strong>If this relation is different, can the size of the hospital explain (a part of) these different relations?</strong></li>
+</ol>
 <p>To see whether part of this variation in slopes can be explained by hospital size we add a so called “cross-level interaction”</p>
 <pre class="r"><code>fit4 &lt;- lmer(stress ~ 1 + age + gender + experience + wardtype + expcon*hospsize + 
                       (1 + expcon | hospital) + (1 | hospital:ward),
@@ -756,7 +748,6 @@ summary(fit4)</code></pre>
 <p>We see that the slope variance of experimental condition decreases from 0.66 to 0.18. The coefficient for the cross-level interaction is equal to 0.998, t=6.22 (so probably significant if we formally test it). If we do a deviance difference test on the previous two models (1574.2-1550.8=23.4, df=1, p&lt;0.01) we see that the model with cross-level interaction fits better.</p>
 <hr />
 <p>End of <code>Practical</code>.</p>
-</div>
 </div>
 
 

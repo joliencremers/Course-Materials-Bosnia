@@ -7,7 +7,7 @@ output: html_document
 
 ---
 
-### Exercise Math Achievement 
+#### Exercise Math Achievement 
 
 --- 
 
@@ -20,18 +20,14 @@ treats `School` as a random effect. Answer the following questions:
     -Discuss how the decision whether to treat `School` as a fixed or a random effect might depend on the purpose of the study. 
 ---
 
-#### Which variables should be treated as fixed effects?
-
----
+1. **Which variables should be treated as fixed effects?**
 
 Minority, SES, Sex and MEANSES can be treated as fixed effects (SES can also be
 treated as random).
 
 ---
 
-#### Are differences between schools greater than can be explained by within-school variation?
-
----
+2. **Are differences between schools greater than can be explained by within-school variation?**
 
 To obtain deviances we use full maximum likelihood estimation (REML=F). First
 fit an empty model, to see whether there are any differences between schools:
@@ -75,9 +71,7 @@ The deviance difference between this and the previous model is equal to
 
 ---
 
-#### Is the relation between SES and MathAch different for different schools? Compare the models using deviance difference tests.
-
----
+3. **Is the relation between SES and MathAch different for different schools? Compare the models using deviance difference tests.**
 
 To check whether the relation between SES and MathAch is different for different
 schools we add a random slope for SES.
@@ -103,9 +97,7 @@ random slope for SES).
 
 ---
 
-#### Discuss how the decision whether to treat `School` as a fixed or a random effect might depend on the purpose of the study.
-
----
+4. **Discuss how the decision whether to treat `School` as a fixed or a random effect might depend on the purpose of the study.**
 
 If the purpose of the study is to generalize to all schools in a specific
 region/country, and a random sample of schools was taken, the school variable
@@ -114,7 +106,7 @@ schools, not randomly sampled, school is fixed.
 
 ---
 
-### Exercise Nurses
+#### Exercise Nurses
 
 ---
 
@@ -140,10 +132,8 @@ grand mean center (centering based on the mean over all hospitals) the variables
 
 ---
 
-#### Are differences between wards greater than can be explained by ward and nurse varying variables?
-#### Are differences between hospitals greater than can be explained by hospital, ward and nurse varying variables?
-
----
+1. **Are differences between wards greater than can be explained by ward and nurse varying variables?**
+2. **Are differences between hospitals greater than can be explained by hospital, ward and nurse varying variables?**
 
 ```{r, message = F}
 #Load the required packages into the environment. Note that we already loaded the lme4 package in the previous exercise so actually we do not need to load it again.
@@ -188,9 +178,7 @@ hospital, nurse and ward varying variables but not all.
 
 ---
 
-#### Is the relation between experimental condition and mean ward stress-score the same in all hospitals?
-
----
+3. **Is the relation between experimental condition and mean ward stress-score the same in all hospitals?**
 
 To test whether the relation between experimental condition and mean ward
 stress-score is the same in all hospitals we add a random effect for
@@ -211,10 +199,8 @@ like to test whether this variance is really diferent from 0).
 
 ---
 
-#### If this relation is different, can the size of the hospital explain (a part of) these different relations?
-   
----   
-      
+4. **If this relation is different, can the size of the hospital explain (a part of) these different relations?**
+
 To see whether part of this variation in slopes can be explained by hospital
 size we add a so called "cross-level interaction"
 
