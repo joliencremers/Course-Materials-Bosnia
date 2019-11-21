@@ -1,0 +1,50 @@
+---
+title: "Practical M"
+author: "Jolien Cremers"
+date: "Statistical Programming in R"
+output: html_document
+---
+
+---
+
+### Exercise Math Achievement
+
+---
+
+Using the dataset `MathAchieve`in the `MEMSS` package carry out an analysis that
+treats `School` as a random effect. Answer the following questions:
+
+    -Which variables should be treated as fixed effects?
+    -Are differences between schools greater than can be explained by within-school variation?
+    -Is the relation between SES and MathAch different for different schools? Compare the models using deviance difference tests.
+    -Discuss how the decision whether to treat `School` as a fixed or a random effect might depend on the purpose of the study. 
+
+---
+
+### Exercise Nurses
+
+---
+
+The file nurses.sav holds data from nurses working in wards nested within
+hospitals (Hox, J.J. (2002). *Multilevel analysis: Techniques and applications.*
+Hove: Routledge). It is from a hypothetical study on stress in hospitals where
+wards were randomly assigned to and experimental or control condition. It
+contains the variables `age`(years),  `experience`(years), `gender` (0=m, 1=f),
+`wardtype` (0=general care, 1=special care), `expcon` (0=control,
+1=experimental), `hospsize` (0=small, 1=medium, 2=large), `stress` (likert scale
+1-7) and the id variables `hospital`, `ward` and `nurse`.
+
+Load this file into R using the function `read_spss()` from the `haven` package,
+grand mean center the variables `age` and `experience` and answer the following
+questions:
+
+    - Are differences between wards greater than can be explained by ward and nurse varying variables?
+    - Are differences between hospitals greater than can be explained by hospital, ward and nurse varying 
+      variables?
+    - Is the relation between experimental condition and mean ward stress-score the same in all hospitals?
+    - If this relation is different, can the size of the hospital explain (a part of) these different 
+      relations?
+
+--- 
+
+End of `Practical`. 

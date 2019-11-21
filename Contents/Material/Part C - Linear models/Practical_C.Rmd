@@ -94,4 +94,4 @@ The mammalsleep dataset is part of `mice`. It contains the Allison and Cicchetti
 
 ---
 
-End of `Practical H`. 
+End of `Practical`. 

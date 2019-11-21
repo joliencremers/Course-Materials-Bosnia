@@ -1,0 +1,289 @@
+---
+title: "Multilevel Modeling"
+author: "Jolien Cremers"
+date: "Statistical Programming in R"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: true
+    number_sections: false
+---
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 12px;
+  }
+td {  /* Table  */
+  font-size: 12px;
+}
+h1.title {
+  font-size: 18px;
+  color: DarkBlue;
+}
+h1 { /* Header 1 */
+  font-size: 18px;
+}
+h2 { /* Header 2 */
+    font-size: 18px;
+}
+h3 { /* Header 3 */
+  font-size: 18px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 14px;
+}
+</style>
+
+---
+## Nested Data
+
+Nested data is data in which a hierarchical structure is present. We may think
+of:
+
+- Students in Classes in Schools
+- Neighbourhoods in Cities in Countries
+- Measurements in Individuals 
+
+Characteristic of these data is that two students within the same school,
+neighbourhoods in the same city and measurements in the same individuals are
+more alike than two students in different schools, etc.
+
+We may use multilevel models to estimate such nested data. To use these models
+in R the package `lme4` must be installed. This package considers linear mixed
+models.
+
+## Intuitive example
+Pupils in classes are rated on their popularity. The students' extraversion and
+gender and the teachers' experience were measured as predictor variables (Hox,
+J.J. (2002). *Multilevel analysis: Techniques and applications.* Hove:
+Routledge).
+
+First we fit an 'empty' baseline model (this is also called an intercept-only
+model):
+
+$$\text{popularity}_{ij} = \beta_{0j} + e_{ij} $$
+$$\beta_{0j} = \gamma_{00} +u_{0j}$$
+
+```{r, message = F, warning = F}
+require(haven)
+require(lme4)
+Popular = read_spss("popular.sav") 
+fit <- lmer(popular ~  (1 | class),
+            data = Popular, REML=T)
+```
+##
+```{r, message = F, warning = F}
+summary(fit)
+
+```
+
+## Adding first level predictors 
+
+$$\text{popularity}_{ij} = \beta_{0j} + \beta_1\text{gender}_{ij} + \beta_2\text{extraversion}_{ij} + e_{ij} $$
+$$\beta_{0j} = \gamma_{00} +u_{0j}$$
+
+```{r, message = F, warning = F}
+fit <- lmer(popular ~ gender + extrav + (1 | class),
+            data = Popular, REML=T)
+```
+##
+```{r, message = F, warning = F}
+summary(fit)
+
+```
+
+## Difference with previous models
+So far, we had models wherein we would use covariates to predict / estimate an
+effect on a certain outcome.
+
+- In these models, each case has an individual effect and an individual error. 
+- The errors were (until now) assumed to be **independently distributed over cases**. 
+
+Now we assume that errors are not independent, but are governed by some
+**clustering structure**. E.g. students in schools.
+
+Instead of:
+
+\[
+y_i=\beta_{0}+e_i
+\]
+
+We have:
+
+\[
+y_{ij} = \beta_{0j}+e_{ij}
+\]
+\[
+\beta_{0j} = \gamma_{00} + u_{0j}
+\]
+
+
+## Intercept variance
+There are two variance components for the intercept only and the model with
+fixed-effects gender and extraversion:
+                                    
+                                    IO          FE  
+    Between classes  (class)        0.7021      0.6272     
+    Between students (Residual)     1.2218      0.5921      
+    
+```{r, message = F, warning = F, echo= F, fig.height=4}
+X <- 0:10
+Y1 <- 2 + 0.5*X
+Y2 <- 4 + 0.5*X
+Y3 <- -0.5 + 0.5*X
+plot(X, Y1, type = "l", xlim = c(0, 10), ylim = c(-2, 10), ylab = "Y", col = "red")
+lines(X, Y2)
+lines(X, Y3)
+```
+
+
+## Adding second level predictors
+
+
+$$\text{popularity}_{ij} = \beta_{0j} + \beta_1\text{gender}_{ij} + \beta_2\text{extraversion}_{ij} + e_{ij} $$
+$$\beta_{0j} = \gamma_{00} + \gamma_{01}\text{experience}_{j} + u_{0j}$$
+
+
+```{r, message = F, warning = F}
+fit <- lmer(popular ~ gender + extrav + texp + (1 | class),
+            data = Popular, REML=T)
+```
+
+##
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+summary(fit)
+```
+
+These variances are nested. That is why they decrease when moving up in levels.
+
+## Fixed vs Random effects
+
+**Fixed effects** constant across units
+
+**Random effects** vary across units, interest in underlying population, effect
+is a realized value of a random variable
+
+\[Y_{j} = MVN(\beta{}X + b_{j}Z_{j}, \Sigma)\]
+
+\[b_{j} = MVN(0, \Omega)\]
+
+In the two previous models we just had one random intercept. The model matrix,
+$Z_{j}$ for the random effects of class $j$ with 5 students (rows) looks like:
+
+```{r, echo = F}
+Z.j <- matrix(1, 5,1)
+Z.j
+
+```
+
+We can get model matrices in `lme4` by using the function `getME()`.
+
+## Random Slopes
+We add a random slope for extraversion; the effect of extraversion differs per
+class.
+
+$$\text{popularity}_{ij} = \beta_{0j} + \beta_{1}\text{gender}_{ij} + \beta_{2j}\text{extraversion}_{ij} + e_{ij} $$
+$$\beta_{0j} = \gamma_{00} + \gamma_{01}\text{experience}_{j} + u_{0j}$$
+$$\beta_{2j} = \gamma_{20} + u_{2j}$$
+
+```{r}
+fit2 <- lmer(popular ~ gender + extrav + texp + (1 + extrav| class),
+             data = Popular, REML=T)
+```
+
+The model matrix for $Z_{j}$ for the random effects of class $j$ with now looks like:
+
+```{r, echo = F}
+Z.j <- cbind(Z.j, c(3, 4, 1, 5, 3))
+Z.j
+
+```
+
+where the extraversion scores of the five students are in the second column.
+
+##
+```{r, warning = F, message = F}
+summary(fit2)
+```
+
+## Slope variance
+
+We now have three variance components:
+
+    Between classes  (Intercept)     1.30
+                      extrav         0.03
+    Between students (Residual)      0.55
+
+```{r, message = F, warning = F, echo= F, fig.height=4}
+X <- 0:10
+Y1 <- 2 + 0.3*X
+Y2 <- 4 + 0.5*X
+Y3 <- -0.5 + 0.6*X
+plot(X, Y1, type = "l", xlim = c(0, 10), ylim = c(-2, 10), ylab = "Y", col = "red")
+lines(X, Y2)
+lines(X, Y3)
+```
+
+
+## Cross-level interaction
+To explain the slope variance we may add an interaction between extraversion and
+a second level predictor
+
+$$\text{popularity}_{ij} = \beta_{0j} + \beta_{1}\text{gender}_{ij} + \beta_{2j}\text{extraversion}_{ij} + e_{ij} $$
+
+$$\beta_{0j} = \gamma_{00} + \gamma_{01}\text{experience}_{j} + u_{0j}$$
+
+$$\beta_{2j} = \gamma_{20} + \gamma_{21}\text{experience}_{j} + u_{2j}$$
+
+```{r}
+fit3 <- lmer(popular ~ gender + extrav*texp + (1 + extrav| class),
+             data = Popular, REML=T)
+```
+
+##
+```{r, warning = F, message = F}
+summary(fit3)
+```
+
+## 
+By investigating the variances we see how much slope variance was explained by
+adding the cross-level interaction:
+
+```{r, warning = F, message = F}
+print(VarCorr(fit2), comp="Variance")
+print(VarCorr(fit3), comp="Variance")
+```
+
+
+$$\frac{0.034547-0.0054094}{0.034547} \approx 0.84 $$
+
+## Restricted vs Full ML Estimation
+To investigate model fit by means of the deviance we need to switch our
+estimation method:
+
+```{r, message = F, warning = F}
+fit <- lmer(popular ~ gender + extrav + texp + (1 | class),
+            data = Popular, REML=F)
+fit2 <- lmer(popular ~ gender + extrav + texp + (1 + extrav| class),
+             data = Popular, REML=F)
+fit3 <- lmer(popular ~ gender + extrav*texp + (1 + extrav| class),
+             data = Popular, REML=F)
+```
+
+## Comparing Models
+We can now compare the models with first and second level predictors, random
+slope and cross-level interaction by means of $\chi^2$ tests on the deviance:
+
+```{r}
+anova(fit, fit2, fit3)
+```
+
+## Obtaining confidence intervals/p-values
+This is removed from `lme4` because there is no general reliable way to estimate
+the intervals under every possible condition. See `?pvalues` for more detailed
+info.
+
