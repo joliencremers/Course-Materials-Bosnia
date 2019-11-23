@@ -1,0 +1,278 @@
+---
+title: "Generalized linear models"
+author: "Gerko Vink"
+date: "Statistical Programming with R"
+output:
+  ioslides_presentation:
+    smaller: yes
+    widescreen: no
+#    logo: logo.png
+---
+
+## Packages and functions used
+```{r message=FALSE}
+library(magrittr) # pipes
+library(DAAG) # data sets and functions
+```
+
+- `glm()` Generalized linear models
+- `predict()` Obtain predictions based on a model
+- `confint()` Obtain confidence intervals for model parameters
+- `coef()` Obtain a model's coefficients
+- `DAAG::CVbinary()` Cross-validation for regression with a binary response
+
+
+# Generalized linear models
+## GLMs
+The (general) linear model has 
+\[Y_i=\alpha+\beta X_i+\epsilon_i\]
+where the $\epsilon_i$ are IID, $\epsilon_i \sim N(0,\sigma^2)$
+
+The *generalized* linear model relaxes the assumptions of linearity and normality:
+
+\[f(\mathbb{E}[Y]) = \alpha + \beta X\]
+
+Generalized linear models allow for a range of distributions for the residuals and a variety of *link functions* $f$.  
+
+## GLMs in R
+We will work with the `glm` function in the `stats` package. If your needs grow more exotic, there are a plethora of alternative, GLM-related packages
+
+```{r, eval= FALSE}
+glm(formula, family = gaussian, data, weights, subset,
+    na.action, start = NULL, etastart, mustart, offset,
+    control = list(...), model = TRUE, method = "glm.fit",
+    x = FALSE, y = TRUE, singular.ok = TRUE, contrasts = NULL, ...)
+```
+
+## Distributions and link functions supported by `glm`
+The `family` argument gives the distribution of the residuals and the link function. For instance:
+```{r, eval=F}
+family = gaussian(link = "identity") # This is the default for glm
+family = poisson(link = "log")
+```
+Here, the link functions are the defaults and do not need to be specified. The `help(family)` file describes link functions accepted by `glm` -- or you may specify your own. 
+
+
+## Distributions and link functions supported by `glm`
+
+| Family           | Default Link Function                      |
+|------------------|--------------------------------------------|
+| binomial         | (link = "logit")                           |
+| gaussian         | (link = "identity")                        |
+| Gamma	          | (link = "inverse")                         |
+| inverse.gaussian | (link = "1/mu^2")                          |
+| poisson	       | (link = "log")                             |
+| quasi	          | (link = "identity", variance = "constant") |
+| quasibinomial	 | (link = "logit")                           |
+| quasipoisson	    | (link = "log")                             |
+
+## Further extensions of the general linear model
+
+* The `nlme` package for Gaussian (non)linear mixed-effects models
+* The `mgcv` package for generalized additive (mixed) models
+* The `lcmm` packages for latent class linear mixed models and joint analysis of longitudinal and time-to-event data 
+
+
+<!-- ## Logit -->
+<!-- \[\text{logit}(p) = \log(\frac{p}{1-p}) = \log(p) - \log(1-p)\] -->
+<!-- ```{r echo=FALSE,  dev.args = list(bg = 'transparent')} -->
+<!-- p <- (1:999)/1000  -->
+<!-- gitp <- log(p/(1 - p))  -->
+<!-- par(pty="s") -->
+<!-- plot(gitp, p, xlab = "logit(p)", ylab = "p", type = "l", pch = 1) -->
+<!-- ``` -->
+
+<!-- ## Logit continued -->
+<!-- Logit models work on the $\log(\text{odds})$ scale -->
+
+<!-- \[\log(\text{odds}) = \log(\frac{p}{1-p}) = \log(p) - \log(1-p) = \text{logit}(p)\] -->
+
+<!-- The logit of the probability is the log of the odds.  -->
+
+<!-- Logistic regression allows us to model the $\log(\text{odds})$ as a function of other, linear predictors.  -->
+
+<!-- ## $\log(\text{odds})$ explained -->
+<!-- ```{r cache=TRUE,  dev.args = list(bg = 'transparent')} -->
+<!-- logodds <- rep(NA, 1001) -->
+<!-- for(i in 0:1000){ -->
+<!--   p <- i / 1000  -->
+<!--   logodds[i + 1] <- log(p / (1 - p)) -->
+<!-- } -->
+<!-- head(logodds) -->
+<!-- tail(logodds) -->
+<!-- ``` -->
+
+<!-- ## $\log(\text{odds})$ explained -->
+<!-- ```{r,  dev.args = list(bg = 'transparent')} -->
+<!-- plot(0:1000, logodds, xlab = "x", ylab = "log(odds)", type = "l") -->
+<!-- ``` -->
+
+<!-- ## logit$^{-1}$ explained -->
+<!-- ```{r cache=TRUE,  dev.args = list(bg = 'transparent')} -->
+<!-- invlogit <- exp(logodds) / (1 + exp(logodds)) -->
+<!-- invlogit %>% head() -->
+<!-- invlogit %>% head() -->
+<!-- ``` -->
+
+<!-- ## logit$^{-1}$ explained -->
+<!-- ```{r,  dev.args = list(bg = 'transparent')} -->
+<!-- plot(0:1000, invlogit, xlab = "x", ylab = "log(odds)", type = "l") -->
+<!-- ``` -->
+
+# Logistic regression
+## Logistic regression
+Logistic regression models log(odds) of a binary outcome as a linear function of the predictors:
+
+\[ \text{logit}(p_i) = \log\frac{p_i}{1-p_i} = \alpha + \beta X_i \]
+
+Where the outcome $Y_i$ follows a binomial distribution with probability $p_i$ of success. 
+
+<!-- ## Logistic regression -->
+<!-- With linear regression we had the `Sum of Squares (SS)`. Its logistic counterpart is the `Deviance (D)`.  -->
+
+<!--  -  Deviance is the fit of the observed values to the expected values.  -->
+
+<!-- With logistic regression we aim to maximize the `likelihood`, which is equivalent to minimizing the deviance.  -->
+
+<!-- The likelihood is the (joint) probability of the observed values, given the current model parameters. -->
+
+<!-- In normally distributed data: $\text{SS}=\text{D}$. -->
+
+## Logistic regression
+We explore the `anesthetic` dataset: Thirty patients were given an anesthetic agent maintained at a predetermined level (conc) for 15 minutes before making an incision. It was then noted whether the patient moved, i.e. jerked or twisted
+```{r, message = FALSE}
+anesthetic %>% head
+```
+
+## Logistic regression
+```{r,  dev.args = list(bg = 'transparent')}
+glm(nomove ~ conc, family = binomial(link="logit"), data=anesthetic) %>% summary()
+```
+
+## A different approach
+Say we want to analyse counts in the aggregated table: 
+```{r,  dev.args = list(bg = 'transparent')}
+anestot <- aggregate(anesthetic[, c("move","nomove")],  
+                     by = list(conc = anesthetic$conc), FUN = sum) 
+anestot
+```
+
+## A different approach
+```{r,  dev.args = list(bg = 'transparent')}
+anestot$total <- apply(anestot[, c("move","nomove")], 1 , sum) 
+anestot$prop <- anestot$nomove / anestot$total 
+anestot
+```
+
+## A different approach
+```{r,  dev.args = list(bg = 'transparent')}
+glm(prop ~ conc, family = binomial(link="logit"), weights = total, data=anestot) %>% 
+  summary()
+```
+
+<!-- ## Logistic multiple regression -->
+<!-- Always try to make the relation as linear as possible  -->
+
+<!-- - after all you are assessing a linear model.  -->
+
+<!-- Do not forget that you use transformations to "make" things more linear -->
+
+## Logistic multiple regression
+We analyse the `frogs` dataset, which details the presence or absence of the Southern Corroboree frog from a number of reference points in the Snowy Mountains area of New South Wales, Australia
+
+```{r,  dev.args = list(bg = 'transparent'), echo=FALSE}
+with(frogs, pairs(cbind(distance, NoOfPools, NoOfSites, avrain, altitude, 
+                        meanmax+meanmin, meanmax-meanmin), 
+                  col = "gray", panel = panel.smooth, 
+                  labels = c("Distance", "NoOfPools", 
+                             "NoOfSites", "AvRainfall", "Altitude", 
+                             "meanmax + meanmin", "meanmax - meanmin"))) 
+```
+
+## Logistic multiple regression
+Code for the previous slide: 
+
+```{r,  dev.args = list(bg = 'transparent'), eval = FALSE}
+with(frogs, pairs(cbind(distance, NoOfPools, NoOfSites, avrain, altitude, 
+                        meanmax+meanmin, meanmax-meanmin), 
+                  col = "gray", panel = panel.smooth, 
+                  labels = c("Distance", "NoOfPools", 
+                             "NoOfSites", "AvRainfall", "Altitude", 
+                             "meanmax + meanmin", "meanmax - meanmin"))) 
+```
+
+## Logistic multiple regression
+```{r,  dev.args = list(bg = 'transparent'), echo=FALSE}
+with(frogs, pairs(cbind(log(distance), log(NoOfPools), NoOfSites, avrain, altitude, 
+                        meanmax+meanmin, meanmax-meanmin), 
+                  col = "gray", panel = panel.smooth, 
+                  labels = c("log(Distance)", "log(NoOfPools)", 
+                             "NoOfSites", "AvRainfall", "Altitude", 
+                             "meanmax + meanmin", "meanmax - meanmin"))) 
+```
+
+## Logistic multiple regression
+```{r echo=FALSE,  dev.args = list(bg = 'transparent')}
+summary(frogs.glm0 <- glm(formula = pres.abs ~ log(distance) + log(NoOfPools) 
+                          + NoOfSites + avrain +  I(meanmax + meanmin) 
+                          + I(meanmax - meanmin), family = binomial, data = frogs)) 
+```
+
+## Logistic multiple regression
+```{r echo=FALSE,  dev.args = list(bg = 'transparent')}
+frogs.glm <- glm(pres.abs ~ log(distance) + log(NoOfPools) 
+                 + I(meanmax + meanmin) + I(meanmax - meanmin),  
+                 family = binomial,
+                 data = frogs)
+frogs.glm %>% summary()
+```
+
+## Fitted values
+```{r,  dev.args = list(bg = 'transparent')}
+frogs.glm <- glm(pres.abs ~ log(distance) + log(NoOfPools) 
+                 + I(meanmax + meanmin) + I(meanmax - meanmin),  
+                 family = binomial,
+                 data = frogs)
+frogs.glm %>% fitted() %>% head()
+frogs.glm %>% predict(type = "response") %>% head()
+frogs.glm %>% predict(type = "link") %>% head() # Scale of linear predictor 
+```
+
+## Fitted values with approximate SE's
+```{r,  dev.args = list(bg = 'transparent')}
+pred <- frogs.glm %>% 
+  predict(type = "link", se.fit = TRUE)
+data.frame(fit = pred$fit, se = pred$se.fit) %>% head()
+```
+
+## Confidence intervals for the $\beta$
+```{r}
+frogs.glm %>% confint()
+frogs.glm %>% coef()
+```
+
+## Cross validating predictive power
+```{r,  dev.args = list(bg = 'transparent')}
+set.seed(123)
+frogs.glm <- glm(pres.abs ~ log(distance) + log(NoOfPools), 
+                 family = binomial, data = frogs)
+cv <- CVbinary(frogs.glm)
+```
+
+The cross-validation measure is the proportion of predictions over the folds that are correct. 
+
+## Cross validating predictive power
+```{r,  dev.args = list(bg = 'transparent')}
+frogs.glm2 <- glm(pres.abs ~ log(distance) + log(NoOfPools) 
+                 + I(meanmax + meanmin) + I(meanmax - meanmin),
+                 family = binomial, data = frogs)
+cv <- CVbinary(frogs.glm2)
+```
+
+## Cross validating predictive power
+```{r,  dev.args = list(bg = 'transparent')}
+frogs.glm2 <- glm(pres.abs ~ log(distance) + log(NoOfPools) 
+                 + I(meanmax + meanmin) + I(meanmax - meanmin),
+                 family = binomial, data = frogs)
+cv <- CVbinary(frogs.glm2, nfolds = 5)
+```

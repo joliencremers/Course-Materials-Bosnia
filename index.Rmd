@@ -92,10 +92,12 @@ Rstudio is an Integrated Development Environment (IDE). It can be obtained as st
 Execute the following lines of code in the console window:
 
 ```{r eval=FALSE, echo = TRUE}
-install.packages(c("ggplot2", "stats","tidyverse", "magrittr", "micemd", "jomo", "pan", 
-                 "lme4", "knitr", "rmarkdown", "plotly", "ggplot2", "shiny", 
-                 "devtools", "boot", "class", "car", "MASS", "ggplot2movies", 
-                 "ISLR", "DAAG", "mice", "mitml", "miceadds", "sf"), 
+install.packages(c("tidyverse", "micemd", "jomo", "pan", 
+                 "lme4", "knitr", "rmarkdown", "plotly",
+                 "devtools", "boot", "class", "car", "MASS", 
+                 "ISLR", "DAAG", "mice", "mitml", "miceadds",
+                 "Ecdat", "MEMSS", "VIM", "simputation", "naniar",
+                 "visdat", "UpSetR" ), 
                  dependencies = TRUE)
 ```
 
@@ -124,6 +126,11 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
 
 - Part A: Repetition
 
+    - [Lecture A](Contents/Material/Part A - Repetition/Lecture_A.html){target="_blank"}
+    - [Lecture A Handout](Contents/Material/Part A - Repetition/Lecture_A_handout.html){target="_blank"}
+    - [Practical A](Contents/Material/Part A - Repetition/Practical_A_walkthrough.html){target="_blank"}
+    - [Impractical A](Contents/Material/Part A - Repetition/Practical_A.html){target="_blank"}
+
 
 - Part B: Statistical Inference
 
@@ -137,7 +144,13 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
 ## Column 2
 
 ### Useful references
-
+- [The R project homepage](https://www.r-project.org/) 
+- [CRAN task view for official statistics](https://cran.r-project.org/web/views/OfficialStatistics.html)
+- Some places to find the `R` community:
+  - [#rstats hashtag](https://twitter.com/search?q=%23rstats)
+  - [Rweekly](https://rweekly.org/)
+  - [R-bloggers](https://www.r-bloggers.com/)
+  - [Stack Overflow](https://stackoverflow.com/) A good place to ask questions. Check if your question has been answered before, and make sure to phrase it carefully and correctly. 
 
 
 
@@ -161,6 +174,11 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
     - [Nurse dataset](Contents/Material/Part C - Linear models/nurses.sav){target="_blank"}
        
 - Part D: Generalized Linear Models
+
+    - [Lecture D](Contents/Material/Part D - GLMs/Lecture_D.html){target="_blank"}
+    - [Lecture D Handout](Contents/Material/Part D - GLMs/Lecture_D_handout.html){target="_blank"}
+    - [Practical D](Contents/Material/Part D - GLMs/Practical_D_walkthrough.html){target="_blank"}
+    - [Impractical D](Contents/Material/Part D - GLMs/Practical_D.html){target="_blank"}
 
 All lectures are in `html` format. Practicals are are provided both as naked questions but also with ample explanations and solutions - choose according to your taste!
 

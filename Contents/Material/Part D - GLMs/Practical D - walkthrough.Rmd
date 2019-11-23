@@ -1,0 +1,246 @@
+---
+title: "Practical L"
+author: "Gerko Vink"
+date: "Statistical Programming with R"
+output: html_document
+---
+
+We use the following packages:
+```{r warning=FALSE, message=FALSE}
+library(mice)
+library(dplyr)
+library(magrittr)
+library(DAAG)
+```
+
+---
+
+The following table shows numbers of occasions when inhibition (i.e., no flow of current across a membrane) occurred within 120 s, for different concentrations of the protein peptide-C. The outcome `yes` implies that inhibition has occurred.
+
+    conc 0.1 0.5  1 10 20 30 50 70 80 100 150 
+    no     7   1 10  9  2  9 13  1  1   4   3 
+    yes    0   0  3  4  0  6  7  0  0   1   7
+
+---
+
+1. **Create this data in `R`**
+```{r}
+data <- data.frame(conc = c(.1, .5, 1, 10, 20, 30, 50, 70, 80, 100, 150),
+                   no = c(7, 1, 10, 9, 2, 9, 13, 1, 1, 4, 3),
+                   yes = c(0, 0, 3, 4, 0, 6, 7, 0, 0, 1 ,7)) 
+data
+```
+
+
+---
+
+2. **Add two new variables (columns) to the data**
+
+- the margin of `no` and `yes` over the rows (i.e. `no` + `yes`)
+- the proportion (`yes` over `margin`)
+<!-- - the logodds -->
+
+<!-- First, we create a function to calculate the logit (logodds): -->
+<!-- ```{r} -->
+<!-- logit <- function(p) log(p / (1 - p)) -->
+<!-- ``` -->
+
+<!-- Then we add the new columns -->
+```{r}
+data <- 
+  data %>% 
+  mutate(margin = no+yes,
+         prop = yes / margin)
+```
+
+<!-- --- -->
+
+<!-- 3. **Inspect the expanded data. What do you see?** -->
+<!-- ```{r} -->
+<!-- data -->
+<!-- ``` -->
+
+<!-- There are a lot of zero proportions, hence the $-\infty$ in the logit. You can fix this (at least the interpretation of the `logodds`) by adding a constant (usually 0.5) to all cells conform the empirical `logodds` [(see e.g. Cox and Snell 1989)](http://www.amazon.com/Analysis-Edition-Monographs-Statistics-Probability/dp/0412306204).  -->
+
+<!-- --- -->
+
+<!-- 4. **Add a new column where the log odds are calculated as:** -->
+<!-- $$\log\text{odds} = \log\left(\frac{\text{yes} + 0.5}{\text{no} + 0.5}\right)$$ -->
+<!-- ```{r} -->
+<!-- logitCandS <- function(yes, no) log((yes + .5) / (no + .5)) -->
+<!-- data <-  -->
+<!--   data %>%  -->
+<!--   mutate(logitCS = logitCandS(yes, no)) -->
+<!-- data -->
+<!-- ``` -->
+<!-- We can now see that the $-\infty$ proportions are mostly gone -->
+
+<!-- --- -->
+
+3. **Fit the logistic model with `margin` as the weights**
+```{r}
+fit <- 
+  data %$%
+  glm(prop ~ conc, family=binomial, weights=margin)
+```
+
+---
+
+4. **Look at the summary of the fitted object**
+```{r}
+summary(fit)
+```
+
+---
+
+5. **Inspect the plots number 1 and 5 for `fit`**
+```{r}
+plot(fit, which = c(1, 5))
+```
+
+The data set is small, but case `11` stands out in the `Residuals vs. Leverage` plot
+
+---
+
+6. **`conc` is somewhat skewed. Run the model again with a log-transformation for `conc`.**
+```{r echo = FALSE}
+data$conc %>%
+  density() %>%
+  plot()
+```
+
+
+To apply this in the model directly:
+
+```{r}
+fit.log <- 
+  data %$%
+  glm(prop ~ I(log(conc)), family=binomial, weights=margin)
+```
+
+---
+
+7. **Look at the summary of the fitted object again**
+```{r}
+summary(fit.log)
+```
+The logodds now depict the unit increase in `log(conc)`, instead of `conc`.
+
+---
+
+8. **Inspects the plots number 1 and 5 of the fitted object based on `log(conc)`.**
+```{r}
+plot(fit.log, which = c(1, 5))
+```
+
+Outliers are now less of an issue. 
+
+---
+
+9. **Use the `brandsma` data from package `mice` to fit a logistic regression model for `sex` based on `lpo` (Language Post Outcome).**
+```{r}
+brandsma.subset <- 
+  brandsma %>%
+  subset(!is.na(sex) & !is.na(lpo), select = c(sex, lpo))
+fit <- 
+  brandsma.subset %$%
+  glm(sex ~ lpo, family=binomial(link='logit'))
+fit %>%
+  summary()
+```
+
+With every unit increase in `lpo`, the logodds of gender increases by `r coef(fit)[2]`. 
+
+---
+
+10. **Obtain confidence intervals for the parameter estimates.**
+```{r}
+confint(fit)
+```
+
+---
+
+11. **Use the model parameters to predict the `sex` variable and compare your predictions to the observed `sex`. **
+We can obtain predictions by using function `predict`. The default predictions are on the scale of the linear predictors; the alternative "response" is on the scale of the response variable. Thus for a default binomial model the default predictions are of log-odds (probabilities on logit scale) and type = "response" gives the predicted probabilities. 
+To obtain the predicted logodds:
+```{r}
+pred.logodds <- 
+  fit %>%
+  predict()
+head(pred.logodds)
+```
+and the predicted probabilities
+```{r}
+pred.prob <- 
+  fit %>%
+  predict(type = "response")
+head(pred.prob)
+```
+We can then use the decision boundary `pred.prob > .5` to assign cases to `sex == 1` and the others to `sex == 0`. 
+```{r}
+pred <- numeric(length(pred.prob))
+pred[pred.prob > .5] <- 1
+pred <- unlist(pred)
+```
+To determine how many correct predictions we have, we can use
+```{r}
+obs <- 
+  brandsma %>%
+  subset(!is.na(sex) & !is.na(lpo), select = sex)
+sum(pred == obs) #total correct
+mean(pred == obs) #average correct
+```
+So we succesfully predict about half. Not that impressive. An alternative way to test our model efficiency is with `CVbinary()`:
+```{r}
+CVbinary(glm(sex ~ lpo, family=binomial(link='logit'), data = brandsma.subset))
+```
+---
+
+The lesson here is that a significant parameter has no meaning if the substantive interpretation of the effect is ignored. There is almost no relation, whatsoever, there is just sufficient data to deem the influence of `lpo` on `sex` worthy of significance. 
+
+---
+
+12. 
+The `moths` data frame in the `DAAG` package contains data from a study of the effect of habitat on the densities of two species of moth (A and P). The quasipoisson distribution is a reasonable model for these data. Try modeling the variable `A` using this distribution. Is there a better link function than the standard?
+```{r}
+A.glm <- glm(formula = A ~ log(meters) + factor(habitat), family =
+quasipoisson, data = moths)
+summary(A.glm)
+# Note the huge standard errors
+
+## Consider the square root link as another possibility
+A2.glm <- glm(formula = A ~ sqrt(meters) + factor(habitat), family = quasipoisson(link=sqrt), data = moths)
+summary(A2.glm)
+```
+
+---
+13. 
+Let's try to specify our own link function: $f(x) = \log(\exp(x)-1)$. Generate data like this: 
+```{r}
+n <- 1000                       
+x <- runif(n)
+sh <- 2                        
+y <- rgamma(n,scale=log(2+3*x)/sh,shape=sh)
+```
+Specify the link function and run a `glm` regressing `y` on `x`. **Hint:** Look at the help file for `family`. You need to make an object of type "link-glm", containing the items needed for `glm` to run: a link function, an inverse link, the derivative of the inverse link, and a function that describes the domain of the inverse link. 
+
+```{r}
+ ## link
+ linkfun <- function(y) log(exp(y)-1)
+ ## inverse link
+ linkinv <- function(eta)  log(exp(eta)+1)
+ ## derivative of invlink wrt eta
+ mu.eta <- function(eta) { 1/(exp(-eta) + 1) }
+ valideta <- function(eta) TRUE
+ link <- "log(exp(y)-1)"
+ vv <- structure(list(linkfun = linkfun, linkinv = linkinv,
+                 mu.eta = mu.eta, valideta = valideta, 
+                 name = link),
+                 class = "link-glm")
+
+glm(y~x,family=Gamma(link=vv)) 
+
+```
+
+
+End of Practical
