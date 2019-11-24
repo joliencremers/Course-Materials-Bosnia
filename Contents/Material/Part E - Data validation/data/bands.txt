@@ -1,0 +1,19 @@
+﻿name	country	date
+Barnabas 	United States 	01JAN1977
+Barón Rojo 	Spain 	03FEB1980
+Battleaxe 	UK 	03MAY1980
+Bengal Tigers 	Australia 	09SEP1979
+Beowülf 	US 	09SEP1981
+Birth Control 	Germany 	01APR1966
+Bitch 	United States 	01APR1980
+Black Death 	United States 	01APR1977
+Black 'n Blue 	United States 	01APR1981
+Black Rose 	United Kingsom 	01APR1980
+Black Sabbath 	United Kingdom 	01APR1968
+Black Widow 	United Kingdom 	01APR1966
+Bleak House 	United Kingdom 	01APR1972
+Blind Illusion 	United States 	01APR1978
+Blitzkrieg 	United Kigdom 	01APR1980
+Bloodrock 	United States 	01APR1969
+Blue Cheer 	United States 	01APR1966
+Blue Öyster Cult 	Untied States 	01APR1967

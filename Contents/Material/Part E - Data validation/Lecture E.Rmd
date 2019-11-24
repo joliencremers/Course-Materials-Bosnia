@@ -1,0 +1,275 @@
+---
+title: Data validation <br> and editing 
+author: "Anne Vinkel, adapted from Mark van der Loo"
+date: "Statistical Programming with R"
+output:
+  ioslides_presentation:
+    smaller: yes
+    widescreen: no
+#    logo: logo.png
+---
+
+## Packages and functions used
+```{r message=FALSE, warning=F}
+library(lubridate)
+library(stringi)
+library(stringr)
+library(stringdist)
+library(editrules)
+library(deducorrect)
+library(rex)
+```
+
+## Resources:
+By Edwin de Jonge & Mark van der Loo:
+
+### Statistical Data Cleaning with Applications in R:
+Comprehensive book
+
+### An introduction to data cleaning with R: 
+Shorter working paper, available online
+
+## Statistical value chain
+<center>
+<img src="figures/statistical value chain.png" alt="HTML5 Icon" width = 95%>
+</center>
+
+- A way to think about the process of producing statistics and separating production systems
+- By this logic, you should store the data for each state separately for reuse, and probably also use separate R scripts for each step
+- For reproducibility!
+
+## Concepts
+
+### Technically correct data
+
+- Well-defined format (data structure)
+- Well-defined types (numbers, date/time,string, categorical$...$ )
+- Statistical units can be identified (persons, transactions, phone calls$...$)
+- Variables can be identified as properties of statistical units.
+
+### Consistent data
+
+- Data satisfies demands from domain knowledge
+- Ready for analysis
+
+
+# Some basics
+
+## Variable types in R:
+
+  - `numeric`
+  - `integer`
+  - `factor` - categorical data
+  - `ordered` - ordinal data
+  - `character` - character data
+  - `logical` - `TRUE` or `FALSE`
+  - `raw` -  binary data
+
+## Special values
+
+- `NA`: Not available - placeholder for a missing value. When computed with, returns `NA`
+- `NULL`: The null object. Cannot be done maths on.
+- `Inf`: Infinity - can be done maths on! 
+- `NaN`: *Not a Number*. Generally result of calculation (eg `Inf - Inf`). Is numeric, further computation always returns `NaN`
+
+# Raw data to technically correct data
+
+## Raw data to technically correct data
+
+- Get data into `R`
+- Clean up data, so each variable can be made the correct type
+  - Particularly dates
+- Clean up messy text variables
+  - String normalization and approximate text matching
+
+## Tabular data: long story short
+
+- `read.table`: R's swiss army knife
+    - fairly strict (no sniffing)
+    - Very flexible
+    - Interface could be cleaner (see [this talk](http://sumsar.net/files/academia/UseR_2013_R_naming_conventions_final.pdf))
+- `readr::read_csv`
+    - Easy to switch between strict/lenient parsing
+    - Compact control over column types
+    - Fast
+    - Clear reports of parsing failure
+
+## For even dirtier data
+- (base) R has great text processing tools.
+- Need to work with regular expressions\footnote{Mastering Regular Expressions (2006) by Jeffrey Friedl is a great resource}
+- Write many small functions extracting single data elements.
+- Don't overgeneralize: adapt functions as you meet new input.
+
+
+## Regular expressions
+
+Express a _pattern_ of text, e.g.
+
+\[ 
+\texttt{"(a|b)c*"} = \{\texttt{"a"},\texttt{"ac"},\texttt{"acc"},\ldots,\texttt{"b"},\texttt{"bc"},\texttt{"bcc"},\ldots\}
+\]
+
+| **Task**           | **stringr**                                | **Base R**          |
+|:-------------------|:-------------------------------------------|:--------------------|
+| string detection   |  str_detect(string, pattern)               | grep, grepl         |
+| string extraction  |  str_extract(string, pattern)              | regexpr, regmatches |
+| string replacement |  str_extract(string, pattern, replacement) | sub, gsub           |
+| string splitting   |  str_split(string, pattern)                | strsplit            |
+
+
+## Tips on regular expressions with R
+
+- `stringr` has _many_ useful shorthands for common tasks.
+- Generate regular expressions with `rex`
+
+```{r}
+library(rex)
+# recognize a number in scientific notation
+rex(one_or_more(digit)
+    , maybe(".",one_or_more(digit))
+    , "E" %or% "e"
+    , one_or_more(digit))
+```
+
+## String normalization
+
+Bring a text string in a standard format, e.g.
+
+- Standardize upper/lower case (casefolding) 
+    - stringr: str_to_lower, str_to_upper, str_to_title
+    - base R: tolower, toupper
+- Remove accents (transliteration)
+    - stringi: stri_trans_general
+    - base R: iconv
+
+## Approximate text matching
+
+- Defines a distance metric between strings that measures how "different" two strings are. 
+- Uses this to correct data
+
+```{r}
+gender <- c("Male", "male", "Female", "fem.", "F", "M")
+stringdist(gender, "Male")
+stringdist(gender, "Female")
+```
+
+## Approximate text matching
+```{r}
+gender <- c("Male", "male", "Female", "fem.", "F", "M")
+codes <- c("male", "female")
+D <- stringdistmatrix(gender, codes)
+i <- apply(D, 1, which.min)
+data.frame(rawtext = gender, coded = codes[i])
+```
+
+
+## Approximate text matching: edit-based distances
+
+| *Distance* | *substitution* | *deletion* | *insertion* | *transposition* |
+|------------|----------------|------------|-------------|-----------------|
+| Hamming             | yes   | no   | no  | no |
+| LCS                 | no    | yes  | yes | no |
+| Levenshtein         | yes   | yes  | yes |  no |
+| OSA                 | yes   | yes  | yes |  yes |
+| Damerau-Levenshtein | yes   | yes  | yes |  yes |
+
+$$\texttt{"leela"} \to \texttt{"leea"} \to \texttt{"leia"}$$
+
+```{r,echo=TRUE}
+stringdist::stringdist("leela","leia",method="dl")
+```
+
+## Further steps in making data technically correct
+
+- `lubridate`: extract dates from strings
+    ```{r,echo=TRUE}
+    lubridate::dmy("17 December 2015") 
+    ```
+- `tidyr`: many data cleaning operations to make your life easier
+- `readr`: Parse numbers from text strings
+    ```{r echo=TRUE}
+    readr::parse_number(c("2%","6%","0.3%"))
+    ```
+
+# From technically correct <br>to consistent data
+
+## The mantra of data cleaning
+
+- Detection (data conflicts with domain knowledge)
+- Selection (find the value(s) that cause the violation)
+- Correction (replace them with better values)
+
+
+## Detection, AKA data validation
+
+### Informally:
+
+Data Validation is checking data against (multivariate) expectations about
+a data set
+
+### For example
+- Ages cannot be negative and should be less than 150 years
+- The number of years married must be smaller than the age minus 17 years
+- A person labeled as "single" should have the number of years married recorded as 0
+
+### Validation rules
+
+Often these expectations can be expressed as a set of simple _validation rules_.
+
+The `validate` package allows us to define a set of validation rules which can then be applied to data
+
+## The `validate` package, in summary
+
+- Make data validation rules explicit
+- Treat them as objects of computation
+    - store to / read from file
+    - manipulate
+    - annotate
+- Confront data with rules
+- Analyze/visualize the results
+
+## Use rules to correct data
+
+### Main idea
+
+Rules restrict the data. Sometimes this is enough to derive a correct value uniquely.
+
+### Examples
+
+- Correct typos in values under linear restrictions
+    - $123 + 45 \not= 177$, but $123 + \underline{54} = 177$. 
+- Derive imputations from values under linear restrictions
+    - $123 + \texttt{NA} = 177$, compute $177-123=54$.
+
+Both can be generalized to systems $\mathbf{Ax}\leq\mathbf{b}$.
+
+The `deducorrect` package allows for deterministic imputation in these cases
+
+
+## Selection, or: error localization
+
+### Fellegi and Holt (1976)
+
+Find the least (weighted) number of fields that can be imputed
+such that all rules can be satisfied.
+
+### Note
+
+- Solutions need not be unique.
+- Random one chosen in case of degeneracy.
+- Lowest weight need not guarantee smallest number of altered variables.
+
+
+## Error localization
+
+The `errorlocate` package
+
+- For in-record rules
+- Support for
+    - linear (in)equality rules 
+    - Conditionals on categorical variables (if male then not pregnant)
+    - Mixed conditionals (has job then age $>= 15$)
+    - Conditionals w/linear predicates (staff $> 0$ then staff cost $> 0$)
+- Optimization is mapped to MIP problem.
+
+# Practical

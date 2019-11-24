@@ -146,6 +146,7 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
 ### Useful references
 - [The R project homepage](https://www.r-project.org/) 
 - [CRAN task view for official statistics](https://cran.r-project.org/web/views/OfficialStatistics.html)
+- [CRAN area for contributed documentation](https://cran.r-project.org/other-docs.html) No longer actively maintained, but a lot of good resources
 - Some places to find the `R` community:
   - [#rstats hashtag](https://twitter.com/search?q=%23rstats)
   - [Rweekly](https://rweekly.org/)
@@ -185,6 +186,7 @@ All lectures are in `html` format. Practicals are are provided both as naked que
 ## Column 2
 
 ### Useful references
+- [Practical Regression and Anova using R](https://cran.r-project.org/doc/contrib/Faraway-PRA.pdf) by Julian Faraway  
 
 # Thursday
 
@@ -207,13 +209,16 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
 ## Column 2
 
 ### Useful references
-
-- [Flexible Imputation of Missing Data](https://stefvanbuuren.name/fimd/): written by Stef van Buuren, uses the `mice` package. 
-- [Applied Missing Data Analysis](https://bookdown.org/mwheymans/bookmi/): book on missing data and imputation in R and SPSS.
-- [Visualization of Missingness Patterns](https://cran.r-project.org/web/packages/naniar/vignettes/naniar-visualisation.html): Tutorial for the naniar package that does nice visualizations of missingness patterns.
-- [Tutorial](https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/): Tutorial describing the use of 5 different R-packages for missing data imputation.
-- [Tutorial](http://www.di.fc.ul.pt/~jpn/r/missing/index.html): Another tutorial on missing data in R.
-- [Tutorial](https://github.com/gerkovink/miceVignettes): a set of tutorials for the `mice` package.
+- Data validation
+  - [An introduction to data cleaning with R](https://cran.r-project.org/doc/contrib/de_Jonge+van_der_Loo-Introduction_to_data_cleaning_with_R.pdf)
+  - [Mark van der Loo](http://www.markvanderloo.eu/) has given several talks and workshops on this, with slides available from his [GitHub](https://github.com/markvanderloo)
+- Imputation
+  - [Flexible Imputation of Missing Data](https://stefvanbuuren.name/fimd/): written by Stef van Buuren, uses the `mice` package. 
+  - [Applied Missing Data Analysis](https://bookdown.org/mwheymans/bookmi/): book on missing data and imputation in R and SPSS.
+  - [Visualization of Missingness Patterns](https://cran.r-project.org/web/packages/naniar/vignettes/naniar-visualisation.html): Tutorial for the naniar package that does nice visualizations of missingness patterns.
+  - [Tutorial](https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/): Tutorial describing the use of 5 different R-packages for missing data imputation.
+  - [Tutorial](http://www.di.fc.ul.pt/~jpn/r/missing/index.html): Another tutorial on missing data in R.
+  - [Tutorial](https://github.com/gerkovink/miceVignettes): a set of tutorials for the `mice` package.
 
 # Further studies
 

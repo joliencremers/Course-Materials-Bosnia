@@ -1,0 +1,100 @@
+---
+title: "Practical E"
+author: "Anne Vinkel, adapted from Mark van der Loo "
+date: "Statistical Programming with R"
+output: html_document
+---
+
+### 1 - a bit on factors
+**Define the vector**
+```{r}
+v <- factor(c(1,8.2,3,11))
+```
+**What happens if you apply the function `as.numeric` to `v`? How can you make `v` into a numeric vector?**
+
+```{r}
+as.numeric(v)
+```
+Since `v` is a factor, the visible values in it are actually labels for the underlying factor values - which are nicely ordered consequtive integers. In order to make `v` numeric with the *right* values, use
+```{r}
+as.numeric(as.character(v))
+```
+
+
+### 2 - reading in data with base R and `readr`
+
+**The file `unnamed.csv` contains comma-separated values of ages and heights for a set of imaginary persons. Read in the data. Make sure to name both variables, and make both numeric. The obvious candidate function is `read.table`, but the `read_csv` function in the `readr` package makes it a lot easier** 
+
+Let's try with `read.table`
+```{r}
+## reading with read.table ----
+dat <- read.table(
+  file = "data/unnamed.csv"
+  , header = FALSE
+  , col.names = c("age","height")
+  , stringsAsFactors=FALSE
+  , sep=",")
+dat
+```
+The file reads in nicely, and we get useful variable names, but the data in the `height` variable isn't clean and cannot be read as numeric. We can try to coerce the variable into numeric, but this fails:
+
+```{r, error = T}
+## define colClasses ----
+dat <- read.table(
+  file = "data/unnamed.csv"
+  , header = FALSE
+  , col.names = c("age","height")
+  , colClasses = c("numeric","numeric")
+  , stringsAsFactors=FALSE
+  , sep=",")
+```
+Instead, we can read as character, clean up the text and convert to numeric. Or we could go the tidyverse way or use the `readcsv` function in the `readr` package. 
+
+```{r, error = T}
+# parse columns as 'number' (flexible)
+readr::read_csv("data/unnamed.csv"
+      , col_names=c("age","height")
+      , col_types="nn")
+
+```
+
+### 3 - matching dirty data against standard labels
+**The file `bands.txt` has a list of bands, but somebody messed up the "country" variable. Match it against the vector `c("Australia", "United States", "United Kingdom", "Germany", "Spain")`. Also make sure the `date` variable is a date.**
+
+We read in the data nicely with the `readr` package:
+```{r}
+library(readr)
+bands <- read_delim("data/bands.txt", delim = "\t", trim_ws = T,
+                     col_types = cols( date = col_date(format = "%d%b%Y")) )
+```
+
+Now for the label matching
+```{r}
+countries <- trimws(bands$country)
+codes <- c("Australia", "United States", "United Kingdom", "Germany", "Spain")
+
+## base R match function gives the clean matches
+match(countries, codes)
+
+## Which values are failing? 
+countries[is.na(match(countries, codes))]
+
+## The amatch function allows for some slack
+library(stringdist)
+amatch(countries, codes, maxDist=3)
+
+## Which values are still failing?
+countries[is.na(amatch(countries, codes, maxDist=3))]
+
+## We match the closest fit
+D <- stringdistmatrix(countries, codes)
+i <- apply(D, 1, which.min)
+data.frame(rawtext = countries, coded = codes[i])
+
+## This may be the time when we hand-code the rest:
+bands$country_clean <- codes[amatch(countries, codes, maxDist=3)]
+bands$country_clean[ bands$country == "UK"] <- "United Kingdom"
+bands$country_clean[ bands$country == "US"] <- "United States"
+```
+
+
