@@ -196,6 +196,8 @@ All lectures are in `html` format. Practicals are are provided both as naked que
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
 - Part E: Data Validation and Editing
+    - [Lecture E](Contents/Material/Part E - Data validation/Lecture_E.html){target="_blank"}
+    - [Practical E](Contents/Material/Part E - Data validation/Practical_E.html){target="_blank"}
 
 - Part F: Imputation
 
