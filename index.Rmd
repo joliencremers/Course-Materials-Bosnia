@@ -96,8 +96,10 @@ install.packages(c("tidyverse", "micemd", "jomo", "pan",
                  "lme4", "knitr", "rmarkdown", "plotly",
                  "devtools", "boot", "class", "car", "MASS", 
                  "ISLR", "DAAG", "mice", "mitml", "miceadds",
-                 "Ecdat", "MEMSS", "VIM", "simputation", "naniar",
-                 "visdat", "UpSetR" ), 
+                 "Ecdat", "Ecfun", "MEMSS", "VIM", "simputation",
+                 "naniar","visdat", "UpSetR", "DAAG", "magrittr",
+                 "haven", "Matrix", "lattice", "data.table", "grid",
+                 "colorspace"), 
                  dependencies = TRUE)
 ```
 
