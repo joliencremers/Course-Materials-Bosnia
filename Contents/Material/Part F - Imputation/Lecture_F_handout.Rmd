@@ -321,3 +321,9 @@ pool.fit <- pool(fit)
 summary(pool.fit)
 ```
 
+## Other packages for imputation
+
+- `mi`
+- `Hmisc`
+- `Amelia`
+- `mix`
