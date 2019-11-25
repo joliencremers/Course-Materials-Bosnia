@@ -1,5 +1,5 @@
 ---
-title: "Practical B"
+title: "Practical A"
 author: "Anne Vinkel (adapted from Gerko Vink)"
 date: "Statistical Programming with R"
 output: html_document

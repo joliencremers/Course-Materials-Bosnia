@@ -52,7 +52,7 @@ pre { /* Code block - determines code spacing between lines */
 | December 11 | 13:00 - 15:30 | Generalized linear models | D | Anne |
 | December 12 | 9:00 - 12:00  | Data validation and editing  | E | Anne |
 | December 12 | 13:00 - 15:30 | Imputation | F  | Jolien |
-| December 13 | 9:00 - 12:00  | Evaluation, agreement on summary mission report | | | 
+| December 13 | 9:00 - 12:00  | Evaluation, agreement on summary mission report |  
 |------------------------------------------------------------------|
 
 ## Format
