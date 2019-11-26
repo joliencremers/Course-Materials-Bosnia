@@ -24,7 +24,8 @@
         usePrettify: true,
         enableSlideAreas: true,
         enableTouch: true,
-                      },
+                        favIcon: 'css\logo_en.png',
+              },
 
       // Author information
       presenters: [
@@ -3081,18 +3082,18 @@ if (document.readyState !== "loading" &&
     }
 
     slides > slide {
-      -webkit-transition: all 0.4s ease-in-out;
-      -moz-transition: all 0.4s ease-in-out;
-      -o-transition: all 0.4s ease-in-out;
-      transition: all 0.4s ease-in-out;
+      -webkit-transition: all 0s ease-in-out;
+      -moz-transition: all 0s ease-in-out;
+      -o-transition: all 0s ease-in-out;
+      transition: all 0s ease-in-out;
     }
 
     .auto-fadein {
       -webkit-transition: opacity 0.6s ease-in;
-      -webkit-transition-delay: 0.4s;
-      -moz-transition: opacity 0.6s ease-in 0.4s;
-      -o-transition: opacity 0.6s ease-in 0.4s;
-      transition: opacity 0.6s ease-in 0.4s;
+      -webkit-transition-delay: 0s;
+      -moz-transition: opacity 0.6s ease-in 0s;
+      -o-transition: opacity 0.6s ease-in 0s;
+      transition: opacity 0.6s ease-in 0s;
       opacity: 0;
     }
 /* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
@@ -3100,8 +3101,24 @@ slide:not(.current) .plotly.html-widget{
   display: block;
 }
 
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(css\logo_en.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
   </style>
 
+  <style type="text/css">.gdbar img {width: 180px !important;height: 93px !important;margin: 8px 8px;}.gdbar {width: 300px !important;height: 109px !important;}slides > slide:not(.nobackground):before {width: 120px;height: 62px;background-size: 120px 62px;}</style>
 
 </head>
 
@@ -3110,6 +3127,7 @@ slide:not(.current) .plotly.html-widget{
 <slides>
 
   <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAA+CAYAAADgZd+jAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTk2OTBCRjU4NTk4MTFFMkIzNDhCNzEyRjBGOTgzRDQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTk2OTBCRjY4NTk4MTFFMkIzNDhCNzEyRjBGOTgzRDQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxOTY5MEJGMzg1OTgxMUUyQjM0OEI3MTJGMEY5ODNENCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxOTY5MEJGNDg1OTgxMUUyQjM0OEI3MTJGMEY5ODNENCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PnBDhikAAA2WSURBVHja7F0LlFVV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"></aside>
         <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
     <hgroup class="auto-fadein">
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
@@ -3119,7 +3137,7 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>Packages and functions used</h2></hgroup><article  id="packages-and-functions-used" class="smaller ">
+<slide class=""><hgroup><h2>Packages and functions used</h2></hgroup><article  id="packages-and-functions-used">
 
 <pre class = 'prettyprint lang-r'>library(lubridate)
 library(stringi)
@@ -3129,7 +3147,7 @@ library(editrules)
 library(deducorrect)
 library(rex)</pre>
 
-</article></slide><slide class=""><hgroup><h2>Resources:</h2></hgroup><article  id="resources" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Resources:</h2></hgroup><article  id="resources">
 
 <p>By Edwin de Jonge &amp; Mark van der Loo:</p>
 
@@ -3141,7 +3159,7 @@ library(rex)</pre>
 
 <p>Shorter working paper, available online</p>
 
-</article></slide><slide class=""><hgroup><h2>Statistical value chain</h2></hgroup><article  id="statistical-value-chain" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Statistical value chain</h2></hgroup><article  id="statistical-value-chain">
 
 <center>
 
@@ -3155,7 +3173,7 @@ library(rex)</pre>
 <li>For reproducibility!</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Concepts</h2></hgroup><article  id="concepts" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Concepts</h2></hgroup><article  id="concepts">
 
 <h3>Technically correct data</h3>
 
@@ -3173,9 +3191,9 @@ library(rex)</pre>
 <li>Ready for analysis</li>
 </ul>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Some basics</h2></hgroup><article  id="some-basics" class="smaller ">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Some basics</h2></hgroup><article  id="some-basics">
 
-</article></slide><slide class=""><hgroup><h2>Variable types in R:</h2></hgroup><article  id="variable-types-in-r" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Variable types in R:</h2></hgroup><article  id="variable-types-in-r">
 
 <ul>
 <li><code>numeric</code></li>
@@ -3187,7 +3205,7 @@ library(rex)</pre>
 <li><code>raw</code> - binary data</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Special values</h2></hgroup><article  id="special-values" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Special values</h2></hgroup><article  id="special-values">
 
 <ul>
 <li><code>NA</code>: Not available - placeholder for a missing value. When computed with, returns <code>NA</code></li>
@@ -3196,9 +3214,25 @@ library(rex)</pre>
 <li><code>NaN</code>: <em>Not a Number</em>. Generally result of calculation (eg <code>Inf - Inf</code>). Is numeric, further computation always returns <code>NaN</code></li>
 </ul>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Raw data to technically correct data</h2></hgroup><article  id="raw-data-to-technically-correct-data" class="smaller ">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Raw data to technically correct data</h2></hgroup><article  id="raw-data-to-technically-correct-data">
 
-</article></slide><slide class=""><hgroup><h2>Tabular data: long story short</h2></hgroup><article  id="tabular-data-long-story-short" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Raw data to technically correct data</h2></hgroup><article  id="raw-data-to-technically-correct-data-1">
+
+<ul>
+<li>Get data into <code>R</code></li>
+<li>Clean up data, so each variable can be made the correct type
+
+<ul>
+<li>Particularly dates</li>
+</ul></li>
+<li>Clean up messy text variables
+
+<ul>
+<li>String normalization and approximate text matching</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Tabular data: long story short</h2></hgroup><article  id="tabular-data-long-story-short">
 
 <ul>
 <li><code>read.table</code>: R’s swiss army knife
@@ -3218,7 +3252,7 @@ library(rex)</pre>
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>For even dirtier data</h2></hgroup><article  id="for-even-dirtier-data" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>For even dirtier data</h2></hgroup><article  id="for-even-dirtier-data">
 
 <ul>
 <li>(base) R has great text processing tools.</li>
@@ -3227,7 +3261,7 @@ library(rex)</pre>
 <li>Don’t overgeneralize: adapt functions as you meet new input.</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Regular expressions</h2></hgroup><article  id="regular-expressions" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Regular expressions</h2></hgroup><article  id="regular-expressions">
 
 <p>Express a <em>pattern</em> of text, e.g.</p>
 
@@ -3263,7 +3297,7 @@ library(rex)</pre>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>Tips on regular expressions with R</h2></hgroup><article  id="tips-on-regular-expressions-with-r" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Tips on regular expressions with R</h2></hgroup><article  id="tips-on-regular-expressions-with-r">
 
 <ul>
 <li><code>stringr</code> has <em>many</em> useful shorthands for common tasks.</li>
@@ -3279,7 +3313,7 @@ rex(one_or_more(digit)
 
 <pre >## (?:[[:digit:]])+(?:\.(?:[[:digit:]])+)?(?:E|e)(?:[[:digit:]])+</pre>
 
-</article></slide><slide class=""><hgroup><h2>String normalization</h2></hgroup><article  id="string-normalization" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>String normalization</h2></hgroup><article  id="string-normalization">
 
 <p>Bring a text string in a standard format, e.g.</p>
 
@@ -3298,7 +3332,7 @@ rex(one_or_more(digit)
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Approximate text matching</h2></hgroup><article  id="approximate-text-matching" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Approximate text matching</h2></hgroup><article  id="approximate-text-matching">
 
 <ul>
 <li>Defines a distance metric between strings that measures how &ldquo;different&rdquo; two strings are.</li>
@@ -3314,7 +3348,7 @@ stringdist(gender, &quot;Male&quot;)</pre>
 
 <pre >## [1] 3 2 0 4 5 6</pre>
 
-</article></slide><slide class=""><hgroup><h2>Approximate text matching</h2></hgroup><article  id="approximate-text-matching-1" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Approximate text matching</h2></hgroup><article  id="approximate-text-matching-1">
 
 <pre class = 'prettyprint lang-r'>gender &lt;- c(&quot;Male&quot;, &quot;male&quot;, &quot;Female&quot;, &quot;fem.&quot;, &quot;F&quot;, &quot;M&quot;)
 codes &lt;- c(&quot;male&quot;, &quot;female&quot;)
@@ -3330,7 +3364,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 ## 5       F   male
 ## 6       M   male</pre>
 
-</article></slide><slide class=""><hgroup><h2>Approximate text matching: edit-based distances</h2></hgroup><article  id="approximate-text-matching-edit-based-distances" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Approximate text matching: edit-based distances</h2></hgroup><article  id="approximate-text-matching-edit-based-distances">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -3383,7 +3417,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 
 <pre >## [1] 2</pre>
 
-</article></slide><slide class=""><hgroup><h2>Further steps in making data technically correct</h2></hgroup><article  id="further-steps-in-making-data-technically-correct" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Further steps in making data technically correct</h2></hgroup><article  id="further-steps-in-making-data-technically-correct" class="smaller">
 
 <ul>
 <li><p><code>lubridate</code>: extract dates from strings</p>
@@ -3399,9 +3433,9 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <pre >## [1] 2.0 6.0 0.3</pre></li>
 </ul>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>From technically correct <br>to consistent data</h2></hgroup><article  id="from-technically-correct-to-consistent-data" class="smaller ">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>From technically correct <br>to consistent data</h2></hgroup><article  id="from-technically-correct-to-consistent-data">
 
-</article></slide><slide class=""><hgroup><h2>The mantra of data cleaning</h2></hgroup><article  id="the-mantra-of-data-cleaning" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>The mantra of data cleaning</h2></hgroup><article  id="the-mantra-of-data-cleaning">
 
 <ul>
 <li>Detection (data conflicts with domain knowledge)</li>
@@ -3409,7 +3443,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <li>Correction (replace them with better values)</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Detection, AKA data validation</h2></hgroup><article  id="detection-aka-data-validation" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Detection, AKA data validation</h2></hgroup><article  id="detection-aka-data-validation" class="smaller">
 
 <h3>Informally:</h3>
 
@@ -3429,7 +3463,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 
 <p>The <code>validate</code> package allows us to define a set of validation rules which can then be applied to data</p>
 
-</article></slide><slide class=""><hgroup><h2>The <code>validate</code> package, in summary</h2></hgroup><article  id="the-validate-package-in-summary" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>The <code>validate</code> package, in summary</h2></hgroup><article  id="the-validate-package-in-summary">
 
 <ul>
 <li>Make data validation rules explicit</li>
@@ -3444,7 +3478,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <li>Analyze/visualize the results</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Use rules to correct data</h2></hgroup><article  id="use-rules-to-correct-data" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Use rules to correct data</h2></hgroup><article  id="use-rules-to-correct-data" class="smaller">
 
 <h3>Main idea</h3>
 
@@ -3469,7 +3503,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 
 <p>The <code>deducorrect</code> package allows for deterministic imputation in these cases</p>
 
-</article></slide><slide class=""><hgroup><h2>Selection, or: error localization</h2></hgroup><article  id="selection-or-error-localization" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Selection, or: error localization</h2></hgroup><article  id="selection-or-error-localization">
 
 <h3>Fellegi and Holt (1976)</h3>
 
@@ -3483,7 +3517,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <li>Lowest weight need not guarantee smallest number of altered variables.</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Error localization</h2></hgroup><article  id="error-localization" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Error localization</h2></hgroup><article  id="error-localization">
 
 <p>The <code>errorlocate</code> package</p>
 
@@ -3498,7 +3532,9 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <li>Conditionals w/linear predicates (staff \(&gt; 0\) then staff cost \(&gt; 0\))</li>
 </ul></li>
 <li>Optimization is mapped to MIP problem.</li>
-</ul></article></slide>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Practical</h2></hgroup><article  id="practical"></article></slide>
 
 
   <slide class="backdrop"></slide>

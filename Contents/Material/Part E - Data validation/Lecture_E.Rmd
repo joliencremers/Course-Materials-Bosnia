@@ -4,9 +4,10 @@ author: "Anne Vinkel, adapted from Mark van der Loo"
 date: "Statistical Programming with R"
 output:
   ioslides_presentation:
-    smaller: yes
-    widescreen: no
-#    logo: logo.png
+    css: css/style.css
+    logo: css/logo_en.png
+    transition: 0
+    self_contained: TRUE   
 ---
 
 ## Packages and functions used
@@ -179,7 +180,7 @@ $$\texttt{"leela"} \to \texttt{"leea"} \to \texttt{"leia"}$$
 stringdist::stringdist("leela","leia",method="dl")
 ```
 
-## Further steps in making data technically correct
+## Further steps in making data technically correct {.smaller}
 
 - `lubridate`: extract dates from strings
     ```{r,echo=TRUE}
@@ -200,7 +201,7 @@ stringdist::stringdist("leela","leia",method="dl")
 - Correction (replace them with better values)
 
 
-## Detection, AKA data validation
+## Detection, AKA data validation {.smaller}
 
 ### Informally:
 
@@ -228,7 +229,7 @@ The `validate` package allows us to define a set of validation rules which can t
 - Confront data with rules
 - Analyze/visualize the results
 
-## Use rules to correct data
+## Use rules to correct data {.smaller}
 
 ### Main idea
 
