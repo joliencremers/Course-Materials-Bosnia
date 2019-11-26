@@ -1,12 +1,13 @@
 ---
 title: "Generalized linear models"
-author: "Gerko Vink"
+author: "Anne Vinkel (adapted from Gerko Vink)"
 date: "Statistical Programming with R"
 output:
   ioslides_presentation:
-    smaller: yes
-    widescreen: no
-#    logo: logo.png
+    css: css/style.css
+    logo: css/logo_en.png
+    transition: 0
+    self_contained: TRUE   
 ---
 
 ## Packages and functions used
@@ -53,7 +54,7 @@ family = poisson(link = "log")
 Here, the link functions are the defaults and do not need to be specified. The `help(family)` file describes link functions accepted by `glm` -- or you may specify your own. 
 
 
-## Distributions and link functions supported by `glm`
+## Distributions and link functions supported by `glm` {.smaller}
 
 | Family           | Default Link Function                      |
 |------------------|--------------------------------------------|
@@ -144,7 +145,7 @@ We explore the `anesthetic` dataset: Thirty patients were given an anesthetic ag
 anesthetic %>% head
 ```
 
-## Logistic regression
+## Logistic regression {.smaller}
 ```{r,  dev.args = list(bg = 'transparent')}
 glm(nomove ~ conc, family = binomial(link="logit"), data=anesthetic) %>% summary()
 ```
@@ -163,8 +164,8 @@ anestot$total <- apply(anestot[, c("move","nomove")], 1 , sum)
 anestot$prop <- anestot$nomove / anestot$total 
 anestot
 ```
-
-## A different approach
+ 
+## A different approach {.smaller}
 ```{r,  dev.args = list(bg = 'transparent')}
 glm(prop ~ conc, family = binomial(link="logit"), weights = total, data=anestot) %>% 
   summary()
@@ -177,7 +178,7 @@ glm(prop ~ conc, family = binomial(link="logit"), weights = total, data=anestot)
 
 <!-- Do not forget that you use transformations to "make" things more linear -->
 
-## Logistic multiple regression
+## Logistic multiple regression {.smaller}
 We analyse the `frogs` dataset, which details the presence or absence of the Southern Corroboree frog from a number of reference points in the Snowy Mountains area of New South Wales, Australia
 
 ```{r,  dev.args = list(bg = 'transparent'), echo=FALSE}
@@ -189,7 +190,7 @@ with(frogs, pairs(cbind(distance, NoOfPools, NoOfSites, avrain, altitude,
                              "meanmax + meanmin", "meanmax - meanmin"))) 
 ```
 
-## Logistic multiple regression
+## Logistic multiple regression {.smaller}
 Code for the previous slide: 
 
 ```{r,  dev.args = list(bg = 'transparent'), eval = FALSE}
@@ -201,7 +202,7 @@ with(frogs, pairs(cbind(distance, NoOfPools, NoOfSites, avrain, altitude,
                              "meanmax + meanmin", "meanmax - meanmin"))) 
 ```
 
-## Logistic multiple regression
+## Logistic multiple regression {.smaller}
 ```{r,  dev.args = list(bg = 'transparent'), echo=FALSE}
 with(frogs, pairs(cbind(log(distance), log(NoOfPools), NoOfSites, avrain, altitude, 
                         meanmax+meanmin, meanmax-meanmin), 
@@ -211,14 +212,14 @@ with(frogs, pairs(cbind(log(distance), log(NoOfPools), NoOfSites, avrain, altitu
                              "meanmax + meanmin", "meanmax - meanmin"))) 
 ```
 
-## Logistic multiple regression
+## Logistic multiple regression {.smaller}
 ```{r echo=FALSE,  dev.args = list(bg = 'transparent')}
 summary(frogs.glm0 <- glm(formula = pres.abs ~ log(distance) + log(NoOfPools) 
                           + NoOfSites + avrain +  I(meanmax + meanmin) 
                           + I(meanmax - meanmin), family = binomial, data = frogs)) 
 ```
 
-## Logistic multiple regression
+## Logistic multiple regression {.smaller}
 ```{r echo=FALSE,  dev.args = list(bg = 'transparent')}
 frogs.glm <- glm(pres.abs ~ log(distance) + log(NoOfPools) 
                  + I(meanmax + meanmin) + I(meanmax - meanmin),  
@@ -227,7 +228,7 @@ frogs.glm <- glm(pres.abs ~ log(distance) + log(NoOfPools)
 frogs.glm %>% summary()
 ```
 
-## Fitted values
+## Fitted values {.smaller}
 ```{r,  dev.args = list(bg = 'transparent')}
 frogs.glm <- glm(pres.abs ~ log(distance) + log(NoOfPools) 
                  + I(meanmax + meanmin) + I(meanmax - meanmin),  
@@ -245,7 +246,7 @@ pred <- frogs.glm %>%
 data.frame(fit = pred$fit, se = pred$se.fit) %>% head()
 ```
 
-## Confidence intervals for the $\beta$
+## Confidence intervals for the $\beta$ {.smaller}
 ```{r}
 frogs.glm %>% confint()
 frogs.glm %>% coef()

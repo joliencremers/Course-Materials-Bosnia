@@ -1,6 +1,6 @@
 ---
-title: "Practical L"
-author: "Gerko Vink"
+title: "Practical D"
+author: "Anne Vinkel (adapted from Gerko Vink)"
 date: "Statistical Programming with R"
 output: html_document
 ---
