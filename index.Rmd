@@ -99,7 +99,8 @@ install.packages(c("tidyverse", "micemd", "jomo", "pan",
                  "Ecdat", "Ecfun", "MEMSS", "VIM", "simputation",
                  "naniar","visdat", "UpSetR", "DAAG", "magrittr",
                  "haven", "Matrix", "lattice", "data.table", "grid",
-                 "colorspace"), 
+                 "colorspace", "stringi", "stringdist", "editrules", 
+                 "deducorrect", "rex"), 
                  dependencies = TRUE)
 ```
 
