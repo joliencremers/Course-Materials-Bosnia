@@ -24,9 +24,11 @@ printAnswers <- TRUE
 3. **Now look at the table `HairEyeColor`. Look at the help file and print the data. Why does it print weird? How do you make a data frame containing only data on female students? Can you compute the number of brown-haired students? Which hair/eye/sex color combination has the fewest students?**
 
 --- 
+
 4. **Make a vector containing the numbers 0 to 0.8 by 0.1. Make a vector repeating the numbers 1,2,3 three times. Make a vector containing the letters A to I. Make a data frame out of these three vectors. Name the columns of the data frame - say, "fractions", "numbers" and "letters". Add a column containing the log of the sum of "numbers" and "fractions". Make a histogram of the logs.**
 
 ---
+
 5. **Save a copy of your data frame to the disk. Where is it saved? Where is your working directory? If it isn't where you want it, move it - say, to a new folder designated for this course**
 
 ---

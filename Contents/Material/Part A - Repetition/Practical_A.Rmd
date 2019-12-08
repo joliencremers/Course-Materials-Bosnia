@@ -21,7 +21,6 @@ data( package = "mice")
 ?`mice-package`
 ```
 
-Doesn't that look *fascinating*? We'll get to it in a couple of days.
 ---
 
 2. **Look at the data frame `ToothGrowth`  which is part of the `datasets` package included with base R. Print the data, look at the help file, do a summary. How would you look at whether higher doses of vitamin C were associated wih longer teeth? **
@@ -97,6 +96,7 @@ HairEyeColor %>% as_tibble() %>% filter(n == min(n))
 ```
 
 --- 
+
 4. **Make a vector containing the numbers 0 to 0.8 by 0.1. Make a vector repeating the numbers 1,2,3 three times. Make a vector containing the letters A to I. Make a data frame out of these three vectors. Name the columns of the data frame - say, "fractions", "numbers" and "letters". Add a column containing the log of the sum of "numbers" and "fractions". Make a histogram of the logs.**
 ```{r}
 a <- seq( from = 0, to = 0.8, by = 0.1)
@@ -108,7 +108,9 @@ D$logs <- log( D$numbers + D$fractions )
 
 hist(D$logs)
 ```
+
 ---
+
 5. **Save a copy of your data frame to the disk. Where is it saved? Where is your working directory? If it isn't where you want it, move it - say, to a new folder designated for this course**
 ```{r}
 save(D, file = "MyData.RDS")

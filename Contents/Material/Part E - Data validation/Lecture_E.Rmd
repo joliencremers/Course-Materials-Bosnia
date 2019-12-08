@@ -44,8 +44,8 @@ Shorter working paper, available online
 ### Technically correct data
 
 - Well-defined format (data structure)
-- Well-defined types (numbers, date/time,string, categorical$...$ )
-- Statistical units can be identified (persons, transactions, phone calls$...$)
+- Well-defined types (numbers, dates, string, categorical, ... )
+- Statistical units can be identified (persons, transactions, phone calls, ...)
 - Variables can be identified as properties of statistical units.
 
 ### Consistent data
@@ -150,6 +150,7 @@ Bring a text string in a standard format, e.g.
 
 ```{r}
 gender <- c("Male", "male", "Female", "fem.", "F", "M")
+
 stringdist(gender, "Male")
 stringdist(gender, "Female")
 ```

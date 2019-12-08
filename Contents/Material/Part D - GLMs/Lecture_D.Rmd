@@ -1,5 +1,5 @@
 ---
-title: "Generalized linear models"
+title: "Generalized <br>linear models"
 author: "Anne Vinkel (adapted from Gerko Vink)"
 date: "Statistical Programming with R"
 output:
@@ -11,7 +11,7 @@ output:
 ---
 
 ## Packages and functions used
-```{r message=FALSE}
+```{r message=FALSE, warning=F}
 library(magrittr) # pipes
 library(DAAG) # data sets and functions
 ```
@@ -23,7 +23,7 @@ library(DAAG) # data sets and functions
 - `DAAG::CVbinary()` Cross-validation for regression with a binary response
 
 
-# Generalized linear models
+# Generalized <br>linear models
 ## GLMs
 The (general) linear model has 
 \[Y_i=\alpha+\beta X_i+\epsilon_i\]
@@ -33,10 +33,10 @@ The *generalized* linear model relaxes the assumptions of linearity and normalit
 
 \[f(\mathbb{E}[Y]) = \alpha + \beta X\]
 
-Generalized linear models allow for a range of distributions for the residuals and a variety of *link functions* $f$.  
+Generalized linear models allow for a range of distributions (the exponential family) for the residuals and a variety of *link functions* $f$.  
 
 ## GLMs in R
-We will work with the `glm` function in the `stats` package. If your needs grow more exotic, there are a plethora of alternative, GLM-related packages
+We will work with the `glm` function in the `stats` package. If your needs grow more exotic, there are a many alternative, GLM-related packages
 
 ```{r, eval= FALSE}
 glm(formula, family = gaussian, data, weights, subset,
@@ -202,15 +202,16 @@ with(frogs, pairs(cbind(distance, NoOfPools, NoOfSites, avrain, altitude,
                              "meanmax + meanmin", "meanmax - meanmin"))) 
 ```
 
-## Logistic multiple regression {.smaller}
-```{r,  dev.args = list(bg = 'transparent'), echo=FALSE}
-with(frogs, pairs(cbind(log(distance), log(NoOfPools), NoOfSites, avrain, altitude, 
-                        meanmax+meanmin, meanmax-meanmin), 
-                  col = "gray", panel = panel.smooth, 
-                  labels = c("log(Distance)", "log(NoOfPools)", 
-                             "NoOfSites", "AvRainfall", "Altitude", 
-                             "meanmax + meanmin", "meanmax - meanmin"))) 
-```
+<!-- ## Logistic multiple regression {.smaller} -->
+<!-- ```{r,  dev.args = list(bg = 'transparent'), echo=FALSE} -->
+<!-- with(frogs, pairs(cbind(log(distance), log(NoOfPools), NoOfSites, avrain, altitude,  -->
+<!--                         meanmax+meanmin, meanmax-meanmin),  -->
+<!--                   col = "gray", panel = panel.smooth,  -->
+<!--                   labels = c("log(Distance)", "log(NoOfPools)",  -->
+<!--                              "NoOfSites", "AvRainfall", "Altitude",  -->
+<!--                              "meanmax + meanmin", "meanmax - meanmin")))  -->
+<!-- ``` -->
+
 
 ## Logistic multiple regression {.smaller}
 ```{r echo=FALSE,  dev.args = list(bg = 'transparent')}

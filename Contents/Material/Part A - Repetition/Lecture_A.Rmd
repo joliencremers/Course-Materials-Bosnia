@@ -33,7 +33,7 @@ output:
 # What is R?
 ## What is R?
 <center>
-<img src="figures/fig2.png" alt="HTML5 Icon" width = 85%>
+<img src="figures/fig1.png" alt="HTML5 Icon" width = 85%>
 </center>
 
 ## What is R? 
@@ -84,6 +84,11 @@ output:
 
 # Using R
 
+## Help
+- Everything that is published CRAN and is aimed at `R` users, must be accompanied by a help file. 
+- If you know the name of the function that performs an operation, e.g. `anova()`, then you just type `?anova` or `help(anova)` in the console. 
+- If you do not know the name of the function: type `??` followed by your search criterion. For example `??anova` returns a list of all help pages that contain the word 'anova'
+
 ## The basics
 
 - Write commands directly in the console
@@ -96,11 +101,6 @@ b <- 0:5
 c <- rep( c("Hi", "there"), 3)
 D <- as.data.frame(cbind(a,b,c))
 ```
-
-## Help
-- Everything that is published CRAN and is aimed at `R` users, must be accompanied by a help file. 
-- If you know the name of the function that performs an operation, e.g. `anova()`, then you just type `?anova` or `help(anova)` in the console. 
-- If you do not know the name of the function: type `??` followed by your search criterion. For example `??anova` returns a list of all help pages that contain the word 'anova'
 
 ## Objects
 Vectors and character vectors
@@ -115,6 +115,8 @@ Matrices
 ```{r}
 matrix(1:12, nrow = 3)
 ```
+The elements of a vector or matrix must all have the same type
+
 
 ## Data frames
 Data sets for R
@@ -142,9 +144,9 @@ The pipe %>% allows for chained method calls that make code much more readable
 ```{r, results="hide", message = F}
 library(dplyr)
 starwars %>%
-  subset(species == "Human") %>%
-  group_by(homeworld) %>% 
-  summarise( n= n(), mean.height = mean(height))
+  subset( species == "Human" ) %>%
+  group_by( homeworld ) %>% 
+  summarise( n = n(), mean.height = mean(height))
 ```
 
 ## Plotting {.smaller}

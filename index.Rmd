@@ -201,6 +201,8 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
 - Part E: Data Validation and Editing
     - [Lecture E](Contents/Material/Part E - Data validation/Lecture_E.html){target="_blank"}
     - [Practical E](Contents/Material/Part E - Data validation/Practical_E.html){target="_blank"}
+    - Data for the practical: [bands.txt](Contents/Material/Part E - Data validation/data/bands.txt){target="_blank"}, 
+      [unnamed.csv](Contents/Material/Part E - Data validation/data/unnamed.csv){target="_blank"}
 
 - Part F: Imputation
 
