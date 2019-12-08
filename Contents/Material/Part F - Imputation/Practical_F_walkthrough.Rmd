@@ -125,7 +125,7 @@ pred[, c("src", "id", "pop", "prg", "edu", "etn", "web", "bm", "br")] <- 0 #set 
 ```
 
 Impute:
-```{r, cache = TRUE, results = FALSE}
+```{r, results = FALSE}
 imp <- mice(selfreport, pred = pred, meth = meth, seed = 66573, maxit = 20, m = 10)
 ```
 

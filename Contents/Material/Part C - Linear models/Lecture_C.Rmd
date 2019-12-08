@@ -268,31 +268,31 @@ plot(lm(outcome4 ~ pred4), which = 5)
 # Model fit & comparison
 ## R-squared
 
-```{r cache = TRUE}
+```{r}
 summary(fit)$r.squared
 ```
 
-```{r cache = TRUE}
+```{r}
 summary(fit)$adj.r.squared
 ```
 
 
 ## AIC and BIC
 Akaike's *An Information Criterion* 
-```{r cache = TRUE}
+```{r}
 fit %>% 
   AIC()
 ```
 
 and *Bayesian Information Criterion*
-```{r cache = TRUE}
+```{r}
 fit %>%
   BIC()
 ```
 
 ## Influence of cases
 DfBeta calculates the change in coefficients depicted as deviation in SE's.
-```{r cache = TRUE}
+```{r}
 fit %>%
   dfbeta() %>%
   head(n = 7)
@@ -306,20 +306,20 @@ fit %>%
 
 ## Fitted values:
 Let's use the simpler `anscombe` data example
-```{r cache = TRUE}
+```{r}
 fit <- anscombe %$% lm(y1 ~ x1)
 y_hat <- 
   fit %>%
   fitted.values()
 ```
 The residual is then calculated as
-```{r cache = TRUE}
+```{r }
 y_hat - anscombe$y1
 ```
 
 ## Predict new values
 If we introduce new values for the predictor `x1`, we can generate predicted values from the model
-```{r cache = TRUE, warning=FALSE}
+```{r , warning=FALSE}
 new.x1 <- data.frame(x1 = 1:20)
 predict.lm(fit, newdata = new.x1)
 ```
