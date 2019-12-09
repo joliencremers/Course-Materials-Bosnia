@@ -110,6 +110,29 @@ set.seed(101)
 rnorm(5, 2, 5)
 ```
 
+
+## Histograms
+
+```{r echo=FALSE, fig.height=4}
+set.seed(101)
+hist(rnorm(1000, 3, 0.5), ylab = "P(Y=y)", xlab = "y", ylim = c(0,1), prob = TRUE)
+set.seed(101)
+lines(density(rnorm(1000, 3, 0.5))) 
+
+```
+
+## Code for previous plot
+
+```{r, eval = FALSE, fig.height=4}
+
+hist(rnorm(1000, 3, 0.5),
+     ylab = "P(Y=y)", xlab = "y",
+     ylim = c(0,1), prob = TRUE)
+lines(density(rnorm(1000, 3, 0.5))) 
+
+```
+
+
 ## Barplots
 
 Barplots for a poisson distribution:
@@ -151,30 +174,6 @@ barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y,
         ylab = "P(Y = y)",xlab="y")
 text(5,.5,expression(paste(lambda," = 2")))
 ```
-
-## Histograms
-
-```{r echo=FALSE, fig.height=4}
-set.seed(101)
-hist(rnorm(1000, 3, 0.5), ylab = "P(Y=y)", xlab = "y", ylim = c(0,1), prob = TRUE)
-set.seed(101)
-lines(density(rnorm(1000, 3, 0.5))) 
-
-```
-
-## Code for previous plot
-
-```{r, eval = FALSE, fig.height=4}
-
-hist(rnorm(1000, 3, 0.5),
-     ylab = "P(Y=y)", xlab = "y",
-     ylim = c(0,1), prob = TRUE)
-lines(density(rnorm(1000, 3, 0.5))) 
-
-```
-
-
-
 
 
 # Comparing two groups
@@ -243,6 +242,18 @@ barplot(table(bacteria$y, bacteria$ap),
 ```{r}
 head(Benefits, n = 5)
 ```
+
+Unemployment of blue collar workers:
+
+
+Column `stateur`: 
+
+* state unemployment rate (in %)
+
+Column `sex`: 
+
+* `male`
+* `female`
 
 ##
 

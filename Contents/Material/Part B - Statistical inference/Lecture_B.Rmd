@@ -78,47 +78,6 @@ set.seed(101)
 rnorm(5, 2, 5)
 ```
 
-## Barplots
-
-Barplots for a poisson distribution:
-
-```{r echo=FALSE, fig.height=4}
-par(mfrow = c(1, 3), bg = NA)
-y <- factor(0:5)
-x <- 0:5
-barplot(dpois(x, .5), ylim = c(0, .6), names.arg = y, 
-        ylab = "P(Y=y)", xlab = "y")
-text(5, .5, expression(paste(lambda, " = 0.5")))
-barplot(dpois(x, 1), 
-        ylim = c(0, .6), 
-        names.arg = y, 
-        ylab = "P(Y=y)", 
-        xlab = "y")
-text(5, .5, expression(paste(lambda, " = 1")))
-barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y, 
-        ylab = "P(Y = y)",xlab="y")
-text(5,.5,expression(paste(lambda," = 2")))
-```
-
-## Code for the previous plot  {.smaller}
-
-```{r, eval = FALSE, fig.height=4}
-par(mfrow = c(1, 3), bg = NA)
-y <- factor(0:5)
-x <- 0:5
-barplot(dpois(x, .5), ylim = c(0, .6), names.arg = y, 
-        ylab = "P(Y=y)", xlab = "y")
-text(5, .5, expression(paste(lambda, " = 0.5")))
-barplot(dpois(x, 1), 
-        ylim = c(0, .6), 
-        names.arg = y, 
-        ylab = "P(Y=y)", 
-        xlab = "y")
-text(5, .5, expression(paste(lambda, " = 1")))
-barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y, 
-        ylab = "P(Y = y)",xlab="y")
-text(5,.5,expression(paste(lambda," = 2")))
-```
 
 ## Histograms
 
@@ -142,7 +101,47 @@ lines(density(rnorm(1000, 3, 0.5)))
 ```
 
 
+## Barplots
 
+Barplots for a poisson distribution:
+
+```{r echo=FALSE, fig.height=4}
+par(mfrow = c(1, 3), bg = NA)
+y <- factor(0:5)
+x <- 0:5
+barplot(dpois(x, .5), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y=y)", xlab = "y")
+text(5, .5, expression(paste(lambda, " = 0.5")))
+barplot(dpois(x, 1), 
+        ylim = c(0, .6), 
+        names.arg = y, 
+        ylab = "P(Y=y)", 
+        xlab = "y")
+text(5, .5, expression(paste(lambda, " = 1")))
+barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y = y)",xlab="y")
+text(5,.5,expression(paste(lambda," = 2")))
+```
+
+
+## Code for the previous plot  {.smaller}
+```{r, eval = FALSE, fig.height=4}
+par(mfrow = c(1, 3), bg = NA)
+y <- factor(0:5)
+x <- 0:5
+barplot(dpois(x, .5), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y=y)", xlab = "y")
+text(5, .5, expression(paste(lambda, " = 0.5")))
+barplot(dpois(x, 1), 
+        ylim = c(0, .6), 
+        names.arg = y, 
+        ylab = "P(Y=y)", 
+        xlab = "y")
+text(5, .5, expression(paste(lambda, " = 1")))
+barplot(dpois(x, 2), ylim = c(0, .6), names.arg = y, 
+        ylab = "P(Y = y)",xlab="y")
+text(5,.5,expression(paste(lambda," = 2")))
+```
 
 
 # Comparing two groups
@@ -213,6 +212,19 @@ head(Benefits, n = 5)
 ```
 
 ##
+Unemployment of blue collar workers:
+
+
+Column `stateur`: 
+
+* state unemployment rate (in %)
+
+Column `sex`: 
+
+* `male`
+* `female`
+
+##
 
 ```{r}
 hist(Benefits$stateur, xlim=c(2,18),
@@ -275,7 +287,7 @@ short %>%
   fisher.test
 ```
 
-## Assumptions in ANOVA
+## Assumptions in ANOVA {.smaller}
 
 ```{r}
 fit <- Benefits %$% aov(stateur~sex)
