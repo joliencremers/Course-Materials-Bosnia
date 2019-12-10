@@ -59,7 +59,8 @@ HairEyeColor
 
 `HairEyeColor` is not just a table, but a 3-dimensional array resulting from cross-tabulating observations on hair color, eye color and sex. Sex makes up the third dimension of the table, so we can get the female students like this: 
 ```{r}
-A <- HairEyeColor[,,"Female"]
+A <- HairEyeColor[,,2]
+A
 class(A)
 A <- as.data.frame(A)
 class(A)

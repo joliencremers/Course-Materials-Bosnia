@@ -155,7 +155,9 @@ All lectures are in `html` format. Practicals are walkthrough files that guide y
   - [Rweekly](https://rweekly.org/)
   - [R-bloggers](https://www.r-bloggers.com/)
   - [Stack Overflow](https://stackoverflow.com/) A good place to ask questions. Check if your question has been answered before, and make sure to phrase it carefully and correctly. 
+  
 - [Pipes in R](https://r4ds.had.co.nz/pipes.html)
+
 
 
 

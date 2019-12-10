@@ -60,7 +60,7 @@ p.value.t(n = 30, mu = 3)
 ---
 
 
-3. **Use the function of Exercise 3 to generate 50 $p$-values with $n=10,\mu=0$, and make a `qqplot` to compare distribution of the $p$-values with a uniform $[0,1]$ variable.**
+3. **Use the function of Exercise 2 to generate 50 $p$-values with $n=10,\mu=0$, and make a `qqplot` to compare distribution of the $p$-values with a uniform $[0,1]$ variable.**
 
 ```{r eval=printAnswers, echo=printAnswers}
 y <- numeric(50)
