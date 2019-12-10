@@ -36,7 +36,7 @@ The *generalized* linear model relaxes the assumptions of linearity and normalit
 Generalized linear models allow for a range of distributions (the exponential family) for the residuals and a variety of *link functions* $f$.  
 
 ## GLMs in R
-We will work with the `glm` function in the `stats` package. If your needs grow more exotic, there are a many alternative, GLM-related packages
+We will work with the `glm` function in the `stats` package. If your needs grow more exotic, there are many alternative, GLM-related packages
 
 ```{r, eval= FALSE}
 glm(formula, family = gaussian, data, weights, subset,
@@ -58,14 +58,14 @@ Here, the link functions are the defaults and do not need to be specified. The `
 
 | Family           | Default Link Function                      |
 |------------------|--------------------------------------------|
-| binomial         | (link = "logit")                           |
 | gaussian         | (link = "identity")                        |
-| Gamma	          | (link = "inverse")                         |
+| binomial         | (link = "logit")                           |
+| poisson	         | (link = "log")                             |
+| Gamma	           | (link = "inverse")                         |
 | inverse.gaussian | (link = "1/mu^2")                          |
-| poisson	       | (link = "log")                             |
-| quasi	          | (link = "identity", variance = "constant") |
-| quasibinomial	 | (link = "logit")                           |
-| quasipoisson	    | (link = "log")                             |
+| quasi	           | (link = "identity", variance = "constant") |
+| quasibinomial	   | (link = "logit")                           |
+| quasipoisson	   | (link = "log")                             |
 
 ## Further extensions of the general linear model
 

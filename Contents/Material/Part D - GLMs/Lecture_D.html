@@ -3164,7 +3164,7 @@ library(DAAG) # data sets and functions</pre>
 
 </article></slide><slide class=""><hgroup><h2>GLMs in R</h2></hgroup><article  id="glms-in-r">
 
-<p>We will work with the <code>glm</code> function in the <code>stats</code> package. If your needs grow more exotic, there are a many alternative, GLM-related packages</p>
+<p>We will work with the <code>glm</code> function in the <code>stats</code> package. If your needs grow more exotic, there are many alternative, GLM-related packages</p>
 
 <pre class = 'prettyprint lang-r'>glm(formula, family = gaussian, data, weights, subset,
     na.action, start = NULL, etastart, mustart, offset,
@@ -3188,24 +3188,24 @@ family = poisson(link = &quot;log&quot;)</pre>
 <th align="left">Default Link Function</th>
 </tr>
 <tr class="odd">
-<td align="left">binomial</td>
-<td align="left">(link = &ldquo;logit&rdquo;)</td>
-</tr>
-<tr class="even">
 <td align="left">gaussian</td>
 <td align="left">(link = &ldquo;identity&rdquo;)</td>
 </tr>
-<tr class="odd">
-<td align="left">Gamma</td>
-<td align="left">(link = &ldquo;inverse&rdquo;)</td>
-</tr>
 <tr class="even">
-<td align="left">inverse.gaussian</td>
-<td align="left">(link = &ldquo;1/mu^2&rdquo;)</td>
+<td align="left">binomial</td>
+<td align="left">(link = &ldquo;logit&rdquo;)</td>
 </tr>
 <tr class="odd">
 <td align="left">poisson</td>
 <td align="left">(link = &ldquo;log&rdquo;)</td>
+</tr>
+<tr class="even">
+<td align="left">Gamma</td>
+<td align="left">(link = &ldquo;inverse&rdquo;)</td>
+</tr>
+<tr class="odd">
+<td align="left">inverse.gaussian</td>
+<td align="left">(link = &ldquo;1/mu^2&rdquo;)</td>
 </tr>
 <tr class="even">
 <td align="left">quasi</td>

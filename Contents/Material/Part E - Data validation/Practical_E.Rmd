@@ -1,6 +1,6 @@
 ---
 title: "Practical E"
-author: "Anne Vinkel, adapted from Mark van der Loo "
+author: "Anne Vinkel, adapted from 'An Introduction to data cleaning with R' by Edwin de Jonge and  Mark van der Loo "
 date: "Statistical Programming with R"
 output: html_document
 ---
@@ -48,7 +48,7 @@ dat <- read.table(
   , stringsAsFactors=FALSE
   , sep=",")
 ```
-Instead, we can read as character, clean up the text and convert to numeric. Or we could go the tidyverse way or use the `readcsv` function in the `readr` package. 
+Instead, we can read as character, clean up the text and convert to numeric. Or we could go the tidyverse way or use the `read_csv` function in the `readr` package. 
 
 ```{r, error = T}
 # parse columns as 'number' (flexible)
@@ -97,4 +97,137 @@ bands$country_clean[ bands$country == "UK"] <- "United Kingdom"
 bands$country_clean[ bands$country == "US"] <- "United States"
 ```
 
+### 4 - a walkthrough for the `editrules` package 
+
+**This exercise is adapted from an example in De Jonge and van der Loo and walks you through applying functions in the `editrules` package. The `editrules` package allows allows us to define rules which each record of a data set must obey. Editrules can check which rules fail for each record, and find the minimal set of variables to adapt so that all rules can be folowed.** 
+
+**We will work with the following data - you can find it on the course homepage or paste it into a text file from here:**
+```{r, eval=F}
+age, agegroup, height, status, yearsmarried
+21, adult, 6.0, single, -1
+2, child, 3, married, 0
+18, adult, 5.7, married, 20
+221, elderly, 5, widowed, 2
+34, child, -7, married, 3
+```
+
+```{r}
+people <- read.csv( file = "data/people.txt", stringsAsFactors = F, strip.white = T)
+```
+**For a cleaner workflow, the rules that these data must obey are treated as a separate object, that can then be stored and reapplied (instead, say, of treating these rules and checks as lines of code in a syntax file). We define an edit set and confront the data with these rules:**
+```{r, warning=F, message=F}
+library(editrules)
+E <- editset( c( "age >=0" , "age <= 150" ) )
+E
+violatedEdits( E, people)
+```
+**A realistic set of edit rules will be rather larger. It may be defined in a text file and read in with `editset`. Try for the rule set in the `peoplerules.txt` file. Also, with a larger rule set, the `summary` and `plot` functions for the `violatedEdits` object become useful.**
+```{r}
+E <- editfile("data/peoplerules.txt")
+ve <- violatedEdits(E, people)
+summary(ve)
+plot(ve)
+```
+
+**Obviously, fixing errors requires subject matter expertise, but the `editrules` package does have facilities for finding potential fixes. The logic goes as follows: Fixing a variable so that an error is eliminated may cause new errors. Also, it makes sense to chose the edits necessary to make a record consistent in a way so as to minimise the total number of edits. This is a minimisation problem and can be automated. Further add-ons for the methods allow finer control by adding confidence weights. A branch-and-bound approach instead of the MIP solver used here is more slow but also allows for more control.**
+```{r}
+le <- localizeErrors(E, people, method = "mip")
+le$adapt
+```
+**The `le` object contains metadata and a logical array which indicates the minimal set of edits needed to make data follow the rules in `E` (note that `E` is missing at least one rule). The corrections are not part of the `editrules` package.**
+
+
+### 5 - more on the `editrules` package
+**This exercise, again borrowed from de Jonge and van der Loo, follows on the previous but has less hand-holding.**
+
+#### 5.1 Reading in and manual checks
+**The `dirty_iris` dataset can be found on the course webpage. Read in the data, and make sure that strings are not converted to factors. Replace special values with `NA` and compute the proportion of complete observations.**
+```{r}
+dirty.iris <- read.csv( file = "data/dirty_iris.txt", 
+                        stringsAsFactors = F)
+summary(dirty.iris)
+
+## There are Inf values in Petal.Width
+dirty.iris$Petal.Width[ !is.finite(dirty.iris$Petal.Width) ] <- NA
+
+## The complete.cases function checks each record for missing values
+prop.table( table( complete.cases(dirty.iris) ))
+```
+#### 5.2 Validating with rules
+**Codify the following rules into an `editfile` object:**
+
+  * **Species should be one of the following values: setosa, versicolor or virginica.**
+  * **All measurements should be positive.**
+  * **Petal length is at least 2 times petal width.**
+  * **Sepal length cannot exceed 30 cm.**
+  * **The sepals of an iris are longer than its petals.**
+
+```{r}
+iris.rules <- editset(
+  c(
+    "Species %in% c('setosa', 'versicolor', 'virginica')",
+    "Sepal.Length > 0",
+    "Sepal.Width  > 0",
+    "Petal.Length > 0",
+    "Petal.Width  > 0",
+    "Petal.Length >= 2*Petal.Width",
+    "Sepal.Length <=30",
+    "Sepal.Length >= Petal.Length"
+  )
+)
+```
+**Find out how often each rule is broken. Summarise and plot the object.**
+```{r}
+violated.rules.iris <- violatedEdits( iris.rules, dirty.iris)
+summary(violated.rules.iris)
+plot(violated.rules.iris)
+```
+
+**Use `violatedEdits` to find the observations with too long petals**
+Which column of the matrix returned by the function corresponds to that rule? We first look at the rules in the rules object
+```{r}
+iris.rules
+```
+The rule is "num7". It's easier to pick  out this rule from `violated.rules.iris` if we make it into a tibble
+```{r}
+library(dplyr)
+violated.rules.iris %>% as_tibble() %>%
+  filter(num7 == T)
+
+## Find the observations corresponding to this:
+
+## First we find the indices of these observations
+
+indices <- violated.rules.iris %>% 
+    as_tibble() %>%
+    mutate( id = row_number()) %>%           
+    filter(num7 == T)
+
+dirty.iris[indices$id,]
+```
+
+**Use `boxplot` and `boxplot.stats` to find observations with outlier values of sepal length. Set outliers to `NA`**
+```{r}
+## boxplot does a box plot
+boxplot(dirty.iris$Sepal.Length)
+## boxplot.stats does statistics for the boxplot
+bps <- boxplot.stats(dirty.iris$Sepal.Length)
+bps
+
+dirty.iris <- dirty.iris %>% 
+  mutate( Sepal.Length = if_else(Sepal.Length %in% bps$out, NA_real_, Sepal.Length)) 
+```
+
+#### 5.3 Correcting data
+**Use the `correctWithRules` function from the `deducorrect` library to replace non-positive values of of Petal.Width with NA. **
+```{r, message=F}
+library(deducorrect)
+
+# We make a set of correction rules
+iris.correction.rules <- correctionRules( "if( Petal.Width <= 0 ){ Petal.Width <- NA } ", 
+                                          file = FALSE )
+
+# We use the correction rules on the data
+dirty.iris <- correctWithRules( iris.correction.rules , dirty.iris)
+```
 

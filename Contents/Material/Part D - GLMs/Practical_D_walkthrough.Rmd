@@ -137,70 +137,70 @@ Outliers are now less of an issue.
 
 ---
 
-9. **Use the `brandsma` data from package `mice` to fit a logistic regression model for `sex` based on `lpo` (Language Post Outcome).**
-```{r}
-brandsma.subset <- 
-  brandsma %>%
-  subset(!is.na(sex) & !is.na(lpo), select = c(sex, lpo))
-fit <- 
-  brandsma.subset %$%
-  glm(sex ~ lpo, family=binomial(link='logit'))
-fit %>%
-  summary()
-```
+<!-- 9. **Use the `brandsma` data from package `mice` to fit a logistic regression model for `sex` based on `lpo` (Language Post Outcome).** -->
+<!-- ```{r} -->
+<!-- brandsma.subset <-  -->
+<!--   brandsma %>% -->
+<!--   subset(!is.na(sex) & !is.na(lpo), select = c(sex, lpo)) -->
+<!-- fit <-  -->
+<!--   brandsma.subset %$% -->
+<!--   glm(sex ~ lpo, family=binomial(link='logit')) -->
+<!-- fit %>% -->
+<!--   summary() -->
+<!-- ``` -->
 
-With every unit increase in `lpo`, the logodds of gender increases by `r coef(fit)[2]`. 
+<!-- With every unit increase in `lpo`, the logodds of gender increases by `r coef(fit)[2]`.  -->
 
----
+<!-- --- -->
 
-10. **Obtain confidence intervals for the parameter estimates.**
-```{r}
-confint(fit)
-```
+<!-- 10. **Obtain confidence intervals for the parameter estimates.** -->
+<!-- ```{r} -->
+<!-- confint(fit) -->
+<!-- ``` -->
 
----
+<!-- --- -->
 
-11. **Use the model parameters to predict the `sex` variable and compare your predictions to the observed `sex`. **
-We can obtain predictions by using function `predict`. The default predictions are on the scale of the linear predictors; the alternative "response" is on the scale of the response variable. Thus for a default binomial model the default predictions are of log-odds (probabilities on logit scale) and type = "response" gives the predicted probabilities. 
-To obtain the predicted logodds:
-```{r}
-pred.logodds <- 
-  fit %>%
-  predict()
-head(pred.logodds)
-```
-and the predicted probabilities
-```{r}
-pred.prob <- 
-  fit %>%
-  predict(type = "response")
-head(pred.prob)
-```
-We can then use the decision boundary `pred.prob > .5` to assign cases to `sex == 1` and the others to `sex == 0`. 
-```{r}
-pred <- numeric(length(pred.prob))
-pred[pred.prob > .5] <- 1
-pred <- unlist(pred)
-```
-To determine how many correct predictions we have, we can use
-```{r}
-obs <- 
-  brandsma %>%
-  subset(!is.na(sex) & !is.na(lpo), select = sex)
-sum(pred == obs) #total correct
-mean(pred == obs) #average correct
-```
-So we succesfully predict about half. Not that impressive. An alternative way to test our model efficiency is with `CVbinary()`:
-```{r}
-CVbinary(glm(sex ~ lpo, family=binomial(link='logit'), data = brandsma.subset))
-```
----
+<!-- 11. **Use the model parameters to predict the `sex` variable and compare your predictions to the observed `sex`. ** -->
+<!-- We can obtain predictions by using function `predict`. The default predictions are on the scale of the linear predictors; the alternative "response" is on the scale of the response variable. Thus for a default binomial model the default predictions are of log-odds (probabilities on logit scale) and type = "response" gives the predicted probabilities.  -->
+<!-- To obtain the predicted logodds: -->
+<!-- ```{r} -->
+<!-- pred.logodds <-  -->
+<!--   fit %>% -->
+<!--   predict() -->
+<!-- head(pred.logodds) -->
+<!-- ``` -->
+<!-- and the predicted probabilities -->
+<!-- ```{r} -->
+<!-- pred.prob <-  -->
+<!--   fit %>% -->
+<!--   predict(type = "response") -->
+<!-- head(pred.prob) -->
+<!-- ``` -->
+<!-- We can then use the decision boundary `pred.prob > .5` to assign cases to `sex == 1` and the others to `sex == 0`.  -->
+<!-- ```{r} -->
+<!-- pred <- numeric(length(pred.prob)) -->
+<!-- pred[pred.prob > .5] <- 1 -->
+<!-- pred <- unlist(pred) -->
+<!-- ``` -->
+<!-- To determine how many correct predictions we have, we can use -->
+<!-- ```{r} -->
+<!-- obs <-  -->
+<!--   brandsma %>% -->
+<!--   subset(!is.na(sex) & !is.na(lpo), select = sex) -->
+<!-- sum(pred == obs) #total correct -->
+<!-- mean(pred == obs) #average correct -->
+<!-- ``` -->
+<!-- So we succesfully predict about half. Not that impressive. An alternative way to test our model efficiency is with `CVbinary()`: -->
+<!-- ```{r} -->
+<!-- CVbinary(glm(sex ~ lpo, family=binomial(link='logit'), data = brandsma.subset)) -->
+<!-- ``` -->
+<!-- --- -->
 
-The lesson here is that a significant parameter has no meaning if the substantive interpretation of the effect is ignored. There is almost no relation, whatsoever, there is just sufficient data to deem the influence of `lpo` on `sex` worthy of significance. 
+<!-- The lesson here is that a significant parameter has no meaning if the substantive interpretation of the effect is ignored. There is almost no relation, whatsoever, there is just sufficient data to deem the influence of `lpo` on `sex` worthy of significance.  -->
 
----
+<!-- --- -->
 
-12. 
+9. 
 The `moths` data frame in the `DAAG` package contains data from a study of the effect of habitat on the densities of two species of moth (A and P). The quasipoisson distribution is a reasonable model for these data. Try modeling the variable `A` using this distribution. Is there a better link function than the standard?
 ```{r}
 A.glm <- glm(formula = A ~ log(meters) + factor(habitat), family =
@@ -214,7 +214,7 @@ summary(A2.glm)
 ```
 
 ---
-13. 
+10. 
 Let's try to specify our own link function: $f(x) = \log(\exp(x)-1)$. Generate data like this: 
 ```{r}
 n <- 1000                       
