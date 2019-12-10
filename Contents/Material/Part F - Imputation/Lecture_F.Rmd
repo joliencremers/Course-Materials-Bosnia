@@ -16,13 +16,16 @@ output:
 
 - Missing data patterns
 - Imputation methods
+  * `simputation` package
+  * `mice` package
 
 ## I use the following packages in this lecture
 
 ```{r message = FALSE}
 
 library(mice) # for visualisation & pmm
-library(VIM) # visualisation & several hotdeck imputation methods (fast implementation)
+library(VIM) # visualisation & several hotdeck imputation methods 
+#(fast implementation)
 library(simputation) # common interface for several imputation methods
 library(magrittr) # for pipe operator
 library(naniar) # additional package for practical
@@ -83,24 +86,6 @@ naniar::gg_miss_fct(x = nhanes, fct = age)
 ```
 
 
-## Both variables observed
-```{r}
-pairs <- mice::md.pairs(nhanes)
-
-pairs$rr
-```
-
-## Row missing, column observed
-```{r}
-pairs$mr
-```
-
-## Both variables missing
-```{r}
-pairs$rr
-```
-
-
 # Imputation methods
 
 ## Specifying models in `simputation`
@@ -142,21 +127,15 @@ imp_2a <- nhanes %>%
 head(imp_2a)
 ```
 
-## Decision tree imputation
-
-```{r}
-imp_3 <- impute_cart(nhanes, hyp ~ .)
-head(imp_3)
-```
-
 ## Other methods
 
+- `impute_cart()`: decision tree imputation
 - `impute_hotdeck()`:  random and sequential hot deck, k-nearest neighbours imputation and predictive mean matching.
 - `impute_multivariate()`: imputation based on EM-estimation of multivariate normal parameters, imputation based on iterative Random Forest estimates and stochastic imptuation based on bootstrapped EM-estimatin of multivariate normal parameters.
-- `impute_proxy()`: Impute missing values by a constant, by copying another variable computing transformations from other variables.
+- `impute_proxy()`: Impute missing values by a constant, by copying another variable, computing transformations from other variables.
 
 
-## Predictive Mean Matching (mice)
+## Multivariate Imputation by Chained Equations (mice)
 
 Default imputation
 
@@ -297,3 +276,4 @@ summary(pool.fit)
 - `Amelia`
 - `mix`
 
+# Practical 

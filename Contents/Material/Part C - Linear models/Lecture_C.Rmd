@@ -375,3 +375,5 @@ predict(fit, interval = "prediction")
 - `lme4::lmer`: linear mixed effect models
 - `lme4::glmer`: generalized linear mixed effect models
 - `lme4::nlmer`: non-linear mixed effect models
+
+# Practical
