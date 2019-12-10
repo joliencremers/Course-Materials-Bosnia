@@ -1569,9 +1569,40 @@ library(ggplot2)</code></pre>
 <pre class="r"><code>?lm</code></pre>
 <p>This will open a help page on the <code>lm()</code> function.</p>
 </div>
+<div id="benefits-data" class="section level2 smaller">
+<h2>Benefits data</h2>
+<p>Unemployment of blue collar workers:</p>
+<p>Column <code>stateur</code>:</p>
+<ul>
+<li>state unemployment rate (in %)</li>
+</ul>
+<p>Column <code>tenure</code>:</p>
+<ul>
+<li>years of tenure in jobs lost</li>
+</ul>
+<p>Column <code>age</code>:</p>
+<ul>
+<li>age in years</li>
+</ul>
+<p>Column <code>joblost</code>:</p>
+<ul>
+<li>reason for loss of job (position abolished, seasonal job, not performing well enough, other)</li>
+</ul>
+</div>
+<div id="linear-regression" class="section level2">
+<h2>Linear regression</h2>
+<p>Linear regression model <span class="math display">\[
+y_i=\alpha+\beta{x}_i+\varepsilon_i
+\]</span></p>
+<p>Assumptions:</p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> conditionally normal with mean <span class="math inline">\(\mu_i=\alpha+\beta{x}_i\)</span></li>
+<li><span class="math inline">\(\varepsilon_i\)</span> are <span class="math inline">\(i.i.d.\)</span> with mean 0 and (constant) variance <span class="math inline">\(\sigma^2\)</span></li>
+</ul>
+</div>
 <div id="continuous-predictors" class="section level2 smaller">
 <h2>Continuous predictors</h2>
-<p>To obtain a linear model with a main effect for <code>tenure</code>, we formulate <span class="math inline">\(stateur\sim tenure\)</span></p>
+<p>To obtain a linear regression model with a main effect for <code>tenure</code>, we formulate <span class="math inline">\(stateur\sim tenure\)</span></p>
 <pre class="r"><code>fit &lt;- Benefits %$%
   lm(stateur~tenure)
 fit</code></pre>

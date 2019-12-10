@@ -44,8 +44,40 @@ If we want to know what these arguments do we can ask R:
 
 This will open a help page on the `lm()` function.
 
+## Benefits data {.smaller}
+Unemployment of blue collar workers:
+
+
+Column `stateur`: 
+
+* state unemployment rate (in %)
+
+Column `tenure`: 
+
+* years of tenure in jobs lost
+
+Column `age`:
+
+* age in years
+
+Column `joblost`:
+
+* reason for loss of job (position abolished, seasonal job, not performing well enough, other)
+
+##  Linear regression
+Linear regression model
+\[
+y_i=\alpha+\beta{x}_i+\varepsilon_i
+\]
+
+Assumptions:
+
+  -  $y_i$ conditionally normal with mean $\mu_i=\alpha+\beta{x}_i$
+  -  $\varepsilon_i$ are $i.i.d.$ with mean 0 and (constant) variance $\sigma^2$
+
+
 ## Continuous predictors {.smaller}
-To obtain a linear model with a main effect for `tenure`, we formulate $stateur\sim tenure$ 
+To obtain a linear regression model with a main effect for `tenure`, we formulate $stateur\sim tenure$ 
 ```{r warning=FALSE, message = FALSE}
 fit <- Benefits %$%
   lm(stateur~tenure)
