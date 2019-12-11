@@ -25,6 +25,7 @@ library(magrittr)
 library(mice)
 library(ggplot2)
 library(DAAG)
+library(MASS)
 ```
 
 ---
@@ -45,7 +46,8 @@ elastic$source <- c(rep("Elastic1", nrow(elastic1)),
 elastic %>%
   ggplot(aes(stretch, distance, colour = source)) +
   geom_point() + 
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm") +
+  scale_fill_manual(values = c("blue", "green"))
 
 ```
 
@@ -211,7 +213,8 @@ The predicted values are very similar to the observed values:
 ```{r}
 data.frame(distance = elastic2$distance, predicted = pred) %>%
   ggplot(aes(distance, predicted)) + 
-  geom_point()
+  geom_point() + 
+  geom_abline(intercept = 0, slope = 1)
   
 ```
 
