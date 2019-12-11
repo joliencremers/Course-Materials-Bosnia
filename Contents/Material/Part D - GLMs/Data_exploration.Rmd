@@ -9,7 +9,7 @@ output: html_document
 
 ```{r, echo = FALSE, eval = FALSE, message = FALSE, warnings = FALSE}
 library(readxl)
-data <- read_excel("Contents/Material/Part D - GLMs/Benefits.xlsx")
+data <- read_excel("Benefits.xlsx")
 
 ```
 
