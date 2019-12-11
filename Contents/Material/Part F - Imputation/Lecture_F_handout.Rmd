@@ -42,6 +42,7 @@ pre { /* Code block - determines code spacing between lines */
 
 
 
+
 # Imputation
 
 ## This Lecture:
@@ -56,7 +57,8 @@ pre { /* Code block - determines code spacing between lines */
 ```{r message = FALSE}
 
 library(mice) # for visualisation & pmm
-library(VIM) # visualisation & several hotdeck imputation methods (fast implementation)
+library(VIM) # visualisation & several hotdeck imputation methods 
+#(fast implementation)
 library(simputation) # common interface for several imputation methods
 library(magrittr) # for pipe operator
 library(naniar) # additional package for practical
@@ -70,13 +72,16 @@ library(ggplot2) # plots
 
 ## `nhanes` data {.smaller}
 
+`age`: Age group (1=20-39, 2=40-59, 3=60+)
+
+`bmi`: Body mass index (kg/m**2)
+
+`hyp`: High blood pressure, hypertension (1=no,2=yes)
+
+`chl`: Total serum cholesterol (mg/dL)
+
 ```{r}
 head(nhanes, n = 10)
-```
-
-##
-```{r}
-summary(nhanes)
 ```
 
 
@@ -103,17 +108,7 @@ pattern
 
 ##
 ```{r}
-visdat::vis_miss(nhanes)
-```
-
-##
-```{r}
 naniar::gg_miss_upset(nhanes)
-```
-
-##
-```{r, message = FALSE, warning = FALSE}
-naniar::gg_miss_fct(x = nhanes, fct = age)
 ```
 
 
@@ -134,11 +129,12 @@ IMPUTED ~ MODEL_SPECIFICATION [ | GROUPING ]
 ```
 
 
-## Regression imputation
+## Regression imputation {.smaller}
 
 ```{r}
 imp_1 <- impute_lm(nhanes, bmi ~ age + hyp + chl)
 head(imp_1)
+head(nhanes)
 ```
 
 ## Median imputation
@@ -222,19 +218,6 @@ pred
 imp <- mice(nhanes, m = 4, init = pred, print = F)
 ```
 
-## Convergence
-
-```{r}
-plot(imp)
-```
-
-## Seed values
-
-```{r}
-
-imp <- mice(nhanes, m = 4, init = pred, print = F, seed = 101)
-
-```
 
 ## Changing imputation methods
 
@@ -283,13 +266,6 @@ fit
 ##
 
 ```{r}
-class(fit)
-ls(fit)
-```
-
-##
-
-```{r}
 summary(fit$analyses[[2]])
 ```
 
@@ -308,3 +284,29 @@ summary(pool.fit)
 - `mix`
 
 # Practical 
+
+# Extra slides
+
+## Visualization
+```{r, message = FALSE, warning = FALSE}
+naniar::gg_miss_fct(x = nhanes, fct = age)
+```
+
+
+## Visualization
+```{r}
+visdat::vis_miss(nhanes)
+```
+
+
+## Convergence
+
+```{r}
+plot(imp)
+```
+
+## Seed values
+
+```{r}
+imp <- mice(nhanes, m = 4, init = pred, print = F, seed = 101)
+```
