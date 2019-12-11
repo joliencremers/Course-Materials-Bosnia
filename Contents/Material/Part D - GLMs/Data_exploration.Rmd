@@ -5,7 +5,7 @@ date: "Statistical Programming with R"
 output: html_document
 ---
 
-1. Download the benefits data from the course webpage. Note that this data is in .xlsx format. Try to load this data into R using the function `read_excel` function from the `readxl` package (rember to specify the correct path/set your working directory accordingly)
+1. Download the benefits data from the course webpage. Note that this data is in .xlsx format. Try to load this data into R using the function `read_excel` function from the `readxl` package (remember to specify the correct path/set your working directory accordingly)
 
 ```{r, echo = FALSE, eval = FALSE, message = FALSE, warnings = FALSE}
 library(readxl)
