@@ -16,8 +16,8 @@ data <- read_excel("Contents/Material/Part D - GLMs/Benefits.xlsx")
 ---
 
 2. Get a subset of the individuals that had more than 10 years of tenure and lost their job because the position was abolished.
-```{r, echo = false}
-
+```{r, echo = FALSE}
+library(dplyr)
 data %>% subset(tenure > 10 & joblost == "position_abolished")
 
 ```
