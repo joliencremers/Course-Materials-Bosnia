@@ -186,7 +186,7 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
     - [Lecture D Handout](Contents/Material/Part D - GLMs/Lecture_D_handout.html){target="_blank"}
     - [Practical D](Contents/Material/Part D - GLMs/Practical_D_walkthrough.html){target="_blank"}
     - [Impractical D](Contents/Material/Part D - GLMs/Practical_D.html){target="_blank"}
-    - [Extra Practical](Contents/Material/Part D - GLMs/Data-exploration.html){target="_blank"}
+    - [Extra Practical](Contents/Material/Part D - GLMs/Data_exploration.html){target="_blank"}
     - Data: [cabinet](Contents/Material/Part D - GLMs/danish_cabinet.xls), 
     [benefits](Contents/Material/Part D - GLMs/Benefits.xlsx)
 
