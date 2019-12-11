@@ -12,92 +12,46 @@ v <- factor(c(1,8.2,3,11))
 ```
 **What happens if you apply the function `as.numeric` to `v`? How can you make `v` into a numeric vector?**
 
-```{r}
-as.numeric(v)
-```
-Since `v` is a factor, the visible values in it are actually labels for the underlying factor values - which are nicely ordered consequtive integers. In order to make `v` numeric with the *right* values, use
-```{r}
-as.numeric(as.character(v))
-```
-
+---
 
 ### 2 - reading in data with base R and `readr`
 
 **The file `unnamed.csv` contains comma-separated values of ages and heights for a set of imaginary persons. Read in the data. Make sure to name both variables, and make both numeric. The obvious candidate function is `read.table`, but the `read_csv` function in the `readr` package makes it a lot easier** 
 
-Let's try with `read.table`
-```{r}
-## reading with read.table ----
-dat <- read.table(
-  file = "data/unnamed.csv"
-  , header = FALSE
-  , col.names = c("age","height")
-  , stringsAsFactors=FALSE
-  , sep=",")
-dat
-```
-The file reads in nicely, and we get useful variable names, but the data in the `height` variable isn't clean and cannot be read as numeric. We can try to coerce the variable into numeric, but this fails:
-
-```{r, error = T}
-## define colClasses ----
-dat <- read.table(
-  file = "data/unnamed.csv"
-  , header = FALSE
-  , col.names = c("age","height")
-  , colClasses = c("numeric","numeric")
-  , stringsAsFactors=FALSE
-  , sep=",")
-```
-Instead, we can read as character, clean up the text and convert to numeric. Or we could go the tidyverse way or use the `read_csv` function in the `readr` package. 
-
-```{r, error = T}
-# parse columns as 'number' (flexible)
-readr::read_csv("data/unnamed.csv"
-      , col_names=c("age","height")
-      , col_types="nn")
-
-```
+---
 
 ### 3 - matching dirty data against standard labels
 **The file `bands.txt` has a list of bands, but somebody messed up the "country" variable. Match it against the vector `c("Australia", "United States", "United Kingdom", "Germany", "Spain")`. Also make sure the `date` variable is a date.**
 
-We read in the data nicely with the `readr` package:
-```{r}
-library(readr)
-bands <- read_delim("data/bands.txt", delim = "\t", trim_ws = T,
-                     col_types = cols( date = col_date(format = "%d%b%Y")) )
+---
+
+### 3a - data cleaning
+**Exercise 3 is about removing inconsistencies from data. The exercise comes in two versions: One using base procedures by "hand", and one using the editrules package. This first version is less abstract and does not require looking into a new framework. Feel free to skip it and do  3b instead, if it is too simple - or feel free to skip 3b if it's too involved**
+
+**We will work with the following data - you can find it on the course homepage or paste it into a text file from here:**
+```{r, eval=F}
+age, agegroup, height, status, yearsmarried
+21, adult, 6.0, single, -1
+2, child, 3, married, 0
+18, adult, 5.7, married, 20
+221, elderly, 5, widowed, 2
+34, child, -7, married, 3
 ```
 
-Now for the label matching
 ```{r}
-countries <- trimws(bands$country)
-codes <- c("Australia", "United States", "United Kingdom", "Germany", "Spain")
-
-## base R match function gives the clean matches
-match(countries, codes)
-
-## Which values are failing? 
-countries[is.na(match(countries, codes))]
-
-## The amatch function allows for some slack
-library(stringdist)
-amatch(countries, codes, maxDist=3)
-
-## Which values are still failing?
-countries[is.na(amatch(countries, codes, maxDist=3))]
-
-## We match the closest fit
-D <- stringdistmatrix(countries, codes)
-i <- apply(D, 1, which.min)
-data.frame(rawtext = countries, coded = codes[i])
-
-## This may be the time when we hand-code the rest:
-bands$country_clean <- codes[amatch(countries, codes, maxDist=3)]
-bands$country_clean[ bands$country == "UK"] <- "United Kingdom"
-bands$country_clean[ bands$country == "US"] <- "United States"
+people <- read.csv( file = "data/people.txt", stringsAsFactors = F, strip.white = T)
 ```
+**Correct the data, replacing impossible values with correct ones or with `NA` where the correct value cannot be deduced:**
+* **Age should not be negative and should be less than 150**
+* **Height should be greater than zero**
+* **Age should be greater than the number of years married**
+* **Children cannot be married or widowed**
+* **People under 18 of age should be coded as children, those between 18 and 64 should be coded as adults, and those over age 65 should be coded as elderly**
+* **Age should be larger than or equal to yearsmarried + 18**
 
-### 4 - a walkthrough for the `editrules` package 
+--- 
+
+### 3b - a walkthrough for the `editrules` package 
 
 **This exercise is adapted from an example in De Jonge and van der Loo and walks you through applying functions in the `editrules` package. The `editrules` package allows allows us to define rules which each record of a data set must obey. Editrules can check which rules fail for each record, and find the minimal set of variables to adapt so that all rules can be folowed.** 
 
@@ -136,24 +90,15 @@ le$adapt
 ```
 **The `le` object contains metadata and a logical array which indicates the minimal set of edits needed to make data follow the rules in `E` (note that `E` is missing at least one rule). The corrections are not part of the `editrules` package.**
 
+---
 
-### 5 - more on the `editrules` package
+### 4 - more on the `editrules` package
 **This exercise, again borrowed from de Jonge and van der Loo, follows on the previous but has less hand-holding.**
 
-#### 5.1 Reading in and manual checks
+#### 4.1 Reading in and manual checks
 **The `dirty_iris` dataset can be found on the course webpage. Read in the data, and make sure that strings are not converted to factors. Replace special values with `NA` and compute the proportion of complete observations.**
-```{r}
-dirty.iris <- read.csv( file = "data/dirty_iris.txt", 
-                        stringsAsFactors = F)
-summary(dirty.iris)
 
-## There are Inf values in Petal.Width
-dirty.iris$Petal.Width[ !is.finite(dirty.iris$Petal.Width) ] <- NA
-
-## The complete.cases function checks each record for missing values
-prop.table( table( complete.cases(dirty.iris) ))
-```
-#### 5.2 Validating with rules
+#### 4.2 Validating with rules
 **Codify the following rules into an `editfile` object:**
 
   * **Species should be one of the following values: setosa, versicolor or virginica.**
@@ -162,93 +107,13 @@ prop.table( table( complete.cases(dirty.iris) ))
   * **Sepal length cannot exceed 30 cm.**
   * **The sepals of an iris are longer than its petals.**
 
-```{r}
-iris.rules <- editset(
-  c(
-    "Species %in% c('setosa', 'versicolor', 'virginica')",
-    "Sepal.Length > 0",
-    "Sepal.Width  > 0",
-    "Petal.Length > 0",
-    "Petal.Width  > 0",
-    "Petal.Length >= 2*Petal.Width",
-    "Sepal.Length <=30",
-    "Sepal.Length >= Petal.Length"
-  )
-)
-```
 **Find out how often each rule is broken. Summarise and plot the object.**
-```{r}
-violated.rules.iris <- violatedEdits( iris.rules, dirty.iris)
-summary(violated.rules.iris)
-plot(violated.rules.iris)
-```
 
 **Use `violatedEdits` to find the observations with too long petals**
-Which column of the matrix returned by the function corresponds to that rule? We first look at the rules in the rules object
-```{r}
-iris.rules
-```
-The rule is "num7". It's easier to pick  out this rule from `violated.rules.iris` if we make it into a tibble
-```{r}
-library(dplyr)
-violated.rules.iris %>% as_tibble() %>%
-  filter(num7 == T)
-
-## Find the observations corresponding to this:
-
-## First we find the indices of these observations
-
-indices <- violated.rules.iris %>% 
-    as_tibble() %>%
-    mutate( id = row_number()) %>%           
-    filter(num7 == T)
-
-dirty.iris[indices$id,]
-```
 
 **Use `boxplot` and `boxplot.stats` to find observations with outlier values of sepal length. Set outliers to `NA`**
-```{r}
-## boxplot does a box plot
-boxplot(dirty.iris$Sepal.Length)
-## boxplot.stats does statistics for the boxplot
-bps <- boxplot.stats(dirty.iris$Sepal.Length)
-bps
 
-dirty.iris <- dirty.iris %>% 
-  mutate( Sepal.Length = if_else(Sepal.Length %in% bps$out, NA_real_, Sepal.Length)) 
-```
-
-#### 5.3 Correcting data
+#### 4.3 Correcting data
 **Use the `correctWithRules` function from the `deducorrect` library to replace non-positive values of of Petal.Width with NA. **
-```{r, message=F}
-library(deducorrect)
 
-# We make a set of correction rules
-iris.cr <- correctionRules(expression(
-   if ( is.na(Petal.Length) | Petal.Length <= 0 ) Petal.Length <- NA
-))
-
-# We use the correction rules on the data
-iris.corrections <- correctWithRules( iris.cr , dirty.iris)
-
-iris.corrections$corrections
-
-## It's not very good practise, but we'll replace the data with the corrected data
-dirty.iris <- iris.corrections$corrected
-```
 **Use the (output of the) `LocalizeErrors` function and the `editset` defined in exercise 5.2 to replace all faulty values with NA**
-```{r}
-iris.loc.err <- localizeErrors( iris.rules , dirty.iris)
-plot(iris.loc.err)
-
-# DEGENERATE solutions are those with more than one possible edit. We look at them
-table(iris.loc.err$status$degeneracy)
-dirty.iris[iris.loc.err$status$degeneracy>1,]
-iris.loc.err$adapt[iris.loc.err$status$degeneracy>1,]
-
-# We set all values deemed faulty to NA
-dirty.iris[iris.loc.err$adapt] <- NA
-
-summary(violatedEdits( iris.rules, dirty.iris))
-```
-

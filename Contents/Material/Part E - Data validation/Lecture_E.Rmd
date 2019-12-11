@@ -13,6 +13,7 @@ output:
 ## Packages and functions used
 ```{r message=FALSE, warning=F}
 library(lubridate)
+library(tidyr)
 library(stringi)
 library(stringr)
 library(stringdist)
@@ -53,6 +54,15 @@ Shorter working paper, available online
 - Data satisfies demands from domain knowledge
 - Ready for analysis
 
+## The process
+
+- Get data into `R` and make it technically correct
+- Find inconsistencies by stating the rules the data should follow and determining where data does not follow these
+- Replace inconsistencies
+  - Sometimes by deduction
+  - Sometimes by guessing (imputation)
+
+There is a handheld way to look and correct inconsistencies, and there are packages to make the process easier and more reproducible
 
 # Some basics
 
@@ -60,11 +70,13 @@ Shorter working paper, available online
 
   - `numeric`
   - `integer`
+  - `logical` - `TRUE` or `FALSE`
+  - `character` - character data
+Also:
   - `factor` - categorical data
   - `ordered` - ordinal data
-  - `character` - character data
-  - `logical` - `TRUE` or `FALSE`
-  - `raw` -  binary data
+  - `date`
+  - `datetime`
 
 ## Special values
 
@@ -95,6 +107,10 @@ Shorter working paper, available online
     - Fast
     - Clear reports of parsing failure
 
+## Data from Excel
+- `read_excel` from the `readxl` package
+- `read.xlsx` from the `xlsx` package
+
 ## For even dirtier data
 - (base) R has great text processing tools.
 - Need to work with regular expressions\footnote{Mastering Regular Expressions (2006) by Jeffrey Friedl is a great resource}
@@ -118,19 +134,19 @@ Express a _pattern_ of text, e.g.
 | string splitting   |  str_split(string, pattern)                | strsplit            |
 
 
-## Tips on regular expressions with R
+<!-- ## Tips on regular expressions with R -->
 
-- `stringr` has _many_ useful shorthands for common tasks.
-- Generate regular expressions with `rex`
+<!-- - `stringr` has _many_ useful shorthands for common tasks. -->
+<!-- - Generate regular expressions with `rex` -->
 
-```{r}
-library(rex)
-# recognize a number in scientific notation
-rex(one_or_more(digit)
-    , maybe(".",one_or_more(digit))
-    , "E" %or% "e"
-    , one_or_more(digit))
-```
+<!-- ```{r} -->
+<!-- library(rex) -->
+<!-- # recognize a number in scientific notation -->
+<!-- rex(one_or_more(digit) -->
+<!--     , maybe(".",one_or_more(digit)) -->
+<!--     , "E" %or% "e" -->
+<!--     , one_or_more(digit)) -->
+<!-- ``` -->
 
 ## String normalization
 
@@ -143,43 +159,63 @@ Bring a text string in a standard format, e.g.
     - stringi: stri_trans_general
     - base R: iconv
 
-## Approximate text matching
+<!-- ## Approximate text matching -->
 
-- Defines a distance metric between strings that measures how "different" two strings are. 
-- Uses this to correct data
+<!-- - Defines a distance metric between strings that measures how "different" two strings are.  -->
+<!-- - Uses this to correct data -->
+
+<!-- ```{r} -->
+<!-- gender <- c("Male", "male", "Female", "fem.", "F", "M") -->
+
+<!-- stringdist(gender, "Male") -->
+<!-- stringdist(gender, "Female") -->
+<!-- ``` -->
+
+<!-- ## Approximate text matching -->
+<!-- ```{r} -->
+<!-- gender <- c("Male", "male", "Female", "fem.", "F", "M") -->
+<!-- codes <- c("male", "female") -->
+<!-- D <- stringdistmatrix(gender, codes) -->
+<!-- i <- apply(D, 1, which.min) -->
+<!-- data.frame(rawtext = gender, coded = codes[i]) -->
+<!-- ``` -->
+
+
+<!-- ## Approximate text matching: edit-based distances -->
+
+<!-- | *Distance* | *substitution* | *deletion* | *insertion* | *transposition* | -->
+<!-- |------------|----------------|------------|-------------|-----------------| -->
+<!-- | Hamming             | yes   | no   | no  | no | -->
+<!-- | LCS                 | no    | yes  | yes | no | -->
+<!-- | Levenshtein         | yes   | yes  | yes |  no | -->
+<!-- | OSA                 | yes   | yes  | yes |  yes | -->
+<!-- | Damerau-Levenshtein | yes   | yes  | yes |  yes | -->
+
+<!-- $$\texttt{"leela"} \to \texttt{"leea"} \to \texttt{"leia"}$$ -->
+
+<!-- ```{r,echo=TRUE} -->
+<!-- stringdist::stringdist("leela","leia",method="dl") -->
+<!-- ``` -->
+
+## Converting between wide and long data
+- `pivot_longer` and `pivot_wider` in the `tidyr` package
+```{r,include=F}
+library(dplyr)
+billboard <- billboard %>% select(artist, track, wk1,wk2, wk3)
+```
 
 ```{r}
-gender <- c("Male", "male", "Female", "fem.", "F", "M")
-
-stringdist(gender, "Male")
-stringdist(gender, "Female")
+billboard[1:3,]
 ```
 
-## Approximate text matching
+## Converting between wide and long data
+- `pivot_longer` and `pivot_wider` in the `tidyr` package
+
 ```{r}
-gender <- c("Male", "male", "Female", "fem.", "F", "M")
-codes <- c("male", "female")
-D <- stringdistmatrix(gender, codes)
-i <- apply(D, 1, which.min)
-data.frame(rawtext = gender, coded = codes[i])
+billboard %>% pivot_longer( cols = starts_with("wk")) %>% 
+  print(n=6)
 ```
 
-
-## Approximate text matching: edit-based distances
-
-| *Distance* | *substitution* | *deletion* | *insertion* | *transposition* |
-|------------|----------------|------------|-------------|-----------------|
-| Hamming             | yes   | no   | no  | no |
-| LCS                 | no    | yes  | yes | no |
-| Levenshtein         | yes   | yes  | yes |  no |
-| OSA                 | yes   | yes  | yes |  yes |
-| Damerau-Levenshtein | yes   | yes  | yes |  yes |
-
-$$\texttt{"leela"} \to \texttt{"leea"} \to \texttt{"leia"}$$
-
-```{r,echo=TRUE}
-stringdist::stringdist("leela","leia",method="dl")
-```
 
 ## Further steps in making data technically correct {.smaller}
 

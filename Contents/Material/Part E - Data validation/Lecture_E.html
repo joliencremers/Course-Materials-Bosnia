@@ -3140,6 +3140,7 @@ slide:not(.current) .plotly.html-widget{
 <slide class=""><hgroup><h2>Packages and functions used</h2></hgroup><article  id="packages-and-functions-used">
 
 <pre class = 'prettyprint lang-r'>library(lubridate)
+library(tidyr)
 library(stringi)
 library(stringr)
 library(stringdist)
@@ -3191,6 +3192,21 @@ library(rex)</pre>
 <li>Ready for analysis</li>
 </ul>
 
+</article></slide><slide class=""><hgroup><h2>The process</h2></hgroup><article  id="the-process">
+
+<ul>
+<li>Get data into <code>R</code> and make it technically correct</li>
+<li>Find inconsistencies by stating the rules the data should follow and determining where data does not follow these</li>
+<li>Replace inconsistencies
+
+<ul>
+<li>Sometimes by deduction</li>
+<li>Sometimes by guessing (imputation)</li>
+</ul></li>
+</ul>
+
+<p>There is a handheld way to look and correct inconsistencies, and there are packages to make the process easier and more reproducible</p>
+
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Some basics</h2></hgroup><article  id="some-basics">
 
 </article></slide><slide class=""><hgroup><h2>Variable types in R:</h2></hgroup><article  id="variable-types-in-r">
@@ -3198,11 +3214,12 @@ library(rex)</pre>
 <ul>
 <li><code>numeric</code></li>
 <li><code>integer</code></li>
+<li><code>logical</code> - <code>TRUE</code> or <code>FALSE</code></li>
+<li><code>character</code> - character data Also:</li>
 <li><code>factor</code> - categorical data</li>
 <li><code>ordered</code> - ordinal data</li>
-<li><code>character</code> - character data</li>
-<li><code>logical</code> - <code>TRUE</code> or <code>FALSE</code></li>
-<li><code>raw</code> - binary data</li>
+<li><code>date</code></li>
+<li><code>datetime</code></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Special values</h2></hgroup><article  id="special-values">
@@ -3252,6 +3269,13 @@ library(rex)</pre>
 </ul></li>
 </ul>
 
+</article></slide><slide class=""><hgroup><h2>Data from Excel</h2></hgroup><article  id="data-from-excel">
+
+<ul>
+<li><code>read_excel</code> from the <code>readxl</code> package</li>
+<li><code>read.xlsx</code> from the <code>xlsx</code> package</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>For even dirtier data</h2></hgroup><article  id="for-even-dirtier-data">
 
 <ul>
@@ -3297,21 +3321,27 @@ library(rex)</pre>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>Tips on regular expressions with R</h2></hgroup><article  id="tips-on-regular-expressions-with-r">
+<!-- ## Tips on regular expressions with R -->
 
-<ul>
-<li><code>stringr</code> has <em>many</em> useful shorthands for common tasks.</li>
-<li>Generate regular expressions with <code>rex</code></li>
-</ul>
+<!-- - `stringr` has _many_ useful shorthands for common tasks. -->
 
-<pre class = 'prettyprint lang-r'>library(rex)
-# recognize a number in scientific notation
-rex(one_or_more(digit)
-    , maybe(&quot;.&quot;,one_or_more(digit))
-    , &quot;E&quot; %or% &quot;e&quot;
-    , one_or_more(digit))</pre>
+<!-- - Generate regular expressions with `rex` -->
 
-<pre >## (?:[[:digit:]])+(?:\.(?:[[:digit:]])+)?(?:E|e)(?:[[:digit:]])+</pre>
+<!-- ```{r} -->
+
+<!-- library(rex) -->
+
+<!-- # recognize a number in scientific notation -->
+
+<!-- rex(one_or_more(digit) -->
+
+<!--     , maybe(".",one_or_more(digit)) -->
+
+<!--     , "E" %or% "e" -->
+
+<!--     , one_or_more(digit)) -->
+
+<!-- ``` -->
 
 </article></slide><slide class=""><hgroup><h2>String normalization</h2></hgroup><article  id="string-normalization">
 
@@ -3332,93 +3362,98 @@ rex(one_or_more(digit)
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Approximate text matching</h2></hgroup><article  id="approximate-text-matching">
+<!-- ## Approximate text matching -->
+
+<!-- - Defines a distance metric between strings that measures how "different" two strings are.  -->
+
+<!-- - Uses this to correct data -->
+
+<!-- ```{r} -->
+
+<!-- gender <- c("Male", "male", "Female", "fem.", "F", "M") -->
+
+<!-- stringdist(gender, "Male") -->
+
+<!-- stringdist(gender, "Female") -->
+
+<!-- ``` -->
+
+<!-- ## Approximate text matching -->
+
+<!-- ```{r} -->
+
+<!-- gender <- c("Male", "male", "Female", "fem.", "F", "M") -->
+
+<!-- codes <- c("male", "female") -->
+
+<!-- D <- stringdistmatrix(gender, codes) -->
+
+<!-- i <- apply(D, 1, which.min) -->
+
+<!-- data.frame(rawtext = gender, coded = codes[i]) -->
+
+<!-- ``` -->
+
+<!-- ## Approximate text matching: edit-based distances -->
+
+<!-- | *Distance* | *substitution* | *deletion* | *insertion* | *transposition* | -->
+
+<!-- |------------|----------------|------------|-------------|-----------------| -->
+
+<!-- | Hamming             | yes   | no   | no  | no | -->
+
+<!-- | LCS                 | no    | yes  | yes | no | -->
+
+<!-- | Levenshtein         | yes   | yes  | yes |  no | -->
+
+<!-- | OSA                 | yes   | yes  | yes |  yes | -->
+
+<!-- | Damerau-Levenshtein | yes   | yes  | yes |  yes | -->
+
+<!-- $$\texttt{"leela"} \to \texttt{"leea"} \to \texttt{"leia"}$$ -->
+
+<!-- ```{r,echo=TRUE} -->
+
+<!-- stringdist::stringdist("leela","leia",method="dl") -->
+
+<!-- ``` -->
+
+</article></slide><slide class=""><hgroup><h2>Converting between wide and long data</h2></hgroup><article  id="converting-between-wide-and-long-data">
 
 <ul>
-<li>Defines a distance metric between strings that measures how &ldquo;different&rdquo; two strings are.</li>
-<li>Uses this to correct data</li>
+<li><code>pivot_longer</code> and <code>pivot_wider</code> in the <code>tidyr</code> package</li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>gender &lt;- c(&quot;Male&quot;, &quot;male&quot;, &quot;Female&quot;, &quot;fem.&quot;, &quot;F&quot;, &quot;M&quot;)
+<pre class = 'prettyprint lang-r'>billboard[1:3,]</pre>
 
-stringdist(gender, &quot;Male&quot;)</pre>
+<pre >## # A tibble: 3 x 5
+##   artist       track                     wk1   wk2   wk3
+##   &lt;chr&gt;        &lt;chr&gt;                   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 2 Pac        Baby Don&#39;t Cry (Keep...    87    82    72
+## 2 2Ge+her      The Hardest Part Of ...    91    87    92
+## 3 3 Doors Down Kryptonite                 81    70    68</pre>
 
-<pre >## [1] 0 1 3 4 4 3</pre>
+</article></slide><slide class=""><hgroup><h2>Converting between wide and long data</h2></hgroup><article  id="converting-between-wide-and-long-data-1">
 
-<pre class = 'prettyprint lang-r'>stringdist(gender, &quot;Female&quot;)</pre>
+<ul>
+<li><code>pivot_longer</code> and <code>pivot_wider</code> in the <code>tidyr</code> package</li>
+</ul>
 
-<pre >## [1] 3 2 0 4 5 6</pre>
+<pre class = 'prettyprint lang-r'>billboard %&gt;% pivot_longer( cols = starts_with(&quot;wk&quot;)) %&gt;% 
+  print(n=6)</pre>
 
-</article></slide><slide class=""><hgroup><h2>Approximate text matching</h2></hgroup><article  id="approximate-text-matching-1">
+<pre >## # A tibble: 951 x 4
+##   artist  track                   name  value
+##   &lt;chr&gt;   &lt;chr&gt;                   &lt;chr&gt; &lt;dbl&gt;
+## 1 2 Pac   Baby Don&#39;t Cry (Keep... wk1      87
+## 2 2 Pac   Baby Don&#39;t Cry (Keep... wk2      82
+## 3 2 Pac   Baby Don&#39;t Cry (Keep... wk3      72
+## 4 2Ge+her The Hardest Part Of ... wk1      91
+## 5 2Ge+her The Hardest Part Of ... wk2      87
+## 6 2Ge+her The Hardest Part Of ... wk3      92
+## # ... with 945 more rows</pre>
 
-<pre class = 'prettyprint lang-r'>gender &lt;- c(&quot;Male&quot;, &quot;male&quot;, &quot;Female&quot;, &quot;fem.&quot;, &quot;F&quot;, &quot;M&quot;)
-codes &lt;- c(&quot;male&quot;, &quot;female&quot;)
-D &lt;- stringdistmatrix(gender, codes)
-i &lt;- apply(D, 1, which.min)
-data.frame(rawtext = gender, coded = codes[i])</pre>
-
-<pre >##   rawtext  coded
-## 1    Male   male
-## 2    male   male
-## 3  Female female
-## 4    fem. female
-## 5       F   male
-## 6       M   male</pre>
-
-</article></slide><slide class=""><hgroup><h2>Approximate text matching: edit-based distances</h2></hgroup><article  id="approximate-text-matching-edit-based-distances">
-
-<table class = 'rmdtable'>
-<tr class="header">
-<th align="left"><em>Distance</em></th>
-<th align="left"><em>substitution</em></th>
-<th align="left"><em>deletion</em></th>
-<th align="left"><em>insertion</em></th>
-<th align="left"><em>transposition</em></th>
-</tr>
-<tr class="odd">
-<td align="left">Hamming</td>
-<td align="left">yes</td>
-<td align="left">no</td>
-<td align="left">no</td>
-<td align="left">no</td>
-</tr>
-<tr class="even">
-<td align="left">LCS</td>
-<td align="left">no</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">no</td>
-</tr>
-<tr class="odd">
-<td align="left">Levenshtein</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">no</td>
-</tr>
-<tr class="even">
-<td align="left">OSA</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-</tr>
-<tr class="odd">
-<td align="left">Damerau-Levenshtein</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-<td align="left">yes</td>
-</tr>
-</table>
-
-<p>\[\texttt{&quot;leela&quot;} \to \texttt{&quot;leea&quot;} \to \texttt{&quot;leia&quot;}\]</p>
-
-<pre class = 'prettyprint lang-r'>stringdist::stringdist(&quot;leela&quot;,&quot;leia&quot;,method=&quot;dl&quot;)</pre>
-
-<pre >## [1] 2</pre>
-
-</article></slide><slide class=""><hgroup><h2>Further steps in making data technically correct</h2></hgroup><article  id="further-steps-in-making-data-technically-correct" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Further steps in making data technically correct</h2></hgroup><article  class="smaller" id="further-steps-in-making-data-technically-correct">
 
 <ul>
 <li><p><code>lubridate</code>: extract dates from strings</p>
@@ -3444,7 +3479,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <li>Correction (replace them with better values)</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Detection, AKA data validation</h2></hgroup><article  id="detection-aka-data-validation" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Detection, AKA data validation</h2></hgroup><article  class="smaller" id="detection-aka-data-validation">
 
 <h3>Informally:</h3>
 
@@ -3479,7 +3514,7 @@ data.frame(rawtext = gender, coded = codes[i])</pre>
 <li>Analyze/visualize the results</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Use rules to correct data</h2></hgroup><article  id="use-rules-to-correct-data" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Use rules to correct data</h2></hgroup><article  class="smaller" id="use-rules-to-correct-data">
 
 <h3>Main idea</h3>
 
