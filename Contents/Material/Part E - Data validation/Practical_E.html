@@ -381,11 +381,6 @@ summary {
 <p><strong>The file <code>unnamed.csv</code> contains comma-separated values of ages and heights for a set of imaginary persons. Read in the data. Make sure to name both variables, and make both numeric. The obvious candidate function is <code>read.table</code>, but the <code>read_csv</code> function in the <code>readr</code> package makes it a lot easier</strong></p>
 <hr />
 </div>
-<div id="matching-dirty-data-against-standard-labels" class="section level3">
-<h3>3 - matching dirty data against standard labels</h3>
-<p><strong>The file <code>bands.txt</code> has a list of bands, but somebody messed up the “country” variable. Match it against the vector <code>c(&quot;Australia&quot;, &quot;United States&quot;, &quot;United Kingdom&quot;, &quot;Germany&quot;, &quot;Spain&quot;)</code>. Also make sure the <code>date</code> variable is a date.</strong></p>
-<hr />
-</div>
 <div id="a---data-cleaning" class="section level3">
 <h3>3a - data cleaning</h3>
 <p><strong>Exercise 3 is about removing inconsistencies from data. The exercise comes in two versions: One using base procedures by “hand”, and one using the editrules package. This first version is less abstract and does not require looking into a new framework. Feel free to skip it and do 3b instead, if it is too simple - or feel free to skip 3b if it’s too involved</strong></p>
@@ -456,7 +451,7 @@ le$adapt</code></pre>
 <pre><code>##     age agegroup height status yearsmarried
 ## 1 FALSE    FALSE  FALSE  FALSE        FALSE
 ## 2 FALSE    FALSE  FALSE   TRUE        FALSE
-## 3  TRUE    FALSE  FALSE  FALSE        FALSE
+## 3 FALSE    FALSE  FALSE  FALSE         TRUE
 ## 4  TRUE    FALSE  FALSE  FALSE        FALSE
 ## 5 FALSE     TRUE   TRUE  FALSE        FALSE</code></pre>
 <p><strong>The <code>le</code> object contains metadata and a logical array which indicates the minimal set of edits needed to make data follow the rules in <code>E</code> (note that <code>E</code> is missing at least one rule). The corrections are not part of the <code>editrules</code> package.</strong></p>

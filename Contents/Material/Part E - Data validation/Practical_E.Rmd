@@ -20,11 +20,6 @@ v <- factor(c(1,8.2,3,11))
 
 ---
 
-### 3 - matching dirty data against standard labels
-**The file `bands.txt` has a list of bands, but somebody messed up the "country" variable. Match it against the vector `c("Australia", "United States", "United Kingdom", "Germany", "Spain")`. Also make sure the `date` variable is a date.**
-
----
-
 ### 3a - data cleaning
 **Exercise 3 is about removing inconsistencies from data. The exercise comes in two versions: One using base procedures by "hand", and one using the editrules package. This first version is less abstract and does not require looking into a new framework. Feel free to skip it and do  3b instead, if it is too simple - or feel free to skip 3b if it's too involved**
 
