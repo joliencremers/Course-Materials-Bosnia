@@ -37,6 +37,7 @@ age, agegroup, height, status, yearsmarried
 people <- read.csv( file = "data/people.txt", stringsAsFactors = F, strip.white = T)
 ```
 **Correct the data, replacing impossible values with correct ones or with `NA` where the correct value cannot be deduced:**
+
 * **Age should not be negative and should be less than 150**
 * **Height should be greater than zero**
 * **Age should be greater than the number of years married**

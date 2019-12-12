@@ -392,7 +392,15 @@ summary {
 221, elderly, 5, widowed, 2
 34, child, -7, married, 3</code></pre>
 <pre class="r"><code>people &lt;- read.csv( file = &quot;data/people.txt&quot;, stringsAsFactors = F, strip.white = T)</code></pre>
-<p><strong>Correct the data, replacing impossible values with correct ones or with <code>NA</code> where the correct value cannot be deduced:</strong> * <strong>Age should not be negative and should be less than 150</strong> * <strong>Height should be greater than zero</strong> * <strong>Age should be greater than the number of years married</strong> * <strong>Children cannot be married or widowed</strong> * <strong>People under 18 of age should be coded as children, those between 18 and 64 should be coded as adults, and those over age 65 should be coded as elderly</strong> * <strong>Age should be larger than or equal to yearsmarried + 18</strong></p>
+<p><strong>Correct the data, replacing impossible values with correct ones or with <code>NA</code> where the correct value cannot be deduced:</strong></p>
+<ul>
+<li><strong>Age should not be negative and should be less than 150</strong></li>
+<li><strong>Height should be greater than zero</strong></li>
+<li><strong>Age should be greater than the number of years married</strong></li>
+<li><strong>Children cannot be married or widowed</strong></li>
+<li><strong>People under 18 of age should be coded as children, those between 18 and 64 should be coded as adults, and those over age 65 should be coded as elderly</strong></li>
+<li><strong>Age should be larger than or equal to yearsmarried + 18</strong></li>
+</ul>
 <hr />
 </div>
 <div id="b---a-walkthrough-for-the-editrules-package" class="section level3">
@@ -451,7 +459,7 @@ le$adapt</code></pre>
 <pre><code>##     age agegroup height status yearsmarried
 ## 1 FALSE    FALSE  FALSE  FALSE        FALSE
 ## 2 FALSE    FALSE  FALSE   TRUE        FALSE
-## 3 FALSE    FALSE  FALSE  FALSE         TRUE
+## 3  TRUE    FALSE  FALSE  FALSE        FALSE
 ## 4  TRUE    FALSE  FALSE  FALSE        FALSE
 ## 5 FALSE     TRUE   TRUE  FALSE        FALSE</code></pre>
 <p><strong>The <code>le</code> object contains metadata and a logical array which indicates the minimal set of edits needed to make data follow the rules in <code>E</code> (note that <code>E</code> is missing at least one rule). The corrections are not part of the <code>editrules</code> package.</strong></p>
