@@ -218,7 +218,7 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
 
     - [Lecture F](Contents/Material/Part F - Imputation/Lecture_F.html){target="_blank"}
     - [Lecture F Handout](Contents/Material/Part F - Imputation/Lecture_F_handout.html){target="_blank"}
-    <!-- - [Practical F](Contents/Material/Part F - Imputation/Practical_F_walkthrough.html){target="_blank"} -->
+    - [Practical F](Contents/Material/Part F - Imputation/Practical_F_walkthrough.html){target="_blank"}
     - [Impractical F](Contents/Material/Part F - Imputation/Practical_F.html){target="_blank"}
 
 All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions.
