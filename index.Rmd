@@ -5,25 +5,25 @@ output:
     orientation: columns
     vertical_layout: scroll
 ---
+
 # Intro {.sidebar}
 
-This dashboard covers the materials for the second part of the course in `R` programming. 
-The course is held in Tbilisi, October 19th to 21st 2021. 
-The course website of the introductory course can be found [here](https://annevinkel.github.io/RGeorgia/).
+This dashboard covers the materials for the first folow-up course in R programming. Course held in Banja Luka, December 10-13, 2019. The course website of the introductory course can be found [here](http://peterstoltze.dk/RfOS/).
 
 ---
 
 Instructors: 
 
  - Anne Vinkel Hansen (aih@dst.dk)
- - Joen Petur Jacobsen (jpj@dst.dk)
+ - Jolien Cremers (jcre@sund.ku.dk)
 
 
 ---
 
-Part of the material for this course is adapted from [Gerko Vink](https://github.com/gerkovink/R) with massive thanks. 
+Part of the material for this course is adapted from [Gerko Vink](https://github.com/gerkovink/R)
 
 
+---
 # Quick Overview
 
 ## Column 1
@@ -32,10 +32,11 @@ Part of the material for this course is adapted from [Gerko Vink](https://github
 
 This follow-up course deals with the following topics:
 
-1.	Tidy data
-2.  statistical modeling
-3.  Data validation and editing
-4.  Imputation
+1.	Statistical inference
+2.  Linear models
+3.  Generalised linear models
+4.  Data validation and editing
+5.  Imputation
 
 
 Previous experience with R is required.
@@ -47,18 +48,19 @@ Previous experience with R is required.
 | Time        | Topic                                           |
 |:------------|:------------------------------------------------|
 | *Tuesday*   |                                                 |
-| 09.00-12.00 | Repetition and "tidy data" (A)                  |
+| 09.00-12.00 | Repetition (A)                                  |
 |             | *Break*                                         |    
-| 13.00-15.30 | Modeling in `R` (B)                             |
+| 13.00-15.30 | Statistical Inference (B)                       |
 | *Wednesday* |                                                 |
-| 09.00-12.00 | Data Validation and Editing (C)                 |
-|             | *Break*                                         |
-| 13.00-15.30 | Imputation (D)                                  |
+| 09.00-12.00 | Linear Models (C)                               |
+|             | *Break*                                         |             
+| 13.00-15.30 | Generalized Linear Models (D)                   |
 | *Thursday*  |                                                 |
-| 09.00-12.00 | Workshop (E)                                    |
-|             | *Break*                                         |    
-| 13.00-15.30 | Summary (F)                                     |
-
+| 09.00-12.00 | Data Validation and Editing (E)                 |
+|             | *Break*                                         |
+| 13.00-15.30 | Imputation (F)                                  |
+| *Friday*    |                                                 |
+| 09.00-12.00 | Evaluation, agreement on summary mission report |
 
 
 # How to prepare
@@ -70,9 +72,9 @@ Dear all,
 
 The below steps guide you through installing both `R` as well as the necessary additions.
 
-We look forward to see you all in Tbilisi,  
+We look forward to see you all in Banja Luka,  
 
-*Anne and Joen*
+*Anne and Jolien*
 
 ### **System requirements**
 
@@ -125,26 +127,39 @@ type `Yes` in the console and press the return key.
 ### Tuesday's materials
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
-- Part A: Repetition and the concept of "Tidy data"
+- Part A: Repetition
 
-    - [Lecture A](Contents/Material/Part A - Repetition and tidy data/Lecture_A.html){target="_blank"}
-    - [Practical A](Contents/Material/Part A - Repetition and tidy data/Practical_A.html){target="_blank"}
-    - [Practical A with solutions](Contents/Material/Part A - Repetition and tidy data/Practical_A_walkthrough.html){target="_blank"} 
+    - [Lecture A](Contents/Material/Part A - Repetition/Lecture_A.html){target="_blank"}
+    - [Lecture A Handout](Contents/Material/Part A - Repetition/Lecture_A_handout.html){target="_blank"}
+    - [Practical A](Contents/Material/Part A - Repetition/Practical_A_walkthrough.html){target="_blank"}
+    - [Impractical A](Contents/Material/Part A - Repetition/Practical_A.html){target="_blank"}
 
 
-- Part B: Statistical modeling in `R`
+- Part B: Statistical Inference
 
-    - [Lecture B](Contents/Material/Part B - modeling/Lecture_B.html){target="_blank"}
-    - [Practical B](Contents/Material/Part B - modeling/Practical_B.html){target="_blank"}
-    - [Practical B with solutions](Contents/Material/Part B - modeling/Practical_B_walkthrough.html){target="_blank"}
-    - [Nurse dataset](Contents/Material/Part C - Linear models/nurses.sav){target="_blank"} 
+    - [Lecture B](Contents/Material/Part B - Statistical inference/Lecture_B.html){target="_blank"}
+    - [Lecture B Handout](Contents/Material/Part B - Statistical inference/Lecture_B_handout.html){target="_blank"}
+    - [Practical B](Contents/Material/Part B - Statistical inference/Practical_B_walkthrough.html){target="_blank"}
+    - [Impractical B](Contents/Material/Part B - Statistical inference/Practical_B.html){target="_blank"}
+
+All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions. 
 
 ## Column 2
 
 ### Useful references
+- [The R project homepage](https://www.r-project.org/) 
+- [CRAN task view for official statistics](https://cran.r-project.org/web/views/OfficialStatistics.html)
+- [CRAN area for contributed documentation](https://cran.r-project.org/other-docs.html) No longer actively maintained, but a lot of good resources
+- Some places to find the `R` community:
+  - [#rstats hashtag](https://twitter.com/search?q=%23rstats)
+  - [Rweekly](https://rweekly.org/)
+  - [R-bloggers](https://www.r-bloggers.com/)
+  - [Stack Overflow](https://stackoverflow.com/) A good place to ask questions. Check if your question has been answered before, and make sure to phrase it carefully and correctly. 
+  
 - [Pipes in R](https://r4ds.had.co.nz/pipes.html)
 
-- [Practical Regression and Anova using R](https://cran.r-project.org/doc/contrib/Faraway-PRA.pdf) by Julian Faraway  
+
+
 
 
 # Wednesday
@@ -154,33 +169,59 @@ We adapt the course as we go. To ensure that you work with the latest iteration 
 ### Wednesday's materials
 We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
 
-- Part C: Data Validation and Editing
-    - [Lecture C](Contents/Material/Part C - Data validation/Lecture_C.html){target="_blank"}
-    - [Practical C](Contents/Material/Part C - Data validation/Practical_C_walkthrough.html){target="_blank"}
-    - [Impractical C](Contents/Material/Part C - Data validation/Practical_C.html){target="_blank"}
-    - Data for the practical: [bands.txt](Contents/Material/Part C - Data validation/data/bands.txt){target="_blank"}, 
-      [unnamed.xls](Contents/Material/Part C - Data validation/data/unnamed.xls){target="_blank"},
-      [people.txt](Contents/Material/Part C - Data validation/data/people.txt),
-      [peoplerules.txt](Contents/Material/Part C - Data validation/data/peoplerules.txt),
-      [dirty_iris.txt](Contents/Material/Part C - Data validation/data/dirty_iris.txt)
+- Part C: `R` Linear Models
 
-- Part D: Imputation
+    - [Lecture C](Contents/Material/Part C - Linear models/Lecture_C.html){target="_blank"}
+    - [Lecture C Handout](Contents/Material/Part C - Linear models/Lecture_C_handout.html){target="_blank"}
+    - [Practical C](Contents/Material/Part C - Linear models/Practical_C_walkthrough.html){target="_blank"}
+    - [Impractical C](Contents/Material/Part C - Linear models/Practical_C.html){target="_blank"}
+    - [Extra Lecture M Handout](Contents/Material/Part C - Linear models/Lecture_M_handout.html){target="_blank"}
+    - [Extra Practical M](Contents/Material/Part C - Linear models/Practical_M_walkthrough.html){target="_blank"}
+    - [Extra Impractical M](Contents/Material/Part C - Linear models/Practical_M.html){target="_blank"}
+    - [Nurse dataset](Contents/Material/Part C - Linear models/nurses.sav){target="_blank"}
+       
+- Part D: Generalized Linear Models
 
-    - [Lecture D](Contents/Material/Part D - Imputation/Lecture_D.html){target="_blank"}
-    - [Practical D](Contents/Material/Part D - Imputation/Practical_D_walkthrough.html){target="_blank"}
-    - [Impractical D](Contents/Material/Part D - Imputation/Practical_D.html){target="_blank"}
-
-<!-- - Part D: Generalized Linear Models -->
-
-<!--     - [Lecture D](Contents/Material/Part D - GLMs/Lecture_D.html){target="_blank"} -->
-<!--     - [Lecture D Handout](Contents/Material/Part D - GLMs/Lecture_D_handout.html){target="_blank"} -->
-<!--     - [Practical D](Contents/Material/Part D - GLMs/Practical_D_walkthrough.html){target="_blank"} -->
-<!--     - [Impractical D](Contents/Material/Part D - GLMs/Practical_D.html){target="_blank"} -->
-<!--     - [Extra Practical](Contents/Material/Part D - GLMs/Data_exploration.html){target="_blank"} -->
-<!--     - Data: [cabinet](Contents/Material/Part D - GLMs/danish_cabinet.xls),  -->
-<!--     [benefits](Contents/Material/Part D - GLMs/Benefits.xlsx) -->
+    - [Lecture D](Contents/Material/Part D - GLMs/Lecture_D.html){target="_blank"}
+    - [Lecture D Handout](Contents/Material/Part D - GLMs/Lecture_D_handout.html){target="_blank"}
+    - [Practical D](Contents/Material/Part D - GLMs/Practical_D_walkthrough.html){target="_blank"}
+    - [Impractical D](Contents/Material/Part D - GLMs/Practical_D.html){target="_blank"}
+    - [Extra Practical](Contents/Material/Part D - GLMs/Data_exploration.html){target="_blank"}
+    - Data: [cabinet](Contents/Material/Part D - GLMs/danish_cabinet.xls), 
+    [benefits](Contents/Material/Part D - GLMs/Benefits.xlsx)
 
 All lectures are in `html` format. Practicals are are provided both as naked questions but also with ample explanations and solutions - choose according to your taste!
+
+## Column 2
+
+### Useful references
+- [Practical Regression and Anova using R](https://cran.r-project.org/doc/contrib/Faraway-PRA.pdf) by Julian Faraway  
+
+# Thursday
+
+## Column 1
+
+### Thursday's materials
+We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
+
+- Part E: Data Validation and Editing
+    - [Lecture E](Contents/Material/Part E - Data validation/Lecture_E.html){target="_blank"}
+    - [Practical E](Contents/Material/Part E - Data validation/Practical_E_walkthrough.html){target="_blank"}
+    - [Impractical E](Contents/Material/Part E - Data validation/Practical_E.html){target="_blank"}
+    - Data for the practical: [bands.txt](Contents/Material/Part E - Data validation/data/bands.txt){target="_blank"}, 
+      [unnamed.xls](Contents/Material/Part E - Data validation/data/unnamed.xls){target="_blank"},
+      [people.txt](Contents/Material/Part E - Data validation/data/people.txt),
+      [peoplerules.txt](Contents/Material/Part E - Data validation/data/peoplerules.txt),
+      [dirty_iris.txt](Contents/Material/Part E - Data validation/data/dirty_iris.txt)
+
+- Part F: Imputation
+
+    - [Lecture F](Contents/Material/Part F - Imputation/Lecture_F.html){target="_blank"}
+    - [Lecture F Handout](Contents/Material/Part F - Imputation/Lecture_F_handout.html){target="_blank"}
+    - [Practical F](Contents/Material/Part F - Imputation/Practical_F_walkthrough.html){target="_blank"}
+    - [Impractical F](Contents/Material/Part F - Imputation/Practical_F.html){target="_blank"}
+
+All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions.
 
 ## Column 2
 
@@ -195,22 +236,6 @@ All lectures are in `html` format. Practicals are are provided both as naked que
   - [Tutorial](https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/): Tutorial describing the use of 5 different R-packages for missing data imputation.
   - [Tutorial](http://www.di.fc.ul.pt/~jpn/r/missing/index.html): Another tutorial on missing data in R.
   - [Tutorial](https://github.com/gerkovink/miceVignettes): a set of tutorials for the `mice` package.
-
-
-# Thursday
-
-## Column 1
-
-### Thursday's materials
-We adapt the course as we go. To ensure that you work with the latest iteration of the course materials, we advice all course participants to access the materials online.
-
-- Part E: Workshop. Bring your own data to work on. Please ensure beforehand that you can read data into R. 
-
-- Part F: Summary
-
-All lectures are in `html` format. Practicals are walkthrough files that guide you through the exercises. `Impractical` files contain the exercises, without walkthrough, explanations and solutions.
-
-## Column 2
 
 # Further studies
 
