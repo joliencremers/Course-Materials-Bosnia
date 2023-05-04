@@ -16,6 +16,7 @@ Instructors:
 
  - Anne Vinkel Hansen (aih@dst.dk)
  - Jolien Cremers (jcre@sund.ku.dk)
+ - test
 
 
 ---
